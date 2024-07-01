@@ -41,3 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: BackGround
+    uniqueID: 751989195
+    locked: 0
+  - name: Trangtri
+    uniqueID: 112320617
+    locked: 0
+  - name: Ground
+    uniqueID: 4199121561
+    locked: 0
