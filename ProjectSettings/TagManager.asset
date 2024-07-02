@@ -11,11 +11,11 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Ground
+  - Item
+  - Monster
+  - Boss
+  - Player
   - 
   - 
   - 
@@ -49,4 +49,10 @@ TagManager:
     locked: 0
   - name: Ground
     uniqueID: 4199121561
+    locked: 0
+  - name: TrangTri2
+    uniqueID: 509586963
+    locked: 0
+  - name: Player
+    uniqueID: 2265894617
     locked: 0
