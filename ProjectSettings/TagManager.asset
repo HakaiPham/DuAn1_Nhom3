@@ -11,9 +11,9 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
+  - backgroud
+  - map
+  - vatpham
   - 
   - 
   - 
@@ -49,4 +49,10 @@ TagManager:
     locked: 0
   - name: Ground
     uniqueID: 4199121561
+    locked: 0
+  - name: map
+    uniqueID: 1743411901
+    locked: 0
+  - name: vatpham
+    uniqueID: 2897334165
     locked: 0
