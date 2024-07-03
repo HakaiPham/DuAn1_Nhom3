@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Bullet
+  - Monster
   layers:
   - Default
   - TransparentFX
@@ -16,7 +18,7 @@ TagManager:
   - Monster
   - Boss
   - Player
-  - 
+  - Bullet
   - 
   - 
   - 
@@ -55,4 +57,7 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 2265894617
+    locked: 0
+  - name: Ui
+    uniqueID: 3993068163
     locked: 0
