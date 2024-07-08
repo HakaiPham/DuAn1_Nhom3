@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Bullet
   - Monster
+  - ItemHp
+  - ItemMp
+  - BossTank
   layers:
   - Default
   - TransparentFX
@@ -19,7 +22,7 @@ TagManager:
   - Boss
   - Player
   - Bullet
-  - 
+  - BossTank
   - 
   - 
   - 
