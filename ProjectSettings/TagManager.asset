@@ -9,6 +9,7 @@ TagManager:
   - ItemHp
   - ItemMp
   - BossTank
+  - TrapGai
   layers:
   - Default
   - TransparentFX
