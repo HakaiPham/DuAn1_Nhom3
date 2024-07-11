@@ -10,6 +10,7 @@ TagManager:
   - ItemMp
   - BossTank
   - TrapGai
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -64,4 +65,7 @@ TagManager:
     locked: 0
   - name: Ui
     uniqueID: 3993068163
+    locked: 0
+  - name: Bullet
+    uniqueID: 3899484309
     locked: 0

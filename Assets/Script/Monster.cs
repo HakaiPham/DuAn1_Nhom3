@@ -18,7 +18,6 @@ public class Monster : MonoBehaviour
     float _EnemyAttackTimeStart;
     [SerializeField] private float _EnemyAttackTime;
     Player _playerHp;
-    bool _IsAttackAgain;
     public  Slider _EnemyHp;
     public TextMeshProUGUI _HpEnemyText;
     public int hpEmenyValue;
@@ -31,7 +30,6 @@ public class Monster : MonoBehaviour
         _IsAttacking = false;
         //_EnemyAttackTimeStart = 0;
         _playerHp = FindObjectOfType<Player>();
-        _IsAttackAgain = true;
         _EnemyHp.maxValue = 50;
         hpEmenyValue = 50;
         _HpEnemyText.text = hpEmenyValue.ToString("");
