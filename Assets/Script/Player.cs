@@ -225,13 +225,13 @@ public class Player : MonoBehaviour
         if (transform.localScale.x > 0)
         {
             var transformAttack = new Vector2(3f, 0);
-            createBullet.transform.localScale = new Vector3(1, 1, 1);
+            createBullet.transform.localScale = new Vector3(2, 2, 2);
             createBullet.GetComponent<Rigidbody2D>().velocity = transformAttack;
         }
         else if (transform.localScale.x < 0)
         {
             var transformAttack = new Vector2(-3f,0);
-            createBullet.transform.localScale = new Vector3(-1, -1, -1);
+            createBullet.transform.localScale = new Vector3(-2, -2, -2);
             createBullet.GetComponent<Rigidbody2D>().velocity = transformAttack;
         }
         StartCoroutine(ReLoadSkill2());
@@ -415,6 +415,10 @@ public class Player : MonoBehaviour
             }
         }
         if (_HpMonster._EnemyHp.value > 0) _HpMonster.StopHitEnemy();
+        else
+        {
+            Debug.Log("Enemy ko nam trong AttackRange");
+        }
     }
     public void AttackMonsterbySkill2()
     {
