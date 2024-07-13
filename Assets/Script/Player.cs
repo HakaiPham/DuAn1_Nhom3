@@ -39,6 +39,8 @@ public class Player : MonoBehaviour
     int slMp = 0;
     [SerializeField] public TextMeshProUGUI _SlMpText;
     bool canUseItem;
+    GameObject[] _Enemy;
+    Monster2 _EnemySummon;
     void Start()
     {
         _Rigidbody2 = GetComponent<Rigidbody2D>();
@@ -56,6 +58,8 @@ public class Player : MonoBehaviour
         bullet = FindObjectOfType<Bullet>();
         _SlHpText.text = slHp.ToString("");
         _SlMpText.text = slMp.ToString("");
+        _Enemy = GameObject.FindGameObjectsWithTag("Monster");
+        _EnemySummon = FindObjectOfType<Monster2>();
     }
 
     // Update is called once per frame
@@ -331,11 +335,14 @@ public class Player : MonoBehaviour
         AnimatorStateInfo stateInfo = _Animator2.GetCurrentAnimatorStateInfo(0);
         if (isMonsterinRange == true && stateInfo.normalizedTime >= 1)
         {
-            Debug.Log("Tan cong thanh cong");
-            _HpMonster.hpEmenyValue -= 10;
-            _HpMonster._HpEnemyText.text = _HpMonster.hpEmenyValue.ToString("");
-            _HpMonster._EnemyHp.value -= 10;
-            _HpMonster.HitEnemy();
+            if (_Enemy.Length >= 1)
+            {
+                Debug.Log("Tan cong thanh cong");
+                _HpMonster.hpEmenyValue -= 10;
+                _HpMonster._HpEnemyText.text = _HpMonster.hpEmenyValue.ToString("");
+                _HpMonster._EnemyHp.value -= 10;
+                _HpMonster.HitEnemy();
+            }
         }
         _HpMonster.StopHitEnemy();
         _Animator2.SetTrigger("IsIdle");
@@ -390,15 +397,23 @@ public class Player : MonoBehaviour
         AnimatorStateInfo stateInfo = _Animator2.GetCurrentAnimatorStateInfo(0);
         if (positionMonster <= _AttackRange)
         {
-            if (_HpMonster.hpEmenyValue > 0)
+            if (_Enemy.Length>=1)
+            {  
+
+                if (_HpMonster.hpEmenyValue>0)
+                {
+                    _HpMonster.hpEmenyValue -= 5;
+                    _HpMonster._HpEnemyText.text = _HpMonster.hpEmenyValue.ToString("");
+                    _HpMonster._EnemyHp.value = _HpMonster.hpEmenyValue;
+                    _HpMonster.HitEnemy();
+                    _HpMonster.StopHitEnemy();
+                }
+            }
+            else if(_EnemySummon._HpMonsterSummonValue>0)
             {
-                _HpMonster.hpEmenyValue -= 5;
-                _HpMonster._HpEnemyText.text = _HpMonster.hpEmenyValue.ToString("");
-                _HpMonster._EnemyHp.value = _HpMonster.hpEmenyValue;
-                _HpMonster.HitEnemy();
+                _EnemySummon.EnemySummonHitbyPlayerAttackNormal();
             }
         }
-        _HpMonster.StopHitEnemy();
     }
     public void AttackMonsterbySkill1()
     {
@@ -415,10 +430,6 @@ public class Player : MonoBehaviour
             }
         }
         if (_HpMonster._EnemyHp.value > 0) _HpMonster.StopHitEnemy();
-        else
-        {
-            Debug.Log("Enemy ko nam trong AttackRange");
-        }
     }
     public void AttackMonsterbySkill2()
     {
