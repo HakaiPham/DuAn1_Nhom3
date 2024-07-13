@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3065898963966781621}
   - component: {fileID: 7421093244355499466}
-  - component: {fileID: 8795094554010883026}
-  - component: {fileID: -3111991820116612184}
+  - component: {fileID: -2170556042961810600}
+  - component: {fileID: 6648698167341693896}
+  - component: {fileID: -2627600845968561838}
   m_Layer: 0
   m_Name: Arow_6
   m_TagString: Untagged
@@ -74,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: -233910976, guid: d65365122cebe364b8c7f472526f35e8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -86,21 +87,56 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8795094554010883026
+--- !u!114 &-2170556042961810600
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2218603800094290129}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7663c329c15b79e4ebd46ba5d6ae735e, type: 3}
+  m_Script: {fileID: 11500000, guid: bb0dc8903d643d64f82f93dcc285e800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
-  lifetime: 2
---- !u!50 &-3111991820116612184
+  force: 2
+  TimerAAF: 0
+--- !u!70 &6648698167341693896
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2218603800094290129}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.0005113967, y: 0}
+  m_Size: {x: 0.05102279, y: 0.07}
+  m_Direction: 0
+--- !u!50 &-2627600845968561838
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
