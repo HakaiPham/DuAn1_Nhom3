@@ -4,7 +4,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
 public class Monster2 : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -22,6 +21,9 @@ public class Monster2 : MonoBehaviour
     public Slider _hpMonsterSummonSlider;
     public int _HpMonsterSummonValue;
     public TextMeshProUGUI _HpMonsterSummonText;
+    public GameObject _OffHpSliderEnemy;
+    Player _player;
+    BoxCollider2D _conllider;
     void Start()
     {
         // Lưu trữ scale ban đầu của Boss
@@ -29,18 +31,24 @@ public class Monster2 : MonoBehaviour
         animator = GetComponent<Animator>();
         _AttackBossStart = 0;
         rb=GetComponent<Rigidbody2D>();
-        _hpMonsterSummonSlider.maxValue = 100;
-        _HpMonsterSummonValue = 100;
+        _hpMonsterSummonSlider.maxValue = 1000;
+        _HpMonsterSummonValue = 1000;
         _HpMonsterSummonText.text = _HpMonsterSummonValue.ToString("");
+        _player = FindObjectOfType<Player>();
+        _conllider = GetComponent<BoxCollider2D>();
     }
     void Update()
     {
+        IntroBoss();
         distancePlayer = Vector2.Distance(transform.position, player.position);
         // Tính khoảng cách của nhân vật đến Boss
         Debug.Log("Khoảng cách của player hiện tại là: " + distancePlayer);
         if (distancePlayer > _DetectionRange)
         {
-            animator.SetTrigger("IsEnemySummonFly");
+            if (_HpMonsterSummonValue > 0)
+            {
+                animator.SetTrigger("IsEnemySummonFly");
+            }
             MoveBoss();
         }
         else
@@ -58,34 +66,59 @@ public class Monster2 : MonoBehaviour
                 }
                 else if (distancePlayer <= _AttackRange) // Người chơi nằm trong phạm vi tấn công
                 {
-                    BossSkillAttack();
+                    AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+                    if (stateInfo.IsName("ionmySummon_HurtAnimation")) return;
+                    else
+                    {
+                        BossSkillAttack();
+                    }
                 }
 
             }
+        }
+    }
+    public void IntroBoss()
+    {
+        animator.SetTrigger("IsEnemySummonFly");
+        rb.velocity = Vector2.down * 1;
+        if (_conllider.IsTouchingLayers(LayerMask.GetMask("Ground")))
+        {
+            animator.SetTrigger("IsEnemySummonIdle");
+            animator.ResetTrigger("IsEnemySummonFly");
+            Debug.Log("Đã va chạm");
+            rb.velocity = Vector2.zero;
         }
     }
     public void MoveBoss()
     {
         //animator.SetBool("isBossRun", true);
         // Tính toán hướng tới người chơi nhưng chỉ trên trục X
-        Vector3 targetPosition = new Vector3(player.position.x, transform.position.y, transform.position.z);
-
-        // Di chuyển Boss tới vị trí mới
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
-        if (distancePlayer > _DetectionRange)
+        if (_HpMonsterSummonValue > 0)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, _Flyspeed * Time.deltaTime);
+            Vector3 targetPosition = new Vector3(player.position.x, transform.position.y, transform.position.z);
+            // Di chuyển Boss tới vị trí mới
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+            if (distancePlayer > _DetectionRange)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, _Flyspeed * Time.deltaTime);
+            }
+            // Xác định hướng của Boss dựa trên vị trí của người chơi
+            if (player.position.x > transform.position.x)
+            {
+                _HpMonsterSummonText.transform.localScale = new Vector3(1, 1, 1);
+                // Người chơi ở bên phải, quay mặt sang phải
+                transform.localScale = new Vector3(Mathf.Abs(localScale.x), localScale.y, localScale.z);
+            }
+            else if (player.position.x < transform.position.x)
+            {
+                _HpMonsterSummonText.transform.localScale = new Vector3(-1, 1, 1);
+                // Người chơi ở bên trái, quay mặt sang trái
+                transform.localScale = new Vector3(-Mathf.Abs(localScale.x), localScale.y, localScale.z);
+            }
         }
-        // Xác định hướng của Boss dựa trên vị trí của người chơi
-        if (player.position.x > transform.position.x)
+        else
         {
-            // Người chơi ở bên phải, quay mặt sang phải
-            transform.localScale = new Vector3(Mathf.Abs(localScale.x), localScale.y, localScale.z);
-        }
-        else if (player.position.x < transform.position.x)
-        {
-            // Người chơi ở bên trái, quay mặt sang trái
-            transform.localScale = new Vector3(-Mathf.Abs(localScale.x), localScale.y, localScale.z);
+            return;
         }
     }
     public void BossSkillAttack()
@@ -98,9 +131,11 @@ public class Monster2 : MonoBehaviour
             {
                 case 1:
                     animator.SetTrigger("IsEnemySummonSkill1");
+                    _player.TakeDame(10);
                     break;
                 case 2:
                     animator.SetTrigger("IsEnemySummonSkill2");
+                    _player.TakeDame(10);
                     break;
             }
             _AttackBossStart = _AttackBossCoolDown;
@@ -116,18 +151,11 @@ public class Monster2 : MonoBehaviour
     {
         if (_HpMonsterSummonValue <= 0)
         {
+            _OffHpSliderEnemy.SetActive(false);
             Debug.Log("Enemy Da chet");
             animator.SetTrigger("IsEnemySummonDead");
             animator.ResetTrigger("IsEnemySummonIdle");
             animator.ResetTrigger("IsEnemySummonHurt");
-        }
-    }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            Debug.Log("Đã va chạm");
-            rb.velocity = Vector3.zero;
         }
     }
     public void EnemySummonHitbyPlayerAttackNormal()
@@ -143,15 +171,25 @@ public class Monster2 : MonoBehaviour
     }
     public void EnemySummonHitbyPlayerSkill1()
     {
+        animator.SetTrigger("IsEnemySummonHurt");
         _HpMonsterSummonValue -= 10;
         _HpMonsterSummonText.text = _HpMonsterSummonValue.ToString();
         _hpMonsterSummonSlider.value = _HpMonsterSummonValue;
+        animator.ResetTrigger("IsEnemySummonSkill1");
+        animator.ResetTrigger("IsEnemySummonSkill2");
+        Invoke("StopHurtEnemyAnimation", 0.4f);
+        EnemySummonDead();
     }
     public void EnemySummonHitbyPlayerSkill2()
     {
-        _HpMonsterSummonValue -= 20;
+        animator.SetTrigger("IsEnemySummonHurt");
+        _HpMonsterSummonValue -= 50;
         _HpMonsterSummonText.text = _HpMonsterSummonValue.ToString();
         _hpMonsterSummonSlider.value = _HpMonsterSummonValue;
+        animator.ResetTrigger("IsEnemySummonSkill1");
+        animator.ResetTrigger("IsEnemySummonSkill2");
+        Invoke("StopHurtEnemyAnimation", 0.4f);
+        EnemySummonDead();
     }
     public void StartHurtEnemyAnimation()
     {

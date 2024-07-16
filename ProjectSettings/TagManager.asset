@@ -11,6 +11,7 @@ TagManager:
   - BossTank
   - TrapGai
   - Ground
+  - EnemySummon
   layers:
   - Default
   - TransparentFX

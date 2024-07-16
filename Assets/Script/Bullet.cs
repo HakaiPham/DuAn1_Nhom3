@@ -8,15 +8,19 @@ public class Bullet : MonoBehaviour
     Animator _Animator;
     CircleCollider2D _CircleCollider;
     Rigidbody2D _Rigidbody;
-    Monster _HpMonster;
     Player _player;
+    Transform targetMonster;
+    Monster _monster;
+    Monster2 _monster2;
     void Start()
     {
         _Animator = GetComponent<Animator>();
         _CircleCollider = GetComponent<CircleCollider2D>();
         _Rigidbody = GetComponent<Rigidbody2D>();
-        _HpMonster = FindObjectOfType<Monster>();
         _player = FindObjectOfType<Player>();
+        targetMonster = null;
+        _monster = FindObjectOfType<Monster>();
+        _monster2 = FindObjectOfType<Monster2>();
     }
 
     // Update is called once per frame
@@ -30,14 +34,30 @@ public class Bullet : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Monster"))
+        if (collision.gameObject.CompareTag("Monster")|| collision.gameObject.CompareTag("EnemySummon"))
         {
-            if (_HpMonster.hpEmenyValue > 0)
+            Monster currentMonster = collision.GetComponent<Monster>();
+            Monster2 currentMonsterSummon = collision.GetComponent<Monster2>();
+            if (currentMonster != null&&_monster.hpEmenyValue>0)
             {
-                _player.AttackMonsterbySkill2();
+                targetMonster = currentMonster.transform;
+                Debug.Log( "vị trị hiện tại của quái là: " + targetMonster);
+                _player.AttackMonsterbySkill2(targetMonster);
                 _Rigidbody.velocity = Vector2.zero;
                 _Animator.SetBool("IsBulletAttack", true);
                 Invoke("DestroyBullet", 0.4f);
+            }
+            else
+            {
+                if (currentMonsterSummon != null&& _monster2._HpMonsterSummonValue > 0)
+                {
+                    Debug.Log("vị trị hiện tại của quái là: " + targetMonster);
+                    targetMonster = currentMonsterSummon.transform;
+                    _player.AttackMonsterbySkill2(targetMonster);
+                    _Rigidbody.velocity = Vector2.zero;
+                    _Animator.SetBool("IsBulletAttack", true);
+                    Invoke("DestroyBullet", 0.4f);
+                }
             }
         }
     }

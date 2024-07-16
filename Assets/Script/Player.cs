@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -16,7 +17,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float _JumpPowerSkill;
     CircleCollider2D circleCollider;
     [SerializeField] private float _AttackRange;
-    [SerializeField] private Transform[] _monster;
+    public Transform[] _monster;
     Rigidbody2D _rb;
     [SerializeField] private Transform _TransformAttack;
     public GameObject _Bullet;    //float positionMonster;
@@ -39,8 +40,9 @@ public class Player : MonoBehaviour
     int slMp = 0;
     [SerializeField] public TextMeshProUGUI _SlMpText;
     bool canUseItem;
-    GameObject[] _Enemy;
+    public Transform targetMonster;
     Monster2 _EnemySummon;
+    BossTank _BossTank;
     void Start()
     {
         _Rigidbody2 = GetComponent<Rigidbody2D>();
@@ -58,7 +60,7 @@ public class Player : MonoBehaviour
         bullet = FindObjectOfType<Bullet>();
         _SlHpText.text = slHp.ToString("");
         _SlMpText.text = slMp.ToString("");
-        _Enemy = GameObject.FindGameObjectsWithTag("Monster");
+        //_Enemy = GameObject.FindWithTag("Monster");
         _EnemySummon = FindObjectOfType<Monster2>();
     }
 
@@ -68,7 +70,6 @@ public class Player : MonoBehaviour
         MovePlayer();
         Jump();
         PlayerAttack();
-        Hurt();
         //SkillAttack1();
         if (canUseItem && Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -107,14 +108,19 @@ public class Player : MonoBehaviour
     public void PlayerAttack()
     {
         isMonsterinRange = false; // quái chưa có vào phạm vi tấn công
+        targetMonster = null;
+        Debug.Log("Số lượng quái có trong mảng là: " + _monster.Length);
         foreach(Transform monster in _monster) 
         {
-            positionMonster = Vector2.Distance(transform.position, monster.position);
-            Debug.Log("Khoảng cách của quái vật đến nhân vật là: " + positionMonster);
-            if(positionMonster <= _AttackRange) 
+            if (monster != null) // Kiểm tra nếu monster không phải là null
             {
-                isMonsterinRange = true;
-                break; //Nếu ít hơn 1 quái thì sẽ thoát khỏi vòng lặp
+                positionMonster = Vector2.Distance(transform.position, monster.position);
+                if (positionMonster <= _AttackRange)
+                {
+                    isMonsterinRange = true;
+                    targetMonster = monster; // Lưu lại quái vật trong phạm vi tấn công
+                    break; // Thoát khỏi vòng lặp nếu tìm thấy quái vật trong phạm vi
+                }
             }
         }
         if (isMonsterinRange==true)
@@ -123,6 +129,7 @@ public class Player : MonoBehaviour
             {
                 Debug.Log("Đã tấn công thành công");
                 _Animator2.SetTrigger("IsAttack");
+                AttackMonsterbyNormalAttack(targetMonster);
             }
             else
             {
@@ -193,19 +200,17 @@ public class Player : MonoBehaviour
         }
         StopAttack();
     }
+    public void TakeDame(int dame)
+    {
+        hpValue -= dame;
+        _HpSlider.value = hpValue;
+        _HpText.text = hpValue.ToString("");
+        _Animator2.SetTrigger("IsHurt");
+        Invoke("Hurt", 0.2f);
+    }
     public void Hurt()
     {
-        if (circleCollider.IsTouchingLayers(LayerMask.GetMask("Monster")))
-        {
-            if (_HpMonster.hpEmenyValue > 0)
-            {
-                _Animator2.SetTrigger("IsHurt");
-            }
-        }
-        else
-        {
-            _Animator2.SetTrigger("IsIdle");
-        }
+        _Animator2.SetTrigger("IsIdle");
     }
     IEnumerator ReLoadSkill1()
     {
@@ -322,35 +327,16 @@ public class Player : MonoBehaviour
         if (_Collider2.IsTouchingLayers(LayerMask.GetMask("Ground")))
         {
             _Animator2.SetTrigger("IsSkill1_2");
-            AttackMonsterbySkill1();
+            AttackMonsterbySkill1(targetMonster);
         }
         else
         {
             _Animator2.ResetTrigger("IsSkill1_2");
         }
     }
-    public void OnSkill1_2End()
-    {
-        // Animation event khi skill 1_2 kết thúc
-        AnimatorStateInfo stateInfo = _Animator2.GetCurrentAnimatorStateInfo(0);
-        if (isMonsterinRange == true && stateInfo.normalizedTime >= 1)
-        {
-            if (_Enemy.Length >= 1)
-            {
-                Debug.Log("Tan cong thanh cong");
-                _HpMonster.hpEmenyValue -= 10;
-                _HpMonster._HpEnemyText.text = _HpMonster.hpEmenyValue.ToString("");
-                _HpMonster._EnemyHp.value -= 10;
-                _HpMonster.HitEnemy();
-            }
-        }
-        _HpMonster.StopHitEnemy();
-        _Animator2.SetTrigger("IsIdle");
-
-    }   
     public void OnSkill2()
     {
-        _Animator2.SetTrigger("IsAttackSkill2");
+           _Animator2.SetTrigger("IsAttackSkill2");
     }
     public void OnSkill2End()
     {
@@ -392,60 +378,77 @@ public class Player : MonoBehaviour
         hpValue -= 5;
         _HpText.text = hpValue.ToString("");
     }
-    public void AttackMonsterbyNormalAttack()
+    private void AttackMonsterbyNormalAttack(Transform monster)
     {
-        AnimatorStateInfo stateInfo = _Animator2.GetCurrentAnimatorStateInfo(0);
+        if (monster == null) return;
+
+        _HpMonster = monster.GetComponent<Monster>();
+        _EnemySummon = monster.GetComponent<Monster2>();
+        _BossTank = monster.GetComponent<BossTank>();
         if (positionMonster <= _AttackRange)
         {
-            if (_Enemy.Length>=1)
-            {  
-
-                if (_HpMonster.hpEmenyValue>0)
-                {
-                    _HpMonster.hpEmenyValue -= 5;
-                    _HpMonster._HpEnemyText.text = _HpMonster.hpEmenyValue.ToString("");
-                    _HpMonster._EnemyHp.value = _HpMonster.hpEmenyValue;
-                    _HpMonster.HitEnemy();
-                    _HpMonster.StopHitEnemy();
-                }
+            if (_HpMonster != null && _HpMonster.hpEmenyValue > 0)
+            {
+                _HpMonster.hpEmenyValue -= 5;
+                _HpMonster._HpEnemyText.text = _HpMonster.hpEmenyValue.ToString();
+                _HpMonster._EnemyHp.value = _HpMonster.hpEmenyValue;
+                _HpMonster.HitEnemy();
+                _HpMonster.StopHitEnemy();
             }
-            else if(_EnemySummon._HpMonsterSummonValue>0)
+            else if (_EnemySummon != null && _EnemySummon._HpMonsterSummonValue > 0)
             {
                 _EnemySummon.EnemySummonHitbyPlayerAttackNormal();
             }
+            if(_BossTank != null)
+            {
+                _BossTank.TakeDameBoss(5);
+            }
         }
     }
-    public void AttackMonsterbySkill1()
+    private void AttackMonsterbySkill1(Transform monster)
     {
-        AnimatorStateInfo stateInfo = _Animator2.GetCurrentAnimatorStateInfo(0);
+        if (monster == null) return;
+
+        _HpMonster = monster.GetComponent<Monster>();
+        _EnemySummon = monster.GetComponent<Monster2>();
+
         if (positionMonster <= _AttackRange)
         {
-            Debug.Log("Tan cong thanh cong");
-            _HpMonster.hpEmenyValue -= 10;
-            _HpMonster._HpEnemyText.text = _HpMonster.hpEmenyValue.ToString("");
-            _HpMonster._EnemyHp.value = _HpMonster.hpEmenyValue;
-            if (_HpMonster._EnemyHp.value > 0)
+            if (_HpMonster != null && _HpMonster.hpEmenyValue > 0)
             {
+                _HpMonster.hpEmenyValue -= 10;
+                _HpMonster._HpEnemyText.text = _HpMonster.hpEmenyValue.ToString();
+                _HpMonster._EnemyHp.value = _HpMonster.hpEmenyValue;
                 _HpMonster.HitEnemy();
+                _HpMonster.StopHitEnemy();
+            }
+            else if (_EnemySummon != null && _EnemySummon._HpMonsterSummonValue > 0)
+            {
+                _EnemySummon.EnemySummonHitbyPlayerSkill1();
             }
         }
-        if (_HpMonster._EnemyHp.value > 0) _HpMonster.StopHitEnemy();
     }
-    public void AttackMonsterbySkill2()
+    public void AttackMonsterbySkill2(Transform monster)
     {
-        AnimatorStateInfo stateInfo = _Animator2.GetCurrentAnimatorStateInfo(0);
-        if ((positionMonster <= _AttackRange || positionMonster > _AttackRange))
+        if (monster == null) return;
+
+        _HpMonster = monster.GetComponent<Monster>();
+        _EnemySummon = monster.GetComponent<Monster2>();
+
+        if (_HpMonster != null && _HpMonster.hpEmenyValue > 0)
         {
-            _HpMonster.hpEmenyValue -= 20;
-            _HpMonster._HpEnemyText.text = _HpMonster.hpEmenyValue.ToString("");
+            _HpMonster.hpEmenyValue -= 50;
+            _HpMonster._HpEnemyText.text = _HpMonster.hpEmenyValue.ToString();
             _HpMonster._EnemyHp.value = _HpMonster.hpEmenyValue;
-            if (_HpMonster._EnemyHp.value > 0)
-            {
-                _HpMonster.HitEnemy();
-            }
+            _HpMonster.HitEnemy();
+            _HpMonster.StopHitEnemy();
         }
-        if (_HpMonster._EnemyHp.value > 0) _HpMonster.StopHitEnemy();
+        else if (_EnemySummon != null && _EnemySummon._HpMonsterSummonValue > 0)
+        {
+            _EnemySummon.EnemySummonHitbyPlayerSkill2();
+        }
     }
+
     public void HurtInRangeAttackMonster()
     {
         if (_HpMonster.hpEmenyValue > 0)
