@@ -123,6 +123,37 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &31197704
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 31197705}
+  m_Layer: 0
+  m_Name: SpawnBoomer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &31197705
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 31197704}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -10.18, y: -0.41, z: -0.20393728}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &81297619
 GameObject:
   m_ObjectHideFlags: 0
@@ -752,6 +783,7 @@ GameObject:
   - component: {fileID: 682862180}
   - component: {fileID: 682862179}
   - component: {fileID: 682862182}
+  - component: {fileID: 682862183}
   m_Layer: 0
   m_Name: Shooter_Arrow_Trap_0
   m_TagString: Monster
@@ -860,10 +892,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e16d2af3f8f70b9498b2b589fb92187f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Bullet: {fileID: 2218603800094290129, guid: 6386c48479a1d94408c06cd8285f248b, type: 3}
+  Bullet: {fileID: 4066762543896642654, guid: 77218f13af7cdda49a1b513d729fd5b8, type: 3}
   Bulletpos: {fileID: 1579042986}
-  Timer: 0
+  Timer: 2
   rotate: {fileID: 682862177}
+--- !u!58 &682862183
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 682862177}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.065
 --- !u!1 &693561635
 GameObject:
   m_ObjectHideFlags: 0
@@ -11042,8 +11109,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1517236663}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.5207942, y: -4.6528707, z: 0.07838113}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -5.5039434, y: -3.863911, z: 0.13587308}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -11064,7 +11131,7 @@ Transform:
   - {fileID: 853824449}
   - {fileID: 693561636}
   - {fileID: 507168294}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1596913924}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1558722747
 GameObject:
@@ -11338,6 +11405,38 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 682862181}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1596913923
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1596913924}
+  m_Layer: 0
+  m_Name: TreeGr
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1596913924
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1596913923}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.983149, y: -0.78895974, z: -0.057491947}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1517236664}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1772683647
 GameObject:
@@ -29644,6 +29743,7 @@ GameObject:
   - component: {fileID: 2108754198}
   - component: {fileID: 2108754201}
   - component: {fileID: 2108754202}
+  - component: {fileID: 2108754203}
   m_Layer: 0
   m_Name: TestTer
   m_TagString: Player
@@ -29726,7 +29826,7 @@ Transform:
   m_GameObject: {fileID: 2108754197}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.836, y: -4.449, z: 0}
+  m_LocalPosition: {x: 8.67, y: -0.81, z: 0}
   m_LocalScale: {x: 1, y: 0.9716, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -29748,7 +29848,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -29792,7 +29892,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.01962763, y: -0.014814362}
+  m_Offset: {x: 0.01962763, y: -0.09343038}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -29803,18 +29903,33 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.18176687, y: 0.43037125}
+  m_Size: {x: 0.18176687, y: 0.2731392}
   m_EdgeRadius: 0
+--- !u!114 &2108754203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108754197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57ab33a77dcccd946919239ca1942c2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemPrefab: {fileID: 727018660289372882, guid: 4cb2cda390029ed44b35d6c9f973e1a3, type: 3}
+  createEmptyTransform: {fileID: 31197705}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 401226192}
   - {fileID: 884061006}
-  - {fileID: 1517236664}
+  - {fileID: 1596913924}
   - {fileID: 2081324822}
   - {fileID: 630815385}
   - {fileID: 1573108004}
   - {fileID: 1058129657}
   - {fileID: 682862181}
   - {fileID: 2108754200}
+  - {fileID: 31197705}
