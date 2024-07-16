@@ -3,40 +3,30 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Bullet
+  - Monster
+  - ItemHp
+  - ItemMp
+  - BossTank
+  - TrapGai
+  - Ground
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
   - Water
   - UI
   - backgroud
   - map
   - vatpham
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Ground
+  - Item
+  - Monster
+  - Boss
+  - Player
+  - Bullet
+  - BossTank
   m_SortingLayers:
   - name: Default
     uniqueID: 0
@@ -55,4 +45,15 @@ TagManager:
     locked: 0
   - name: vatpham
     uniqueID: 2897334165
+  - name: TrangTri2
+    uniqueID: 509586963
+    locked: 0
+  - name: Player
+    uniqueID: 2265894617
+    locked: 0
+  - name: Ui
+    uniqueID: 3993068163
+    locked: 0
+  - name: Bullet
+    uniqueID: 3899484309
     locked: 0
