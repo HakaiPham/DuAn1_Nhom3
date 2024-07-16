@@ -113,8 +113,8 @@ public class Monster : MonoBehaviour
                         _animator.SetBool("IsEnemyAttack1", true);
                         if (_IsAttacking == true && _playerHp.hpValue > 0)
                         {
-                            Debug.Log("Người chơi trong phạm vi tấn công nên mất máu");
-                            Debug.Log("Skill hiện tại là: " + randomSkill);
+                            //Debug.Log("Người chơi trong phạm vi tấn công nên mất máu");
+                            //Debug.Log("Skill hiện tại là: " + randomSkill);
                             Invoke("Hpnv", 0.51f);
                             _playerHp.HpPlayer();
                         }
@@ -123,8 +123,8 @@ public class Monster : MonoBehaviour
                         _animator.SetBool("IsEnemyAttack2", true);
                         if (_IsAttacking == true && _playerHp.hpValue > 0)
                         {
-                            Debug.Log("Người chơi trong phạm vi tấn công nên mất máu");
-                            Debug.Log("Skill hiện tại là: " + randomSkill);
+                            //Debug.Log("Người chơi trong phạm vi tấn công nên mất máu");
+                            //Debug.Log("Skill hiện tại là: " + randomSkill);
                             Invoke("Hpnv", 0.51f);
                             _playerHp.HpPlayer();
                         }

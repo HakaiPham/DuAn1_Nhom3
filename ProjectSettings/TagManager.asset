@@ -10,6 +10,7 @@ TagManager:
   - ItemMp
   - BossTank
   - Ground
+  - EnemySummon
   layers:
   - Default
   - TransparentFX
