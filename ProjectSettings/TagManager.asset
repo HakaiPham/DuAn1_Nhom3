@@ -15,9 +15,11 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
   - Water
   - UI
+  - backgroud
+  - map
+  - vatpham
   - Ground
   - Item
   - Monster
@@ -25,25 +27,6 @@ TagManager:
   - Player
   - Bullet
   - BossTank
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
   m_SortingLayers:
   - name: Default
     uniqueID: 0
@@ -57,6 +40,11 @@ TagManager:
   - name: Ground
     uniqueID: 4199121561
     locked: 0
+  - name: map
+    uniqueID: 1743411901
+    locked: 0
+  - name: vatpham
+    uniqueID: 2897334165
   - name: TrangTri2
     uniqueID: 509586963
     locked: 0
