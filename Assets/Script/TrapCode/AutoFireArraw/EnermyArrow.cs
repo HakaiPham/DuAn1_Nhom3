@@ -16,7 +16,7 @@ public class EnermyArrow : MonoBehaviour
     public float moveRange = 3.0f;  // Khoảng cách di chuyển trái phải
     private float startPos;         // Vị trí ban đầu để tính khoảng cách di chuyển
     private bool movingRight = true;// Biến để kiểm tra hướng di chuyển
-    public float distance;
+    
 
     void Start()
     {
@@ -31,7 +31,7 @@ public class EnermyArrow : MonoBehaviour
         Timer += Time.deltaTime; // Tăng thời gian cooldown
 
         // Tính khoảng cách giữa đối tượng này và nhân vật
-        distance = Vector2.Distance(transform.position, FindPlayer.transform.position);
+       float distance = Vector2.Distance(transform.position, FindPlayer.transform.position);
         Debug.Log(distance);
 
         // Tính góc giữa đối tượng này và nhân vật trên trục Z
@@ -102,11 +102,21 @@ public class EnermyArrow : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmosSelected()
+
+    void OnDrawGizmosSelected()
     {
-        Debug.Log("OnDrawGizmosSelected called");
+        // Vẽ vùng tấn công (hình tròn đỏ)
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, 2f); // Bán kính 2f, có thể điều chỉnh
+
+        // Vẽ hướng bắn (vùng cảnh báo màu vàng)
+        float angle = 45f; // Góc bắn ±45 độ
+        Vector3 directionRight = Quaternion.Euler(0, 0, angle) * transform.right;
+        Vector3 directionLeft = Quaternion.Euler(0, 0, -angle) * transform.right;
+
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, distance);
+        Gizmos.DrawLine(transform.position, transform.position + directionRight * 2f); // Độ dài 2f, có thể điều chỉnh
+        Gizmos.DrawLine(transform.position, transform.position + directionLeft * 2f); // Độ dài 2f, có thể điều chỉnh
     }
 
 }
