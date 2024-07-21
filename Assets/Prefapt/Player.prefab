@@ -108,7 +108,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2029072679
-  m_SortingLayer: 5
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_Sprite: {fileID: 525816244, guid: b19a4d4b64b2c8a419da7711807124f6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -235,6 +235,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
   _TransformAttack: {fileID: 5357910892851928437}
   _Bullet: {fileID: 7228214551465353365, guid: 66a91ad8c73fdbf4aa4e9056f0a5157e, type: 3}
   _HpSlider: {fileID: 0}
@@ -250,6 +251,7 @@ MonoBehaviour:
   _SlHpText: {fileID: 0}
   _SlMpText: {fileID: 0}
   targetMonster: {fileID: 0}
+  cooldownAttackTime: 0.25
 --- !u!58 &5357277947075482325
 CircleCollider2D:
   m_ObjectHideFlags: 0

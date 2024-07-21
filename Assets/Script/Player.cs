@@ -395,11 +395,7 @@ public class Player : MonoBehaviour
         {
             if (_HpMonster != null && _HpMonster.hpEmenyValue > 0)
             {
-                _HpMonster.hpEmenyValue -= 5;
-                _HpMonster._HpEnemyText.text = _HpMonster.hpEmenyValue.ToString();
-                _HpMonster._EnemyHp.value = _HpMonster.hpEmenyValue;
-                _HpMonster.HitEnemy();
-                _HpMonster.StopHitEnemy();
+                _HpMonster.TakeDameEnemy(5);
             }
             else if (_EnemySummon != null && _EnemySummon._HpMonsterSummonValue > 0)
             {
@@ -429,11 +425,7 @@ public class Player : MonoBehaviour
         {
             if (_HpMonster != null && _HpMonster.hpEmenyValue > 0)
             {
-                _HpMonster.hpEmenyValue -= 20;
-                _HpMonster._HpEnemyText.text = _HpMonster.hpEmenyValue.ToString();
-                _HpMonster._EnemyHp.value = _HpMonster.hpEmenyValue;
-                _HpMonster.HitEnemy();
-                _HpMonster.StopHitEnemy();
+                _HpMonster.TakeDameEnemy(20);
             }
             else if (_EnemySummon != null && _EnemySummon._HpMonsterSummonValue > 0)
             {
@@ -447,7 +439,7 @@ public class Player : MonoBehaviour
             {
                 if (_enemy2 != null&&_enemy2.hpEmenyValue>0) _enemy2.Enemy2TakeDame(20);
             }
-            if (_enemy3 != null && _enemy3.hpEmenyValue > 0) _enemy3.Enemy3TakeDame(5);
+            if (_enemy3 != null && _enemy3.hpEmenyValue > 0) _enemy3.Enemy3TakeDame(20);
         }
     }
     public void AttackMonsterbySkill2(Transform monster)
@@ -460,11 +452,7 @@ public class Player : MonoBehaviour
         _enemy3 = monster.GetComponent<Enemy3>();
         if (_HpMonster != null && _HpMonster.hpEmenyValue > 0)
         {
-            _HpMonster.hpEmenyValue -= 50;
-            _HpMonster._HpEnemyText.text = _HpMonster.hpEmenyValue.ToString();
-            _HpMonster._EnemyHp.value = _HpMonster.hpEmenyValue;
-            _HpMonster.HitEnemy();
-            _HpMonster.StopHitEnemy();
+            _HpMonster.TakeDameEnemy(50);
         }
         else if (_EnemySummon != null && _EnemySummon._HpMonsterSummonValue > 0)
         {
@@ -478,7 +466,7 @@ public class Player : MonoBehaviour
         {
             if (_enemy2 != null) _enemy2.Enemy2TakeDame(50);
         }
-        if (_enemy3 != null && _enemy3.hpEmenyValue > 0) _enemy3.Enemy3TakeDame(5);
+        if (_enemy3 != null && _enemy3.hpEmenyValue > 0) _enemy3.Enemy3TakeDame(50);
     }
     IEnumerator EatHpItem()
     {
