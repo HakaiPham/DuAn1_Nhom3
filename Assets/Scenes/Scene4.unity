@@ -186,7 +186,7 @@ GameObject:
   - component: {fileID: 28797552}
   m_Layer: 0
   m_Name: Wizard_0
-  m_TagString: Untagged
+  m_TagString: BossTank
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -251,7 +251,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2029072679
-  m_SortingLayer: 5
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_Sprite: {fileID: -1351291776, guid: 0e1886436f84bff4998613c5ba4c2ba8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -273,8 +273,8 @@ Transform:
   m_GameObject: {fileID: 28797548}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.49, y: -0.47, z: 0}
-  m_LocalScale: {x: 2.75, y: 2.75, z: 3}
+  m_LocalPosition: {x: -0.88, y: -1.01, z: 0}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2102730966}
@@ -288,7 +288,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 28797548}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 06bc9fb72201fe242be9936cb78fc0e8, type: 3}
   m_Name: 
@@ -308,6 +308,7 @@ MonoBehaviour:
   skill4Cooldown: 10
   _Lazer: {fileID: 2631686523030775184, guid: e030d396ec6872244a41b150c521d8ca, type: 3}
   hpBossTankSlider: {fileID: 1554485570}
+  _HpBossTankValue: 0
   _HpText: {fileID: 93841519}
   _OffSlider: {fileID: 1554485568}
 --- !u!50 &28797553
@@ -454,11 +455,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 196961685140929214, guid: 8237ca23199ebde43a4a46b453aa5927, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 196961685140929214, guid: 8237ca23199ebde43a4a46b453aa5927, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1170190127463294199, guid: 8237ca23199ebde43a4a46b453aa5927, type: 3}
       propertyPath: m_Constraints
@@ -510,7 +511,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6327053895387267601, guid: 8237ca23199ebde43a4a46b453aa5927, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -610,7 +611,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2029072679
-  m_SortingLayer: 5
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
   m_Color: {r: 0.38364768, g: 0.38292924, b: 0.38244122, a: 1}
@@ -945,6 +946,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 101073044}
     - target: {fileID: 898916388902104398, guid: a25b1f52026b8a1449c1652e864d0cee, type: 3}
+      propertyPath: _AttackRange
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 898916388902104398, guid: a25b1f52026b8a1449c1652e864d0cee, type: 3}
       propertyPath: _Skill1Image
       value: 
       objectReference: {fileID: 33186173}
@@ -955,6 +960,10 @@ PrefabInstance:
     - target: {fileID: 898916388902104398, guid: a25b1f52026b8a1449c1652e864d0cee, type: 3}
       propertyPath: targetMonster
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 898916388902104398, guid: a25b1f52026b8a1449c1652e864d0cee, type: 3}
+      propertyPath: cooldownAttackTime
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 898916388902104398, guid: a25b1f52026b8a1449c1652e864d0cee, type: 3}
       propertyPath: _monster.Array.size
@@ -1020,9 +1029,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7418305677773258552, guid: a25b1f52026b8a1449c1652e864d0cee, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 8971783209246835047, guid: a25b1f52026b8a1449c1652e864d0cee, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 8971783209246835047, guid: a25b1f52026b8a1449c1652e864d0cee, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1424,7 +1441,7 @@ GameObject:
   - component: {fileID: 1497290768}
   - component: {fileID: 1497290771}
   - component: {fileID: 1497290772}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Ground
   m_TagString: Ground
   m_Icon: {fileID: 0}

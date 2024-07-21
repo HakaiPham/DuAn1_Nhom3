@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,6 +23,7 @@ public class LazerBoss : MonoBehaviour
     public void LazerHitPLayer()
     {
         if (boxCollider.IsTouchingLayers(LayerMask.GetMask("Player"))){
+            Debug.Log("Đã mất máu");
             player.TakeDame(10);
         }
         animator.SetBool("IsBossLazer", true);

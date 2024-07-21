@@ -12,13 +12,14 @@ TagManager:
   - TrapGai
   - Ground
   - EnemySummon
+  - BulletBoss
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
   - Water
+  - Water
   - UI
-  - backgroud
   - map
   - vatpham
   - Ground
@@ -28,6 +29,23 @@ TagManager:
   - Player
   - Bullet
   - BossTank
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
   m_SortingLayers:
   - name: Default
     uniqueID: 0
@@ -46,6 +64,7 @@ TagManager:
     locked: 0
   - name: vatpham
     uniqueID: 2897334165
+    locked: 0
   - name: TrangTri2
     uniqueID: 509586963
     locked: 0
