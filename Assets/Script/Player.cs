@@ -32,7 +32,6 @@ public class Player : MonoBehaviour
     Monster _HpMonster;
     bool isMonsterinRange;
     float positionMonster;
-    Bullet bullet;
     [SerializeField] private GameObject _HpItem;
     [SerializeField] private GameObject _MpItem;
     [SerializeField] public TextMeshProUGUI _SlHpText;
@@ -43,6 +42,11 @@ public class Player : MonoBehaviour
     public Transform targetMonster;
     Monster2 _EnemySummon;
     BossTank _BossTank;
+    bool isDead;
+    private float _TimeAttackStart;
+   [SerializeField] private float cooldownAttackTime;
+    Enemy2 _enemy2;
+    Enemy3 _enemy3;
     void Start()
     {
         _Rigidbody2 = GetComponent<Rigidbody2D>();
@@ -57,11 +61,15 @@ public class Player : MonoBehaviour
         mpValue = 100;
         _MpText.text = mpValue.ToString("");
         _HpMonster = FindFirstObjectByType<Monster>();
-        bullet = FindObjectOfType<Bullet>();
         _SlHpText.text = slHp.ToString("");
         _SlMpText.text = slMp.ToString("");
         //_Enemy = GameObject.FindWithTag("Monster");
         _EnemySummon = FindObjectOfType<Monster2>();
+        _BossTank = FindObjectOfType<BossTank>();
+        _enemy2 = FindObjectOfType<Enemy2>();
+        isDead = false;
+        _TimeAttackStart = 0;
+        _enemy3 = FindObjectOfType<Enemy3>();
     }
 
     // Update is called once per frame
@@ -70,6 +78,7 @@ public class Player : MonoBehaviour
         MovePlayer();
         Jump();
         PlayerAttack();
+        Debug.Log("cooldown tan cong con: " + _TimeAttackStart);
         //SkillAttack1();
         if (canUseItem && Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -89,6 +98,11 @@ public class Player : MonoBehaviour
                 Invoke("AnimationEatMpFinished", 0.5f);
             }
         }
+        if (hpValue <= 0 && isDead == false)
+        {
+            isDead = true;
+            Dead();
+        }
     }
     public void AnimationEatHpFinished()
     {
@@ -107,6 +121,7 @@ public class Player : MonoBehaviour
     }
     public void PlayerAttack()
     {
+        _TimeAttackStart -= Time.deltaTime;
         isMonsterinRange = false; // quái chưa có vào phạm vi tấn công
         targetMonster = null;
         Debug.Log("Số lượng quái có trong mảng là: " + _monster.Length);
@@ -123,13 +138,14 @@ public class Player : MonoBehaviour
                 }
             }
         }
-        if (isMonsterinRange==true)
+        if (isMonsterinRange==true&&_TimeAttackStart<=0)
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
                 Debug.Log("Đã tấn công thành công");
                 _Animator2.SetTrigger("IsAttack");
                 AttackMonsterbyNormalAttack(targetMonster);
+                _TimeAttackStart = cooldownAttackTime;
             }
             else
             {
@@ -144,6 +160,7 @@ public class Player : MonoBehaviour
                     _Skill1Image.fillAmount = 0;
                     //AttackMonsterbySkill1();
                     StartCoroutine(ReLoadSkill1());
+                    _TimeAttackStart = cooldownAttackTime;
                 }
                 else
                 {
@@ -157,18 +174,19 @@ public class Player : MonoBehaviour
                         _MpText.text = mpValue.ToString("");
                         Invoke("CreateBullet",0.47f);
                         _Skill2Image.fillAmount = 0;
+                        _TimeAttackStart = cooldownAttackTime;
                     }
                 }
             }
         }
         else
         {
-            if (isMonsterinRange == false)
+            if (isMonsterinRange == false&&_TimeAttackStart<=0)
             {
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     _Animator2.SetTrigger("IsAttack");
-
+                    _TimeAttackStart = cooldownAttackTime;
                 }
                 else
                 {
@@ -181,6 +199,7 @@ public class Player : MonoBehaviour
                         _MpText.text = mpValue.ToString("");
                         _Skill1Image.fillAmount = 0;
                         StartCoroutine(ReLoadSkill1());
+                        _TimeAttackStart = cooldownAttackTime;
                     }
                     else
                     {
@@ -193,22 +212,26 @@ public class Player : MonoBehaviour
                             _MpText.text = mpValue.ToString("");
                             Invoke("CreateBullet", 0.47f);
                             _Skill2Image.fillAmount = 0;
+                            _TimeAttackStart = cooldownAttackTime;
                         }
                     }
                 }
             }
         }
-        StopAttack();
+        //StopAttack();
     }
     public void TakeDame(int dame)
     {
-        hpValue -= dame;
-        _HpSlider.value = hpValue;
-        _HpText.text = hpValue.ToString("");
-        _Animator2.SetTrigger("IsHurt");
-        Invoke("Hurt", 0.2f);
+        if (hpValue >= 0)
+        {
+            hpValue -= dame;
+            _HpSlider.value = hpValue;
+            _HpText.text = hpValue.ToString("");
+            _Animator2.SetTrigger("IsHurt");
+            Invoke("StopHurt", 0.2f);
+        }
     }
-    public void Hurt()
+    public void StopHurt()
     {
         _Animator2.SetTrigger("IsIdle");
     }
@@ -344,19 +367,6 @@ public class Player : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Monster"))
-        {
-            if (_HpMonster.hpEmenyValue > 0 && hpValue > 0)
-            {
-                _HpSlider.value -= 5;
-                hpValue -= 5;
-                _HpText.text = hpValue.ToString("");
-            }
-            else
-            {
-                if (hpValue <= 0) Dead();
-            }
-        }
         if (collision.gameObject.CompareTag("ItemHp"))
         {
             Destroy(_HpItem);
@@ -372,12 +382,6 @@ public class Player : MonoBehaviour
             canUseItem = true;
         }
     }
-    public void HpPlayer()
-    {
-        _HpSlider.value -= 5;
-        hpValue -= 5;
-        _HpText.text = hpValue.ToString("");
-    }
     private void AttackMonsterbyNormalAttack(Transform monster)
     {
         if (monster == null) return;
@@ -385,6 +389,8 @@ public class Player : MonoBehaviour
         _HpMonster = monster.GetComponent<Monster>();
         _EnemySummon = monster.GetComponent<Monster2>();
         _BossTank = monster.GetComponent<BossTank>();
+        _enemy2 = monster.GetComponent<Enemy2>();
+        _enemy3 = monster.GetComponent<Enemy3>();
         if (positionMonster <= _AttackRange)
         {
             if (_HpMonster != null && _HpMonster.hpEmenyValue > 0)
@@ -399,10 +405,15 @@ public class Player : MonoBehaviour
             {
                 _EnemySummon.EnemySummonHitbyPlayerAttackNormal();
             }
-            if(_BossTank != null)
+            if(_BossTank != null && _BossTank._HpBossTankValue > 0)
             {
                 _BossTank.TakeDameBoss(5);
             }
+            else
+            {
+                if (_enemy2 != null && _enemy2.hpEmenyValue > 0) _enemy2.Enemy2TakeDame(5);
+            }
+            if(_enemy3 != null && _enemy3.hpEmenyValue > 0) _enemy3.Enemy3TakeDame(5);
         }
     }
     private void AttackMonsterbySkill1(Transform monster)
@@ -411,12 +422,14 @@ public class Player : MonoBehaviour
 
         _HpMonster = monster.GetComponent<Monster>();
         _EnemySummon = monster.GetComponent<Monster2>();
-
+        _BossTank = monster.GetComponent<BossTank>();
+        _enemy2 = monster.GetComponent<Enemy2>();
+        _enemy3 = monster.GetComponent<Enemy3>();
         if (positionMonster <= _AttackRange)
         {
             if (_HpMonster != null && _HpMonster.hpEmenyValue > 0)
             {
-                _HpMonster.hpEmenyValue -= 10;
+                _HpMonster.hpEmenyValue -= 20;
                 _HpMonster._HpEnemyText.text = _HpMonster.hpEmenyValue.ToString();
                 _HpMonster._EnemyHp.value = _HpMonster.hpEmenyValue;
                 _HpMonster.HitEnemy();
@@ -426,15 +439,25 @@ public class Player : MonoBehaviour
             {
                 _EnemySummon.EnemySummonHitbyPlayerSkill1();
             }
+            if (_BossTank != null&&_BossTank._HpBossTankValue>0)
+            {
+                _BossTank.TakeDameBoss(20);
+            }
+            else
+            {
+                if (_enemy2 != null&&_enemy2.hpEmenyValue>0) _enemy2.Enemy2TakeDame(20);
+            }
+            if (_enemy3 != null && _enemy3.hpEmenyValue > 0) _enemy3.Enemy3TakeDame(5);
         }
     }
     public void AttackMonsterbySkill2(Transform monster)
     {
         if (monster == null) return;
-
         _HpMonster = monster.GetComponent<Monster>();
         _EnemySummon = monster.GetComponent<Monster2>();
-
+        _BossTank = monster.GetComponent<BossTank>();
+        _enemy2 = monster.GetComponent<Enemy2>();
+        _enemy3 = monster.GetComponent<Enemy3>();
         if (_HpMonster != null && _HpMonster.hpEmenyValue > 0)
         {
             _HpMonster.hpEmenyValue -= 50;
@@ -447,18 +470,15 @@ public class Player : MonoBehaviour
         {
             _EnemySummon.EnemySummonHitbyPlayerSkill2();
         }
-    }
-
-    public void HurtInRangeAttackMonster()
-    {
-        if (_HpMonster.hpEmenyValue > 0)
+        if (_BossTank != null)
         {
-            _Animator2.SetTrigger("IsHurt");
+            _BossTank.TakeDameBoss(50);
         }
         else
         {
-            _Animator2.SetTrigger("IsIdle");
+            if (_enemy2 != null) _enemy2.Enemy2TakeDame(50);
         }
+        if (_enemy3 != null && _enemy3.hpEmenyValue > 0) _enemy3.Enemy3TakeDame(5);
     }
     IEnumerator EatHpItem()
     {

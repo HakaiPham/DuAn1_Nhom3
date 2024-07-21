@@ -23,8 +23,8 @@ public class BossTank : MonoBehaviour
     [SerializeField] private GameObject _Metorite;
     [SerializeField] private GameObject _GateSummon;
     public float skill1Cooldown = 1f; // Cooldown cho skill đánh thường
-    public float skill2Cooldown = 20f; // Cooldown cho skill 2
-    public float skill3Cooldown = 15f; // Cooldown cho skill 3
+    public float skill2Cooldown = 5f; // Cooldown cho skill 2
+    public float skill3Cooldown = 10f; // Cooldown cho skill 3
     public float skill4Cooldown = 10f;// Cooldown cho skill4
     private float nextSkill1Time;
     private float nextSkill2Time;
@@ -33,9 +33,12 @@ public class BossTank : MonoBehaviour
     bool isTele;
     public GameObject _Lazer;
     public Slider hpBossTankSlider;
-    private int _HpBossTankValue;
+    public int _HpBossTankValue;
     public TextMeshProUGUI _HpText;
     public GameObject _OffSlider;
+    bool isDead;
+    bool _CanUseSkillTele;
+    private bool isPreparingToTeleport = false;
     void Start()
     {
         // Lưu trữ scale ban đầu của Boss
@@ -47,6 +50,8 @@ public class BossTank : MonoBehaviour
         hpBossTankSlider.maxValue = 500;
         _HpBossTankValue = 500;
         _HpText.text = _HpBossTankValue.ToString("");
+        isDead = false;
+        _CanUseSkillTele = false;
     }
 
     void Update()
@@ -54,32 +59,42 @@ public class BossTank : MonoBehaviour
         distancePlayer = Vector2.Distance(transform.position, player.position);
         // Tính khoảng cách của nhân vật đến Boss
         Debug.Log("Khoảng cách của player hiện tại là: " + distancePlayer);
-        if (distancePlayer > _DetectionRange)
+        if (player.position.x > transform.position.x)
+        {
+            _HpText.transform.localScale = new Vector3(1, 1, 1);
+            // Người chơi ở bên phải, quay mặt sang phải
+            transform.localScale = new Vector3(Mathf.Abs(localScale.x), localScale.y, localScale.z);
+        }
+        else if (player.position.x < transform.position.x)
+        {
+            _HpText.transform.localScale = new Vector3(-1, 1, 1);
+            // Người chơi ở bên trái, quay mặt sang trái
+            transform.localScale = new Vector3(-Mathf.Abs(localScale.x), localScale.y, localScale.z);
+        }
+        if (distancePlayer > _AttackRange)
         {
             MoveBoss();
         }
         else
         {
-            if (distancePlayer <= _DetectionRange) // Nếu mà vị trí của người nhỏ hơn phạm vi
+            if (distancePlayer <= _AttackRange) // Nếu mà vị trí của người nhỏ hơn phạm vi
                                                    // di chuyển của Boss thì Boss sẽ tiến hành xác định điều kiện tiếp theo
             {
                 animator.SetBool("IsBossRun", false);
-                Debug.Log("Đã phát hiện người chơi nằm trong phạm vi");
-                if (distancePlayer > _AttackRange) // Nếu player không nằm trong phạm vi tấn công của Boss
-                {
-                    Debug.Log("player không nằm trong phạm vi tấn công");
-                    MoveBoss();//Boss sẽ di chuyển cho đến khi player nằm trong phạm vi tấn công
-                }
-                else if (distancePlayer <= _AttackRange) // Người chơi nằm trong phạm vi tấn công
-                {
-                    BossSkillAttack();
-                }
+                BossSkillAttack();
 
             }
+        }
+        if (_HpBossTankValue <= 0 && isDead == false)
+        {
+            _OffSlider.SetActive(false);
+            animator.SetTrigger("IsBossDead");
+            isDead = true;
         }
     }
     public void MoveBoss()
     {
+        if (_HpBossTankValue <= 0) return;
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         if(stateInfo.IsName("Boss_TeleStartAnimation")||
            stateInfo.IsName("Boss_teleAnimation")) { return; }
@@ -93,33 +108,24 @@ public class BossTank : MonoBehaviour
             // Di chuyển Boss tới vị trí mới
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
             // Xác định hướng của Boss dựa trên vị trí của người chơi
-            if (player.position.x > transform.position.x)
-            {
-                // Người chơi ở bên phải, quay mặt sang phải
-                transform.localScale = new Vector3(Mathf.Abs(localScale.x), localScale.y, localScale.z);
-            }
-            else if (player.position.x < transform.position.x)
-            {
-                // Người chơi ở bên trái, quay mặt sang trái
-                transform.localScale = new Vector3(-Mathf.Abs(localScale.x), localScale.y, localScale.z);
-            }
         }
     }
     public int randomskillPercent()
     {
         int randomSkill = Random.Range(0, 101);
-        if (randomSkill <= 50)
+        if (randomSkill <= 20)
         {
             // 60% xác suất cho skill 1 (đánh thường)
             return 1;
         }
-        else if (randomSkill <= 70)
+        else if (randomSkill <= 40)
         {
-            // 10% xác suất cho skill 3
+            // 30% xác suất cho skill 3
             return 3;
         }
-        if (randomSkill <= 90)
+        if (randomSkill <= 70)
         {
+            // 30% xác suất cho skill 2
             return 2;
         }
         else
@@ -140,6 +146,7 @@ public class BossTank : MonoBehaviour
                 case 1:
                     if(Time.time >= nextSkill1Time)
                     {
+                        _CanUseSkillTele = true;
                         Debug.Log(">>>>>>>>>>>>>1");
                         animator.SetBool("IsBossAttack", true);
                         nextSkill1Time = Time.time + skill1Cooldown;
@@ -148,6 +155,7 @@ public class BossTank : MonoBehaviour
                 case 2:
                     if (Time.time >= nextSkill2Time)
                     {
+                        _CanUseSkillTele = true;
                         Debug.Log(">>>>>>>>>>>>>2");
                         animator.SetBool("IsBossAttack2", true);
                         nextSkill2Time = Time.time + skill2Cooldown;
@@ -156,6 +164,8 @@ public class BossTank : MonoBehaviour
                 case 3:
                     if(Time.time >= nextSkill3Time)
                     {
+                        Debug.Log(">>>>>>>>>>>>>3");
+                        _CanUseSkillTele = true;
                         animator.SetBool("IsBossAttack3", true);
                         nextSkill3Time = Time.time + skill3Cooldown;
                     }
@@ -163,8 +173,11 @@ public class BossTank : MonoBehaviour
                 case 4:
                     if (Time.time >= nextSkill4Time)
                     {
-                        StartCoroutine(TeleportBoss());
-                        nextSkill4Time = Time.time + skill4Cooldown;
+                        if (_CanUseSkillTele == true)
+                        {
+                            StartCoroutine(PrepareToTeleport());
+                            nextSkill4Time = Time.time + skill4Cooldown;
+                        }
                     }
                     break;
             }
@@ -212,42 +225,31 @@ public class BossTank : MonoBehaviour
             yield return new WaitForSeconds(1.5f);
         }
     }
-    public void CreateGateSummon()
+    private IEnumerator PrepareToTeleport()
     {
-        var randomPostion = new Vector2(Random.Range(-7.59f, 6.17f), 0.66f);
-        var createMetorite = Instantiate(_GateSummon, randomPostion, Quaternion.identity);
-        Destroy(createMetorite, 3f);
-    }
-    private IEnumerator TeleportBoss()
-    {
-        isTele = true; // Bắt đầu quá trình teleport
+        isPreparingToTeleport = true;
+        Debug.Log(">>>>>>>>>4");
+        // Tắt hoạt ảnh bị tấn công trong thời gian đệm
+        animator.ResetTrigger("IsBossHurt");
+        yield return new WaitForSeconds(0.5f); // Thời gian đệm
+
+        // Bắt đầu hoạt ảnh teleport
+        animator.SetBool("IsBossAttack", false);
+        animator.SetBool("IsBossAttack2", false);
+        animator.SetBool("IsBossAttack3", false);
         animator.SetTrigger("IsBossStartTele");
 
-        // Chờ một chút để đảm bảo animator đã cập nhật
-        yield return new WaitForSeconds(0.1f);
-
-        // Kiểm tra và chờ cho đến khi animation bắt đầu
+        // Đợi hoạt ảnh teleport kết thúc
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        while (!stateInfo.IsName("Boss_TeleStartAnimation"))
+        while (!stateInfo.IsName("Boss_teleAnimation"))
         {
-            yield return null;
             stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            yield return null;
         }
 
-        // Chờ cho đến khi animation hoàn thành
-        while (stateInfo.normalizedTime < 1.0f)
-        {
-            yield return null;
-            stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        }
-        // Chờ một chút để tránh giật sau khi teleport
-        yield return new WaitForSeconds(0.1f);
-        // Hoàn thành quá trình teleport
-        animator.SetTrigger("IsBossFinishedTele");
-        // Thực hiện teleport
-        var positionBossTele = new Vector2(Random.Range(-7.84f, 7.60f), -0.47f);
-        transform.position = positionBossTele;
-        isTele = false;
+        yield return new WaitForSeconds(stateInfo.length);
+
+        isPreparingToTeleport = false;
     }
     public void EndSkillBossTele()
     {
@@ -270,14 +272,38 @@ public class BossTank : MonoBehaviour
     }
     public void TakeDameBoss(int dame)
     {
-        animator.SetTrigger("IsBossHurt");
-        _HpBossTankValue -= dame;
-        hpBossTankSlider.value = _HpBossTankValue;
-        _HpText.text = _HpBossTankValue.ToString("");
-        if (_HpBossTankValue <= 0)
+        if (isPreparingToTeleport) return;
+
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        if (stateInfo.IsName("Boss_TeleStartAnimation") || stateInfo.IsName("Boss_teleAnimation"))
         {
-            _OffSlider.SetActive(false);
-            animator.SetTrigger("IsBossDead");
+            return;
+        }
+
+        if (_HpBossTankValue > 0)
+        {
+            animator.SetTrigger("IsBossHurt");
+            _HpBossTankValue -= dame;
+            hpBossTankSlider.value = _HpBossTankValue;
+            _HpText.text = _HpBossTankValue.ToString("");
+            animator.SetTrigger("IsBossIdle");
+        }
+    }
+    public void StopAnimationHurt()
+    {
+        animator.SetTrigger("IsBossIdle");
+    }
+    public void BossFinishedTele()
+    {
+        animator.SetTrigger("IsBossFinishedTele");
+        // Thực hiện teleport
+        if (transform.position.x > 0)
+        {
+            transform.position = new Vector2(-7.88f, -1.07f);
+        }
+        else if (transform.position.x < 0)
+        {
+            transform.position = new Vector2(6.57f, -1.07f);
         }
     }
 }

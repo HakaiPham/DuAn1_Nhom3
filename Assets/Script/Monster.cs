@@ -50,9 +50,6 @@ public class Monster : MonoBehaviour
         {
             _IsAttacking = false;
         }
-
-        //Nếu người chơi nằm trong phạm vi tấn công, quái sẽ dừng lại và tấn công
-
         if (_IsAttacking == false)
         {
             EnemyMove();
@@ -116,7 +113,6 @@ public class Monster : MonoBehaviour
                             //Debug.Log("Người chơi trong phạm vi tấn công nên mất máu");
                             //Debug.Log("Skill hiện tại là: " + randomSkill);
                             Invoke("Hpnv", 0.51f);
-                            _playerHp.HpPlayer();
                         }
                         break;
                     case 2:
@@ -125,8 +121,6 @@ public class Monster : MonoBehaviour
                         {
                             //Debug.Log("Người chơi trong phạm vi tấn công nên mất máu");
                             //Debug.Log("Skill hiện tại là: " + randomSkill);
-                            Invoke("Hpnv", 0.51f);
-                            _playerHp.HpPlayer();
                         }
                     ; break;
                 }
@@ -153,7 +147,7 @@ public class Monster : MonoBehaviour
     }
     public void Hpnv()
     {
-        _playerHp.HurtInRangeAttackMonster();
+        _playerHp.TakeDame(5);
     }
     public void HitEnemy()
     {
