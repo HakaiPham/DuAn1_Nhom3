@@ -25,7 +25,7 @@ public class ArrowAutoFire : MonoBehaviour
 
         // Tính khoảng cách giữa đối tượng này và nhân vật
         float distance = Vector2.Distance(transform.position, FindPlayer.transform.position);
-        Debug.Log(distance);
+        
 
         // Nếu khoảng cách nhỏ hơn 2 đơn vị  
         if (distance < 0.5)
