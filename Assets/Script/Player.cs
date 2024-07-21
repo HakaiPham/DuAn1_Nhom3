@@ -47,6 +47,8 @@ public class Player : MonoBehaviour
    [SerializeField] private float cooldownAttackTime;
     Enemy2 _enemy2;
     Enemy3 _enemy3;
+    public float _LimitRight;
+    public float _LimitLeft;
     void Start()
     {
         _Rigidbody2 = GetComponent<Rigidbody2D>();
@@ -294,7 +296,8 @@ public class Player : MonoBehaviour
             localscale.x = Mathf.Abs(transform.localScale.x) * Mathf.Sign(horizontalInput);
             transform.localScale = localscale;
         }
-        if (playerposition.x <= -8.31f && horizontalInput < 0 || playerposition.x >= 8.25f && horizontalInput > 0)
+        if (playerposition.x <= _LimitLeft && horizontalInput < 0 || 
+            playerposition.x >= _LimitRight && horizontalInput > 0)
         {
             return;
         }
