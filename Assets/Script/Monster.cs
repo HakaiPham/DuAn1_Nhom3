@@ -108,20 +108,9 @@ public class Monster : MonoBehaviour
                 {
                     case 1:
                         _animator.SetBool("IsEnemyAttack1", true);
-                        if (_IsAttacking == true && _playerHp.hpValue > 0)
-                        {
-                            //Debug.Log("Người chơi trong phạm vi tấn công nên mất máu");
-                            //Debug.Log("Skill hiện tại là: " + randomSkill);
-                            Invoke("Hpnv", 0.51f);
-                        }
                         break;
                     case 2:
                         _animator.SetBool("IsEnemyAttack2", true);
-                        if (_IsAttacking == true && _playerHp.hpValue > 0)
-                        {
-                            //Debug.Log("Người chơi trong phạm vi tấn công nên mất máu");
-                            //Debug.Log("Skill hiện tại là: " + randomSkill);
-                        }
                     ; break;
                 }
                 _EnemyAttackTime = _EnemyAttackTimeStart;
@@ -141,17 +130,12 @@ public class Monster : MonoBehaviour
                 _animator.SetBool("IsEnemyRun", true);
                 _animator.SetBool("IsEnemyAttack1", false);
                 _animator.SetBool("IsEnemyAttack2", false);
-                _playerHp.Dead();
             }
         }
     }
     public void Hpnv()
     {
         _playerHp.TakeDame(5);
-    }
-    public void HitEnemy()
-    {
-        _animator.SetTrigger("IsEnemyHurt");
     }
     public void StopHitEnemy()
     {
@@ -166,6 +150,17 @@ public class Monster : MonoBehaviour
             _rigidbody2.velocity = Vector2.zero;
             _animator.SetBool("IsEnemyRun", false);
             _animator.SetTrigger("IsEnemyDead");
+        }
+    }
+    public void TakeDameEnemy(int dame)
+    {
+        if (hpEmenyValue > 0)
+        {
+            _animator.SetTrigger("IsEnemyHurt");
+            hpEmenyValue -= dame;
+            _EnemyHp.value = hpEmenyValue;
+            _HpEnemyText.text = hpEmenyValue.ToString("");
+            Invoke("StopHitEnemy", 0.2f);
         }
     }
 }

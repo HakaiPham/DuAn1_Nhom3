@@ -36,7 +36,9 @@ public class Bullet : MonoBehaviour
     }
     public void DestroyBullet ()
     {
-        Destroy(gameObject);
+        _Rigidbody.velocity = Vector2.zero;
+        _Animator.SetBool("IsBulletAttack", true);
+        Destroy(gameObject, 0.4f);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -64,34 +66,24 @@ public class Bullet : MonoBehaviour
                 {
                     Debug.Log("vị trị hiện tại của quái là: " + targetMonster);
                     targetMonster = _monsterSummon.transform;
-                    _player.AttackMonsterbySkill2(targetMonster);
-                    _Rigidbody.velocity = Vector2.zero;
-                    _Animator.SetBool("IsBulletAttack", true);
-                    Invoke("DestroyBullet", 0.4f);
+                    DestroyBullet();
                 }
                 else if (_enemy2 != null && _enemy2.hpEmenyValue > 0)
                 {
                     targetMonster = _enemy2.transform;
                     _player.AttackMonsterbySkill2(targetMonster);
-                    _Rigidbody.velocity = Vector2.zero;
-                    _Animator.SetBool("IsBulletAttack", true);
-                    Invoke("DestroyBullet", 0.4f);
+                    DestroyBullet();
                 }
                 if (_enemy3 != null && _enemy3.hpEmenyValue > 0)
                 {
                     targetMonster = _enemy3.transform;
                     _player.AttackMonsterbySkill2(targetMonster);
-                    _Rigidbody.velocity = Vector2.zero;
-                    _Animator.SetBool("IsBulletAttack", true);
-                    Destroy(gameObject,0.4f);
+                    DestroyBullet();
                 }
                 else if (_bossTank != null && _bossTank._HpBossTankValue > 0)
                 {
                     targetMonster = _bossTank.transform;
-                    _player.AttackMonsterbySkill2(targetMonster);
-                    _Rigidbody.velocity = Vector2.zero;
-                    _Animator.SetBool("IsBulletAttack", true);
-                    Invoke("DestroyBullet", 0.4f);
+                    DestroyBullet();
                 }
             }
         }
