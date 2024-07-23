@@ -18,7 +18,6 @@ public class Player : MonoBehaviour
     CircleCollider2D circleCollider;
     [SerializeField] private float _AttackRange;
     public Transform[] _monster;
-    Rigidbody2D _rb;
     [SerializeField] private Transform _TransformAttack;
     public GameObject _Bullet;    //float positionMonster;
      public Slider _HpSlider;
@@ -47,15 +46,12 @@ public class Player : MonoBehaviour
    [SerializeField] private float cooldownAttackTime;
     Enemy2 _enemy2;
     Enemy3 _enemy3;
-    public float _LimitRight;
-    public float _LimitLeft;
     void Start()
     {
         _Rigidbody2 = GetComponent<Rigidbody2D>();
         _Collider2 = GetComponent<BoxCollider2D>();
         _Animator2 = GetComponent<Animator>();
         circleCollider = GetComponent<CircleCollider2D>();
-        _rb = GetComponent<Rigidbody2D>();
         _HpSlider.maxValue = 100;
         hpValue = 100;
         _HpText.text = hpValue.ToString("");
@@ -65,7 +61,6 @@ public class Player : MonoBehaviour
         _HpMonster = FindFirstObjectByType<Monster>();
         _SlHpText.text = slHp.ToString("");
         _SlMpText.text = slMp.ToString("");
-        //_Enemy = GameObject.FindWithTag("Monster");
         _EnemySummon = FindObjectOfType<Monster2>();
         _BossTank = FindObjectOfType<BossTank>();
         _enemy2 = FindObjectOfType<Enemy2>();
@@ -105,6 +100,7 @@ public class Player : MonoBehaviour
             isDead = true;
             Dead();
         }
+        PlayerClimp();
     }
     public void AnimationEatHpFinished()
     {
@@ -272,19 +268,6 @@ public class Player : MonoBehaviour
         Destroy(createBullet,2f);
 
     }
-    public void StopAttack()
-    {
-        AnimatorStateInfo stateInfo = _Animator2.GetCurrentAnimatorStateInfo(0); // Lấy thông tin của 
-        //Animation
-        if(stateInfo.IsName("Player_AttackAnimation")&&stateInfo.normalizedTime >= 1.0f)
-        {
-            _Animator2.SetTrigger("IsIdle");
-        }
-        else if (stateInfo.IsName("Player_AttackAnimation") && stateInfo.normalizedTime < 1.0f)
-        {
-            _Animator2.ResetTrigger("IsIdle"); // Đảm bảo không chuyển về Idle trong khi hoạt ảnh tấn công chưa hoàn thành
-        } 
-    }
     public void MovePlayer()
     {
         var horizontalInput = Input.GetAxis("Horizontal");
@@ -295,11 +278,6 @@ public class Player : MonoBehaviour
         {
             localscale.x = Mathf.Abs(transform.localScale.x) * Mathf.Sign(horizontalInput);
             transform.localScale = localscale;
-        }
-        if (playerposition.x <= _LimitLeft && horizontalInput < 0 || 
-            playerposition.x >= _LimitRight && horizontalInput > 0)
-        {
-            return;
         }
         if (horizontalInput == 0)
         {
@@ -345,7 +323,7 @@ public class Player : MonoBehaviour
     {
         // Bắt đầu animation skill
         _Animator2.SetTrigger("IsSkill1");
-        _rb.velocity = Vector2.up * _JumpPowerSkill;
+        _Rigidbody2.velocity = Vector2.up * _JumpPowerSkill;
     }
     public void OnSkill1End()
     {
@@ -368,6 +346,31 @@ public class Player : MonoBehaviour
     {
         _Animator2.SetTrigger("IsIdle");
     }
+    public void PlayerClimp()
+    {
+        if (_Collider2.IsTouchingLayers(LayerMask.GetMask("Stair")))
+        {
+            _Rigidbody2.gravityScale = 0;
+            if (Input.GetKey(KeyCode.DownArrow))
+            {
+                _Animator2.SetBool("IsClimp", true);
+                _Rigidbody2.velocity = Vector2.down * 1;
+            }
+            else if (!Input.GetKey(KeyCode.DownArrow))
+            {
+                _Rigidbody2.velocity = Vector2.zero;
+            }
+            if (Input.GetKey(KeyCode.UpArrow))
+            {
+                _Animator2.SetBool("IsClimp", true);
+                _Rigidbody2.velocity = Vector2.up * 1;
+            }
+            else if (Input.GetKey(KeyCode.UpArrow))
+            {
+                _Rigidbody2.velocity = Vector2.zero;
+            }
+        }
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("ItemHp"))
@@ -383,6 +386,14 @@ public class Player : MonoBehaviour
             slMp += 1;
             _SlMpText.text = slMp.ToString("");
             canUseItem = true;
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Stair"))
+        {
+            _Rigidbody2.gravityScale = 1;
+            _Animator2.SetBool("IsClimp", false);
         }
     }
     private void AttackMonsterbyNormalAttack(Transform monster)

@@ -28,13 +28,14 @@ public class Enemy3 : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _IsAttacking = false;
-        //_EnemyAttackTimeStart = 0;
+        _EnemyAttackTimeStart = 0;
         _playerHp = FindObjectOfType<Player>();
         _EnemyHp.maxValue = 50;
         hpEmenyValue = 50;
         _HpEnemyText.text = hpEmenyValue.ToString("");
         _rigidbody2 = GetComponent<Rigidbody2D>();
         _IsDead = false;
+        isMoveLeftOrRight = false;
     }
 
     void Update()
@@ -62,46 +63,55 @@ public class Enemy3 : MonoBehaviour
     }
     public void EnemyMove()
     {
-        var enemyPosition = transform.localPosition;
-
-        if (enemyPosition.x >= _Right)
-        {
-            isMoveLeftOrRight = false;
-        }
-        else if (enemyPosition.x <= _Left)
-        {
-            isMoveLeftOrRight = true;
-        }
-
-        var move = Vector2.right;
-        _HpEnemyText.transform.localScale = new Vector3(1, 1, 1);
-        if (isMoveLeftOrRight == false)
-        {
-            move = Vector2.left;
-            _HpEnemyText.transform.localScale = new Vector3(-1, 1, 1);
-        }
-
-        var enemyScale = transform.localScale;
-        if (enemyScale.x > 0 && isMoveLeftOrRight == false || enemyScale.x < 0 && isMoveLeftOrRight == true)
-        {
-            enemyScale.x *= -1;
-            transform.localScale = enemyScale;
-        }
+        if (_IsAttacking == true) return;
         else
         {
-            if (hpEmenyValue <= 0)
+            var enemyPosition = transform.localPosition;
+            if (enemyPosition.x >= _Right)
             {
-                return;
+                isMoveLeftOrRight = false;
             }
+            else if (enemyPosition.x <= _Left)
+            {
+                isMoveLeftOrRight = true;
+            }
+
+            var move = Vector2.right;
+            _HpEnemyText.transform.localScale = new Vector3(1, 1, 1);
+            if (isMoveLeftOrRight == false)
+            {
+                move = Vector2.left;
+                _HpEnemyText.transform.localScale = new Vector3(-1, 1, 1);
+            }
+
+            var enemyScale = transform.localScale;
+            if (enemyScale.x > 0 && isMoveLeftOrRight == false || enemyScale.x < 0 && isMoveLeftOrRight == true)
+            {
+                enemyScale.x *= -1;
+                transform.localScale = enemyScale;
+            }
+            else
+            {
+                if (hpEmenyValue <= 0)
+                {
+                    return;
+                }
+            }
+            _animator.SetBool("IsEnemy3Run", true);
+            _animator.SetBool("IsEnemy3Attack", false);
+            transform.Translate(move * _enemyMoveSpeed * Time.deltaTime);
         }
-        _animator.SetBool("IsEnemy3Run", true);
-        _animator.SetBool("IsEnemy3Attack", false);
-        transform.Translate(move * _enemyMoveSpeed * Time.deltaTime);
     }
     public void SkillMonster()
     {
         if (_playerHp.hpValue > 0&& _IsAttacking == true)
         {
+            Vector3 scale = transform.localScale;
+            if (_player.position.x < transform.position.x && scale.x > 0 || _player.position.x > transform.position.x && scale.x < 0)
+            {
+                scale.x *= -1;
+                transform.localScale = scale;
+            }
             _animator.SetBool("IsEnemy3Attack", true);
         }
         else

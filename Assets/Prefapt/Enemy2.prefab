@@ -585,7 +585,7 @@ MonoBehaviour:
   _Left: 0.91
   _AttackRange: 0.75
   _player: {fileID: 0}
-  _EnemyAttackTime: 0.5
+  _EnemyAttackTime: 0.25
   _EnemyHp: {fileID: 5564802887949843184}
   _HpEnemyText: {fileID: 2385921822005721392}
   hpEmenyValue: 0

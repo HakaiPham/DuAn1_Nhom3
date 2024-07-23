@@ -186,7 +186,7 @@ GameObject:
   - component: {fileID: 28797552}
   m_Layer: 0
   m_Name: Wizard_0
-  m_TagString: BossTank
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -288,7 +288,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 28797548}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 06bc9fb72201fe242be9936cb78fc0e8, type: 3}
   m_Name: 
@@ -411,7 +411,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 94842498}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 29244bd3c9b11b940b2da84ac8dd1ad3, type: 3}
   m_Name: 
@@ -451,7 +451,7 @@ PrefabInstance:
       objectReference: {fileID: 2015238869}
     - target: {fileID: 133519724435979883, guid: 8237ca23199ebde43a4a46b453aa5927, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 196961685140929214, guid: 8237ca23199ebde43a4a46b453aa5927, type: 3}
       propertyPath: m_AnchorMax.x
@@ -963,7 +963,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 898916388902104398, guid: a25b1f52026b8a1449c1652e864d0cee, type: 3}
       propertyPath: cooldownAttackTime
-      value: 0.5
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 898916388902104398, guid: a25b1f52026b8a1449c1652e864d0cee, type: 3}
       propertyPath: _monster.Array.size

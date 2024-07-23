@@ -28,7 +28,7 @@ public class Enemy2 : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _IsAttacking = false;
-        //_EnemyAttackTimeStart = 0;
+        _EnemyAttackTimeStart = 0;
         _playerHp = FindObjectOfType<Player>();
         _EnemyHp.maxValue = 50;
         hpEmenyValue = 50;
@@ -107,18 +107,29 @@ public class Enemy2 : MonoBehaviour
             _EnemyAttackTimeStart -= Time.deltaTime;
             if (_EnemyAttackTimeStart <= 0&& _IsAttacking == true)
             {
+
                 switch (randomSkill)
                 {
                     case 1:
+                        Vector3 scale = transform.localScale;
+                        if (_player.position.x < transform.position.x && scale.x > 0 || _player.position.x > transform.position.x && scale.x < 0)
+                        {
+                            scale.x *= -1;
+                            transform.localScale = scale;
+                        }
                         _animator.SetBool("IsEnemy2Attack", true);
                         if (_playerHp.hpValue > 0)
                         {
-                            //Debug.Log("Người chơi trong phạm vi tấn công nên mất máu");
-                            //Debug.Log("Skill hiện tại là: " + randomSkill);
                             Invoke("Hpnv", 0.51f);
                         }
                         break;
                     case 2:
+                        scale = transform.localScale;
+                        if (_player.position.x < transform.position.x && scale.x > 0 || _player.position.x > transform.position.x && scale.x < 0)
+                        {
+                            scale.x *= -1;
+                            transform.localScale = scale;
+                        }
                         _animator.SetBool("IsEnemy2Block", true);
                     ; break;
                 }
