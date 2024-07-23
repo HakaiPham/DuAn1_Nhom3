@@ -46,6 +46,7 @@ public class Player : MonoBehaviour
    [SerializeField] private float cooldownAttackTime;
     Enemy2 _enemy2;
     Enemy3 _enemy3;
+    EnermyArrow _enemyArrow;
     void Start()
     {
         _Rigidbody2 = GetComponent<Rigidbody2D>();
@@ -67,6 +68,7 @@ public class Player : MonoBehaviour
         isDead = false;
         _TimeAttackStart = 0;
         _enemy3 = FindObjectOfType<Enemy3>();
+        _enemyArrow = FindObjectOfType<EnermyArrow>();
     }
 
     // Update is called once per frame
@@ -405,6 +407,7 @@ public class Player : MonoBehaviour
         _BossTank = monster.GetComponent<BossTank>();
         _enemy2 = monster.GetComponent<Enemy2>();
         _enemy3 = monster.GetComponent<Enemy3>();
+        _enemyArrow = monster.GetComponent<EnermyArrow>();
         if (positionMonster <= _AttackRange)
         {
             if (_HpMonster != null && _HpMonster.hpEmenyValue > 0)
@@ -424,6 +427,7 @@ public class Player : MonoBehaviour
                 if (_enemy2 != null && _enemy2.hpEmenyValue > 0) _enemy2.Enemy2TakeDame(5);
             }
             if(_enemy3 != null && _enemy3.hpEmenyValue > 0) _enemy3.Enemy3TakeDame(5);
+            else if (_enemyArrow != null && _enemyArrow.hp > 0) _enemyArrow.TakeDamge(5);
         }
     }
     private void AttackMonsterbySkill1(Transform monster)
