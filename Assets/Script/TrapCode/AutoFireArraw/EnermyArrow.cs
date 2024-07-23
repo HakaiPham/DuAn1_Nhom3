@@ -8,8 +8,6 @@ public class EnermyArrow : MonoBehaviour
     public GameObject Bullet;       // Prefab của đạn
     public Transform Bulletpos;     // Vị trí khởi tạo đạn
     public float Timer;             // Thời gian cooldown
-    public float minRestTime = 1f;  // Thời gian nghỉ ngơi tối thiểu
-    public float maxRestTime = 5f;  // Thời gian nghỉ ngơi tối đa
     public float moveSpeed = 2.0f;  // Tốc độ di chuyển trái phải
     public float attackRange = 2.0f; // Phạm vi tấn công trước mặt
     public float hp = 100f;         // HP của Enemy
@@ -26,8 +24,6 @@ public class EnermyArrow : MonoBehaviour
     private bool movingRight = true; // Biến để kiểm tra hướng di chuyển
     private SpriteRenderer spriteRenderer;
     private bool isFacingRight = true; // Biến để theo dõi hướng của quái
-
-    private bool isResting = false;    // Biến để kiểm tra trạng thái nghỉ ngơi
 
     void Start()
     {
@@ -68,12 +64,12 @@ public class EnermyArrow : MonoBehaviour
         UpdateBulletpos();
         if (isFacingRight)
         {
-            inAttackRange = distance < attackRange && angle > -15 && angle < 15;
+            inAttackRange = distance < attackRange && angle > -30 && angle < 30;
         }
         else
         {
             angle = (angle + 360) % 360; // Điều chỉnh góc để đảm bảo nó luôn dương
-            inAttackRange = distance < attackRange && (angle > 165 && angle < 195);
+            inAttackRange = distance < attackRange && (angle > 150 && angle < 210);
         }
 
         if (inAttackRange)
@@ -93,7 +89,7 @@ public class EnermyArrow : MonoBehaviour
         }
 
         // Nếu nhân vật không trong tầm bắn, di chuyển trái phải
-        if (!inRange && !isResting)
+        if (!inRange)
         {
             MoveLeftRight();
             _Animator.SetTrigger("Run"); // Kích hoạt animation Run khi di chuyển
@@ -114,7 +110,6 @@ public class EnermyArrow : MonoBehaviour
                 movingRight = false;
                 spriteRenderer.flipX = true; // Quay mặt sang trái
                 isFacingRight = false; // Cập nhật hướng quay
-                StartCoroutine(Rest()); // Bắt đầu nghỉ ngơi
             }
             else
             {
@@ -130,7 +125,6 @@ public class EnermyArrow : MonoBehaviour
                 movingRight = true;
                 spriteRenderer.flipX = false; // Quay mặt sang phải
                 isFacingRight = true; // Cập nhật hướng quay
-                StartCoroutine(Rest()); // Bắt đầu nghỉ ngơi
             }
             else
             {
@@ -139,22 +133,6 @@ public class EnermyArrow : MonoBehaviour
                 isFacingRight = false; // Cập nhật hướng quay
             }
         }
-    }
-
-    // Coroutine để xử lý nghỉ ngơi
-    IEnumerator Rest()
-    {
-        isResting = true;
-
-        // Đảm bảo hướng quay đúng khi nghỉ ngơi
-        spriteRenderer.flipX = !isFacingRight;
-        _Animator.ResetTrigger("Run");
-        _Animator.SetTrigger("Ide"); // Kích hoạt animation Ide
-
-        float restTime = Random.Range(minRestTime, maxRestTime); // Thời gian nghỉ ngơi ngẫu nhiên
-        yield return new WaitForSeconds(restTime);
-        isResting = false;
-        _Animator.ResetTrigger("Ide");
     }
 
     // Phương thức bắn đạn không có tham số
@@ -221,8 +199,8 @@ public class EnermyArrow : MonoBehaviour
         Vector3 facingDirection = isFacingRight ? transform.right : -transform.right;
 
         // Xác định các góc tấn công dựa trên hướng
-        Vector3 directionRight = Quaternion.Euler(0, 0, isFacingRight ? -15 : 15) * facingDirection;
-        Vector3 directionLeft = Quaternion.Euler(0, 0, isFacingRight ? 15 : -15) * facingDirection;
+        Vector3 directionRight = Quaternion.Euler(0, 0, isFacingRight ? -30 : 30) * facingDirection;
+        Vector3 directionLeft = Quaternion.Euler(0, 0, isFacingRight ? 30 : -30) * facingDirection;
 
         // Vẽ các đường chỉ thị phạm vi tấn công
         Gizmos.DrawLine(transform.position, transform.position + directionRight * attackRange);
@@ -232,7 +210,7 @@ public class EnermyArrow : MonoBehaviour
     // Phương thức để xử lý khi bị tấn công bởi đạn
     public void OnBulletHit()
     {
-        hp -= 10; // Giảm HP khi bị đạn trúng
+        hp -= 100; // Giảm HP khi bị đạn trúng
 
         if (hpSlider != null)
         {
@@ -247,10 +225,6 @@ public class EnermyArrow : MonoBehaviour
         {
             Destroy(gameObject); // Hủy đối tượng nếu HP <= 0
         }
-
-    //    StopAllCoroutines(); // Dừng tất cả các coroutine
-        isResting = false;     // Đặt trạng thái nghỉ ngơi thành false
-       _Animator.ResetTrigger("Ide");
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -258,7 +232,22 @@ public class EnermyArrow : MonoBehaviour
         // Kiểm tra nếu đối tượng va chạm có tag là "Bullet"
         if (other.CompareTag("Bullet"))
         {
-            OnBulletHit(); // Gọi phương thức xử lý khi bị tấn công bởi đạn
+            OnBulletHit(); // Gọi phương thức OnBulletHit
+        }
+    }
+
+    public void TakeDamge(int dame)
+    {
+        if (hp >= 0)
+        {
+            hp -= dame;
+            hpSlider.value = hp;
+            hpText.text = hp.ToString();
+
+        }
+        if (hp <= 0)
+        {
+            Destroy(gameObject); // Hủy đối tượng nếu HP <= 0
         }
     }
 }
