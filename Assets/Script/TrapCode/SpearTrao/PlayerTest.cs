@@ -6,6 +6,7 @@ public class PlayerTest : MonoBehaviour
     [SerializeField] private float _JumpPower;
     private Rigidbody2D _Rigidbody2;
     private BoxCollider2D _Collider2;
+    private bool _IsGrounded;
 
     void Start()
     {
@@ -23,25 +24,18 @@ public class PlayerTest : MonoBehaviour
     {
         var horizontalInput = Input.GetAxis("Horizontal");
         var playerposition = transform.position;
-        if (playerposition.x <= -8.31f && horizontalInput < 0 || playerposition.x >= 8.25f && horizontalInput > 0)
-        {
-            return;
-        }
+      
         transform.localPosition += new Vector3(horizontalInput, 0, 0) * _MoveSpeed * Time.deltaTime;
     }
 
     public void Jump()
     {
-        if (!_Collider2.IsTouchingLayers(LayerMask.GetMask("Ground")))
+        // Kiểm tra xem nhân vật có đang chạm đất không
+        _IsGrounded = _Collider2.IsTouchingLayers(LayerMask.GetMask("Ground"));
+
+        if (_IsGrounded && Input.GetKeyDown(KeyCode.Space))
         {
-            return;
-        }
-        if (_Collider2.IsTouchingLayers(LayerMask.GetMask("Ground")))
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                _Rigidbody2.velocity = new Vector2(_Rigidbody2.velocity.x, _JumpPower);
-            }
+            _Rigidbody2.velocity = new Vector2(_Rigidbody2.velocity.x, _JumpPower);
         }
     }
 

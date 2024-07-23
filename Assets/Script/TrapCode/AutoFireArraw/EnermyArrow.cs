@@ -1,6 +1,7 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI; // Import namespace cho UI
+using TMPro; // Import namespace cho TextMeshPro
 
 public class EnermyArrow : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class EnermyArrow : MonoBehaviour
     public float maxRestTime = 5f;  // Thời gian nghỉ ngơi tối đa
     public float moveSpeed = 2.0f;  // Tốc độ di chuyển trái phải
     public float attackRange = 2.0f; // Phạm vi tấn công trước mặt
+    public float hp = 100f;         // HP của Enemy
+    public Slider hpSlider;         // Slider để hiển thị HP
+    public TextMeshProUGUI hpText;  // TextMeshPro để hiển thị số HP
 
     [SerializeField] private float leftBound = -3.0f; // Điểm cuối trái có thể điều chỉnh từ Inspector
     [SerializeField] private float rightBound = 3.0f; // Điểm cuối phải có thể điều chỉnh từ Inspector
@@ -31,6 +35,17 @@ public class EnermyArrow : MonoBehaviour
         inRange = false;
         _Animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        // Thiết lập giá trị HP trên Slider và TextMeshPro
+        if (hpSlider != null)
+        {
+            hpSlider.maxValue = hp;
+            hpSlider.value = hp;
+        }
+        if (hpText != null)
+        {
+            hpText.text = hp.ToString();
+        }
     }
 
     void Update()
@@ -180,7 +195,6 @@ public class EnermyArrow : MonoBehaviour
         rb2.velocity = bullet2Direction.normalized * 5f;
     }
 
-
     // Cập nhật vị trí của Bulletpos dựa trên hướng quay của Enermy
     void UpdateBulletpos()
     {
@@ -218,15 +232,31 @@ public class EnermyArrow : MonoBehaviour
     // Phương thức để xử lý khi bị tấn công bởi đạn
     public void OnBulletHit()
     {
-        StopAllCoroutines(); // Dừng tất cả các coroutine
+        hp -= 10; // Giảm HP khi bị đạn trúng
+
+        if (hpSlider != null)
+        {
+            hpSlider.value = hp; // Cập nhật giá trị Slider
+        }
+        if (hpText != null)
+        {
+            hpText.text = hp.ToString(); // Cập nhật giá trị Text
+        }
+
+        if (hp <= 0)
+        {
+            Destroy(gameObject); // Hủy đối tượng nếu HP <= 0
+        }
+
+    //    StopAllCoroutines(); // Dừng tất cả các coroutine
         isResting = false;     // Đặt trạng thái nghỉ ngơi thành false
-        _Animator.ResetTrigger("Ide");
+       _Animator.ResetTrigger("Ide");
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D other)
     {
         // Kiểm tra nếu đối tượng va chạm có tag là "Bullet"
-        if (collision.gameObject.CompareTag("Bullet"))
+        if (other.CompareTag("Bullet"))
         {
             OnBulletHit(); // Gọi phương thức xử lý khi bị tấn công bởi đạn
         }
