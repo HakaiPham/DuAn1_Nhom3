@@ -28,7 +28,7 @@ public class Monster : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _IsAttacking = false;
-        //_EnemyAttackTimeStart = 0;
+        _EnemyAttackTimeStart = 0;
         _playerHp = FindObjectOfType<Player>();
         _EnemyHp.maxValue = 50;
         hpEmenyValue = 50;
@@ -59,6 +59,7 @@ public class Monster : MonoBehaviour
     }
     public void EnemyMove()
     {
+        //if (_IsAttacking == true) return;
         var enemyPosition = transform.localPosition;
 
         if (enemyPosition.x >= _Right)
@@ -107,9 +108,21 @@ public class Monster : MonoBehaviour
                 switch (randomSkill)
                 {
                     case 1:
+                        Vector3 scale = transform.localScale;
+                        if (_player.position.x < transform.position.x && scale.x > 0 || _player.position.x > transform.position.x && scale.x < 0)
+                        {
+                            scale.x *= -1;
+                            transform.localScale = scale;
+                        }
                         _animator.SetBool("IsEnemyAttack1", true);
                         break;
                     case 2:
+                        scale = transform.localScale;
+                        if (_player.position.x < transform.position.x && scale.x > 0 || _player.position.x > transform.position.x && scale.x < 0)
+                        {
+                            scale.x *= -1;
+                            transform.localScale = scale;
+                        }
                         _animator.SetBool("IsEnemyAttack2", true);
                     ; break;
                 }
