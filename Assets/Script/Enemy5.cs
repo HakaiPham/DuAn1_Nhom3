@@ -4,9 +4,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Enemy4 : MonoBehaviour
+public class Enemy5 : MonoBehaviour
 {
-    // Start is called before the first frame update
     [SerializeField] private float _enemyMoveSpeed;
     [SerializeField] private float _Right;
     [SerializeField] private float _Left;
@@ -25,25 +24,20 @@ public class Enemy4 : MonoBehaviour
     Rigidbody2D _rigidbody2;
     bool _IsDead;
     [SerializeField] private GameObject _HpEnemyOff;
-    BoxCollider2D _boxconllider2D;
-    CircleCollider2D _circleCollider2D;
-    bool _isEnemyStartIntro;
     void Start()
     {
         _animator = GetComponent<Animator>();
         _IsAttacking = false;
         _EnemyAttackTimeStart = 0;
         _playerHp = FindObjectOfType<Player>();
-        _EnemyHp.maxValue = 50;
-        hpEmenyValue = 50;
+        _EnemyHp.maxValue = 100;
+        hpEmenyValue = 100;
         _HpEnemyText.text = hpEmenyValue.ToString("");
         _rigidbody2 = GetComponent<Rigidbody2D>();
         _IsDead = false;
         isMoveLeftOrRight = false;
-        _boxconllider2D = GetComponent<BoxCollider2D>();
-        _circleCollider2D = GetComponent<CircleCollider2D>();
-        _isEnemyStartIntro = false;
     }
+
     void Update()
     {
         var distancePlayer = Vector2.Distance(transform.position, _player.position);
@@ -51,11 +45,6 @@ public class Enemy4 : MonoBehaviour
         // Kiểm tra xem người chơi có nằm trong phạm vi tấn công không
         if (distancePlayer <= _AttackRange)
         {
-            if (_isEnemyStartIntro == false)
-            {
-                _isEnemyStartIntro = true;
-                _animator.SetTrigger("IsEnemy4Intro");
-            }
             _IsAttacking = true;
         }
         else
@@ -72,20 +61,11 @@ public class Enemy4 : MonoBehaviour
         //StopAttack();
         EnemyDead();
     }
-    public void StopIntro()
-    {
-        _animator.ResetTrigger("IsEnemy4Intro");
-        _animator.SetTrigger("IsEnemy4Idle");
-    }
     public void EnemyMove()
     {
-        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-        if (stateInfo.IsName("Enemy4_IntroAnimation")) return;
         if (_IsAttacking == true) return;
         else
         {
-            _boxconllider2D.enabled = true;
-            _circleCollider2D.enabled = false;
             var enemyPosition = transform.localPosition;
             if (enemyPosition.x >= _Right)
             {
@@ -117,35 +97,34 @@ public class Enemy4 : MonoBehaviour
                     return;
                 }
             }
-            _animator.SetBool("IsEnemy4Run", true);
-            _animator.SetBool("IsEnemy4Attack", false);
+            _animator.SetBool("IsGoblinTankRun", true);
+            _animator.SetBool("IsGoblinTankAttack", false);
             transform.Translate(move * _enemyMoveSpeed * Time.deltaTime);
         }
     }
     public void SkillMonster()
     {
-        if (_playerHp.hpValue > 0 && _IsAttacking == true&&_IsDead==false)
+        if (_playerHp.hpValue > 0 && _IsAttacking == true)
         {
-            Debug.Log("Đã tấn  công");
             Vector3 scale = transform.localScale;
             if (_player.position.x < transform.position.x && scale.x > 0 || _player.position.x > transform.position.x && scale.x < 0)
             {
                 scale.x *= -1;
                 transform.localScale = scale;
             }
-            _animator.SetBool("IsEnemy4Attack", true);
+            _animator.SetBool("IsGoblinTankAttack", true);
         }
         else
         {
             if (_EnemyAttackTimeStart > 0)
             {
                 _EnemyAttackTimeStart -= Time.deltaTime;
-                _animator.SetBool("IsEnemy4Attack", false);
+                _animator.SetBool("IsGoblinTankAttack", false);
             }
             else if (_playerHp.hpValue <= 0)
             {
-                _animator.SetBool("IsEnemy4Run", true);
-                _animator.SetBool("IsEnemy4Attack", false);
+                _animator.SetBool("IsGoblinTankRun", true);
+                _animator.SetBool("IsGoblinTankAttack", false);
             }
         }
     }
@@ -160,44 +139,36 @@ public class Enemy4 : MonoBehaviour
             return;
         }
     }
+    public void HitEnemy()
+    {
+        _animator.SetTrigger("IsGoblinTankHurt");
+    }
     public void StopHitEnemy()
     {
-        _animator.SetTrigger("IsEnemy4Idle");
+        _animator.SetTrigger("IsGoblinTankIdle");
     }
     public void EnemyDead()
     {
         if (hpEmenyValue <= 0 && _IsDead == false)
         {
-            _animator.SetBool("IsEnemy4Run", false);
-            _animator.SetBool("IsEnemy4Attack", false);
-            _animator.ResetTrigger("IsEnemy4Idle");
-            AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-            if (!stateInfo.IsName("GoblinScout_DeadAnimation"))
-            {
-                _circleCollider2D.enabled = true;
-                _boxconllider2D.enabled = false;
-                Debug.Log("Enemy da die");
-                _IsDead = true;
-                _HpEnemyOff.SetActive(false);
-                _rigidbody2.velocity = Vector2.zero;
-                _animator.SetTrigger("IsEnemy4Dead");
-                Invoke("DestroyEnemy", 2f);
-            }
+            _IsDead = true;
+            _HpEnemyOff.SetActive(false);
+            _rigidbody2.velocity = Vector2.zero;
+            _animator.ResetTrigger("IsGoblinTankIdle");
+            _animator.SetBool("IsGoblinTankAttack", false);
+            _animator.SetBool("IsGoblinTankRun", false);
+            _animator.SetTrigger("IsGoblinTankDead");
         }
     }
-    public void DestroyEnemy()
+    public void Enemy5TakeDame(int dame)
     {
-        Destroy(gameObject);
-    }
-    public void Enemy4TakeDame(int dame)
-    {
-        if (hpEmenyValue > 0)
+        if (hpEmenyValue > 0&&_IsDead==false)
         {
-            _animator.SetTrigger("IsEnemy4Hurt");
+            _animator.SetTrigger("IsGoblinTankHurt");
             hpEmenyValue -= dame;
             _EnemyHp.value = hpEmenyValue;
             _HpEnemyText.text = hpEmenyValue.ToString("");
-            Invoke("StopHitEnemy", 0.33f);
+            Invoke("StopHitEnemy", 0.3f);
         }
     }
 }

@@ -186,7 +186,7 @@ GameObject:
   - component: {fileID: 28797552}
   m_Layer: 0
   m_Name: Wizard_0
-  m_TagString: Monster
+  m_TagString: BossTank
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
