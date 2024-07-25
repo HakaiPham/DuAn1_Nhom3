@@ -24,18 +24,22 @@ public class Enemy5 : MonoBehaviour
     Rigidbody2D _rigidbody2;
     bool _IsDead;
     [SerializeField] private GameObject _HpEnemyOff;
+    BoxCollider2D _Boxconllider2D;
+    CircleCollider2D _circleCollider2D;
     void Start()
     {
         _animator = GetComponent<Animator>();
         _IsAttacking = false;
         _EnemyAttackTimeStart = 0;
         _playerHp = FindObjectOfType<Player>();
-        _EnemyHp.maxValue = 100;
-        hpEmenyValue = 100;
+        _EnemyHp.maxValue = 50;
+        hpEmenyValue = 50;
         _HpEnemyText.text = hpEmenyValue.ToString("");
         _rigidbody2 = GetComponent<Rigidbody2D>();
         _IsDead = false;
         isMoveLeftOrRight = false;
+        _Boxconllider2D = GetComponent<BoxCollider2D>();
+        _circleCollider2D = GetComponent<CircleCollider2D>();
     }
 
     void Update()
@@ -70,10 +74,12 @@ public class Enemy5 : MonoBehaviour
             if (enemyPosition.x >= _Right)
             {
                 isMoveLeftOrRight = false;
+                StartCoroutine(CooldownMoveEnemy());
             }
             else if (enemyPosition.x <= _Left)
             {
                 isMoveLeftOrRight = true;
+                StartCoroutine(CooldownMoveEnemy());
             }
 
             var move = Vector2.right;
@@ -97,10 +103,15 @@ public class Enemy5 : MonoBehaviour
                     return;
                 }
             }
-            _animator.SetBool("IsGoblinTankRun", true);
-            _animator.SetBool("IsGoblinTankAttack", false);
+            _animator.SetBool("IsEnemy5Run", true);
+            _animator.SetBool("IsEnemy5Attack", false);
             transform.Translate(move * _enemyMoveSpeed * Time.deltaTime);
         }
+    }
+    IEnumerator CooldownMoveEnemy()
+    {
+        _animator.SetBool("IsEnemy5Run", false);
+        yield return new WaitForSeconds(10f);
     }
     public void SkillMonster()
     {
@@ -112,19 +123,19 @@ public class Enemy5 : MonoBehaviour
                 scale.x *= -1;
                 transform.localScale = scale;
             }
-            _animator.SetBool("IsGoblinTankAttack", true);
+            _animator.SetBool("IsEnemy5Attack", true);
         }
         else
         {
             if (_EnemyAttackTimeStart > 0)
             {
                 _EnemyAttackTimeStart -= Time.deltaTime;
-                _animator.SetBool("IsGoblinTankAttack", false);
+                _animator.SetBool("IsEnemy5Attack", false);
             }
             else if (_playerHp.hpValue <= 0)
             {
-                _animator.SetBool("IsGoblinTankRun", true);
-                _animator.SetBool("IsGoblinTankAttack", false);
+                _animator.SetBool("IsEnemy5Run", true);
+                _animator.SetBool("IsEnemy5Attack", false);
             }
         }
     }
@@ -141,30 +152,34 @@ public class Enemy5 : MonoBehaviour
     }
     public void HitEnemy()
     {
-        _animator.SetTrigger("IsGoblinTankHurt");
+        _animator.SetTrigger("IsEnemy5Hurt");
     }
     public void StopHitEnemy()
     {
-        _animator.SetTrigger("IsGoblinTankIdle");
+        _animator.SetTrigger("IsEnemy5Idle");
     }
     public void EnemyDead()
     {
         if (hpEmenyValue <= 0 && _IsDead == false)
         {
+            _circleCollider2D.enabled = true;
+            _Boxconllider2D.enabled = false;
             _IsDead = true;
             _HpEnemyOff.SetActive(false);
             _rigidbody2.velocity = Vector2.zero;
-            _animator.ResetTrigger("IsGoblinTankIdle");
-            _animator.SetBool("IsGoblinTankAttack", false);
-            _animator.SetBool("IsGoblinTankRun", false);
-            _animator.SetTrigger("IsGoblinTankDead");
+            _animator.ResetTrigger("IsEnemy5Idle");
+            _animator.ResetTrigger("IsEnemy5Hurt");
+            _animator.SetBool("IsEnemy5Attack", false);
+            _animator.SetBool("IsEnemy5Run", false);
+            _animator.SetTrigger("IsEnemy5Dead");
+            Destroy(gameObject, 2f);
         }
     }
     public void Enemy5TakeDame(int dame)
     {
         if (hpEmenyValue > 0&&_IsDead==false)
         {
-            _animator.SetTrigger("IsGoblinTankHurt");
+            _animator.SetTrigger("IsEnemy5Hurt");
             hpEmenyValue -= dame;
             _EnemyHp.value = hpEmenyValue;
             _HpEnemyText.text = hpEmenyValue.ToString("");

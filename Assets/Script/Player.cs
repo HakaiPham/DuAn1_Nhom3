@@ -49,6 +49,8 @@ public class Player : MonoBehaviour
     EnermyArrow _enemyArrow;
     Enemy4 _enemy4;
     Enemy5 _enemy5;
+    Enemy6 _enemy6;
+    Enemy7 _enemy7;
     void Start()
     {
         _Rigidbody2 = GetComponent<Rigidbody2D>();
@@ -73,6 +75,8 @@ public class Player : MonoBehaviour
         _enemyArrow = FindObjectOfType<EnermyArrow>();
         _enemy5 = FindObjectOfType<Enemy5>();
         _enemy4 = FindObjectOfType<Enemy4>();
+        _enemy6 = FindObjectOfType<Enemy6>();
+        _enemy7 = FindObjectOfType<Enemy7>();
     }
 
     // Update is called once per frame
@@ -334,7 +338,8 @@ public class Player : MonoBehaviour
     public void OnSkill1End()
     {
         // Animation event khi skill 1 kết thúc
-        if (_Collider2.IsTouchingLayers(LayerMask.GetMask("Ground")))
+        if (_Collider2.IsTouchingLayers(LayerMask.GetMask("Ground"))
+            || _Collider2.IsTouchingLayers(LayerMask.GetMask("Monster")))
         {
             _Animator2.SetTrigger("IsSkill1_2");
             AttackMonsterbySkill1(targetMonster);
@@ -412,7 +417,10 @@ public class Player : MonoBehaviour
         _enemy2 = monster.GetComponent<Enemy2>();
         _enemy3 = monster.GetComponent<Enemy3>();
         _enemyArrow = monster.GetComponent<EnermyArrow>();
+        _enemy4 = monster.GetComponent<Enemy4>();
         _enemy5 = monster.GetComponent<Enemy5>();
+        _enemy6 = monster.GetComponent<Enemy6>();
+        _enemy7 = monster.GetComponent<Enemy7>();
         if (positionMonster <= _AttackRange)
         {
             if (_HpMonster != null && _HpMonster.hpEmenyValue > 0)
@@ -434,6 +442,9 @@ public class Player : MonoBehaviour
             if(_enemy3 != null && _enemy3.hpEmenyValue > 0) _enemy3.Enemy3TakeDame(5);
             else if (_enemyArrow != null && _enemyArrow.hp > 0) _enemyArrow.TakeDamge(5);
             if(_enemy4 != null && _enemy4.hpEmenyValue > 0) _enemy4.Enemy4TakeDame(5);
+            else if(_enemy5 != null && _enemy5.hpEmenyValue > 0) _enemy5.Enemy5TakeDame(5);
+            if (_enemy6 != null && _enemy6.hpEmenyValue > 0) _enemy6.Enemy6TakeDame(5);
+            else if (_enemy7 != null && _enemy7.hpEmenyValue > 0) _enemy7.Enemy7TakeDame(5);
         }
     }
     private void AttackMonsterbySkill1(Transform monster)
@@ -445,6 +456,11 @@ public class Player : MonoBehaviour
         _BossTank = monster.GetComponent<BossTank>();
         _enemy2 = monster.GetComponent<Enemy2>();
         _enemy3 = monster.GetComponent<Enemy3>();
+        _enemyArrow = monster.GetComponent<EnermyArrow>();
+        _enemy4 = monster.GetComponent<Enemy4>();
+        _enemy5 = monster.GetComponent<Enemy5>();
+        _enemy6 = monster.GetComponent<Enemy6>();
+        _enemy7 = monster.GetComponent<Enemy7>();
         if (positionMonster <= _AttackRange)
         {
             if (_HpMonster != null && _HpMonster.hpEmenyValue > 0)
@@ -464,6 +480,11 @@ public class Player : MonoBehaviour
                 if (_enemy2 != null&&_enemy2.hpEmenyValue>0) _enemy2.Enemy2TakeDame(20);
             }
             if (_enemy3 != null && _enemy3.hpEmenyValue > 0) _enemy3.Enemy3TakeDame(20);
+            else if (_enemyArrow != null && _enemyArrow.hp > 0) _enemyArrow.TakeDamge(20);
+            if (_enemy4 != null && _enemy4.hpEmenyValue > 0) _enemy4.Enemy4TakeDame(20);
+            else if (_enemy5 != null && _enemy5.hpEmenyValue > 0) _enemy5.Enemy5TakeDame(20);
+            if (_enemy6 != null && _enemy6.hpEmenyValue > 0) _enemy6.Enemy6TakeDame(20);
+            else if (_enemy7 != null && _enemy7.hpEmenyValue > 0) _enemy7.Enemy7TakeDame(20);
         }
     }
     public void AttackMonsterbySkill2(Transform monster)
@@ -474,6 +495,10 @@ public class Player : MonoBehaviour
         _BossTank = monster.GetComponent<BossTank>();
         _enemy2 = monster.GetComponent<Enemy2>();
         _enemy3 = monster.GetComponent<Enemy3>();
+        _enemy4 = monster.GetComponent<Enemy4>();
+        _enemy5 = monster.GetComponent<Enemy5>();
+        _enemy6 = monster.GetComponent<Enemy6>();
+        _enemy7 = monster.GetComponent<Enemy7>();
         if (_HpMonster != null && _HpMonster.hpEmenyValue > 0)
         {
             _HpMonster.TakeDameEnemy(50);
@@ -491,6 +516,10 @@ public class Player : MonoBehaviour
             if (_enemy2 != null) _enemy2.Enemy2TakeDame(50);
         }
         if (_enemy3 != null && _enemy3.hpEmenyValue > 0) _enemy3.Enemy3TakeDame(50);
+        else if (_enemy5 != null && _enemy5.hpEmenyValue > 0) _enemy5.Enemy5TakeDame(50);
+        if (_enemy4 != null && _enemy4.hpEmenyValue > 0) _enemy4.Enemy4TakeDame(50);
+        else if (_enemy6 != null && _enemy6.hpEmenyValue > 0) _enemy6.Enemy6TakeDame(50);
+        if (_enemy7 != null && _enemy7.hpEmenyValue > 0) _enemy7.Enemy7TakeDame(50);
     }
     IEnumerator EatHpItem()
     {
