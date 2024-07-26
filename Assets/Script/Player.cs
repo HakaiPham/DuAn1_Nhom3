@@ -51,6 +51,8 @@ public class Player : MonoBehaviour
     Enemy5 _enemy5;
     Enemy6 _enemy6;
     Enemy7 _enemy7;
+    public TextMeshProUGUI _CoinText;
+    private int coinValue;
     void Start()
     {
         _Rigidbody2 = GetComponent<Rigidbody2D>();
@@ -397,6 +399,12 @@ public class Player : MonoBehaviour
             slMp += 1;
             _SlMpText.text = slMp.ToString("");
             canUseItem = true;
+        }
+        if (collision.gameObject.CompareTag("Coin"))
+        {
+            coinValue += 10;
+            _CoinText.text = coinValue.ToString("");
+            Destroy(collision.gameObject);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)

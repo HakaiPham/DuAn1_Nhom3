@@ -15,6 +15,7 @@ TagManager:
   - BulletBoss
   - Spear
   - Stair
+  - Coin
   layers:
   - Default
   - TransparentFX
