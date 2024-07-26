@@ -115,7 +115,6 @@ public class Enemy2 : MonoBehaviour
                         if (_player.position.x < transform.position.x && scale.x > 0 || _player.position.x > transform.position.x && scale.x < 0)
                         {
                             scale.x *= -1;
-                            _HpEnemyText.transform.localScale = new Vector3(scale.x, 1, 1);
                             transform.localScale = scale;
                         }
                         _animator.SetBool("IsEnemy2Attack", true);
@@ -129,7 +128,6 @@ public class Enemy2 : MonoBehaviour
                         if (_player.position.x < transform.position.x && scale.x > 0 || _player.position.x > transform.position.x && scale.x < 0)
                         {
                             scale.x *= -1;
-                            _HpEnemyText.transform.localScale = new Vector3(scale.x, 1, 1);
                             transform.localScale = scale;
                         }
                         _animator.SetBool("IsEnemy2Block", true);
