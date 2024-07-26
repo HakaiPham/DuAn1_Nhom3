@@ -1,13 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class coin : MonoBehaviour
 {
     // Start is called before the first frame update
-    public TextMeshProUGUI _CoinText;
-    private int coinValue;
     void Start()
     {
         
@@ -20,11 +17,6 @@ public class coin : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player")) 
-        {
-            coinValue += 10;
-            _CoinText.text = coinValue.ToString("");
-            Destroy(gameObject); 
-        }
+        if (collision.gameObject.CompareTag("Player")) { Destroy(gameObject); }
     }
 }
