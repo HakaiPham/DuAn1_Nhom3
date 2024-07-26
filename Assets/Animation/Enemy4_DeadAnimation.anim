@@ -30,20 +30,6 @@ AnimationClip:
       value: {fileID: 366655359, guid: c38ebc26c17bd5a4c85b467ef4b777a0, type: 3}
     - time: 0.6666667
       value: {fileID: 248181395, guid: c38ebc26c17bd5a4c85b467ef4b777a0, type: 3}
-    - time: 0.76666665
-      value: {fileID: 21300000, guid: ef7fb676594d9d2458db71fdd53da19a, type: 3}
-    - time: 0.8833333
-      value: {fileID: 21300000, guid: 71154d9a6348ae24f8b20463af2d60e2, type: 3}
-    - time: 1
-      value: {fileID: 21300000, guid: 120a084b402a3134282a43f88307fe43, type: 3}
-    - time: 1.1333333
-      value: {fileID: 21300000, guid: 02d379d37b3f51c4c9857a85462c1e3e, type: 3}
-    - time: 1.25
-      value: {fileID: 21300000, guid: 1530ea39c749d8f4fb4230bef23f7d48, type: 3}
-    - time: 1.3666667
-      value: {fileID: 21300000, guid: 67252494dbf749d489a028ec6e12810b, type: 3}
-    - time: 1.4833333
-      value: {fileID: 21300000, guid: fbe38959a576b204ab0d35b8ff56dd1f, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -71,19 +57,12 @@ AnimationClip:
     - {fileID: -4688135, guid: c38ebc26c17bd5a4c85b467ef4b777a0, type: 3}
     - {fileID: 366655359, guid: c38ebc26c17bd5a4c85b467ef4b777a0, type: 3}
     - {fileID: 248181395, guid: c38ebc26c17bd5a4c85b467ef4b777a0, type: 3}
-    - {fileID: 21300000, guid: ef7fb676594d9d2458db71fdd53da19a, type: 3}
-    - {fileID: 21300000, guid: 71154d9a6348ae24f8b20463af2d60e2, type: 3}
-    - {fileID: 21300000, guid: 120a084b402a3134282a43f88307fe43, type: 3}
-    - {fileID: 21300000, guid: 02d379d37b3f51c4c9857a85462c1e3e, type: 3}
-    - {fileID: 21300000, guid: 1530ea39c749d8f4fb4230bef23f7d48, type: 3}
-    - {fileID: 21300000, guid: 67252494dbf749d489a028ec6e12810b, type: 3}
-    - {fileID: 21300000, guid: fbe38959a576b204ab0d35b8ff56dd1f, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 1.5
+    m_StopTime: 0.68333334
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0

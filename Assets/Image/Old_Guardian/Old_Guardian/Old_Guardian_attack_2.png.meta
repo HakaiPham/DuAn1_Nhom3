@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -121,175 +121,7 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: Old_Guardian_attack_2_0
-      rect:
-        serializedVersion: 2
-        x: 38
-        y: 869
-        width: 50
-        height: 60
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 25cd1e3d5fed31f419cb6a0746b2b9f6
-      internalID: -1288483010
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Old_Guardian_attack_2_1
-      rect:
-        serializedVersion: 2
-        x: 28
-        y: 749
-        width: 60
-        height: 60
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 11d92b3e112b9c642b20158755274dde
-      internalID: 1611839683
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Old_Guardian_attack_2_2
-      rect:
-        serializedVersion: 2
-        x: 15
-        y: 629
-        width: 73
-        height: 60
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ffb53b6c3650d654b91a00703c28b1d7
-      internalID: 1376126092
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Old_Guardian_attack_2_3
-      rect:
-        serializedVersion: 2
-        x: 18
-        y: 509
-        width: 70
-        height: 60
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0fdb1908ff6b863438ef1297ab900503
-      internalID: 1989338426
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Old_Guardian_attack_2_4
-      rect:
-        serializedVersion: 2
-        x: 19
-        y: 389
-        width: 68
-        height: 75
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e82971e5b329cfb4db48c36781204be9
-      internalID: 1112642460
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Old_Guardian_attack_2_5
-      rect:
-        serializedVersion: 2
-        x: 28
-        y: 269
-        width: 86
-        height: 60
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 15d73dc445fde9a4f8d587dfa490f7b5
-      internalID: 172040120
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Old_Guardian_attack_2_6
-      rect:
-        serializedVersion: 2
-        x: 43
-        y: 149
-        width: 66
-        height: 60
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3d09a83a8fc7c124b8f26a9aa2706ccb
-      internalID: 992895682
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Old_Guardian_attack_2_7
-      rect:
-        serializedVersion: 2
-        x: 43
-        y: 29
-        width: 71
-        height: 60
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 09bb84053afcf3a49aa6001c3fd78e81
-      internalID: 506235797
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     physicsShape: []
     bones: []
@@ -300,16 +132,7 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      Old_Guardian_attack_2_0: -1288483010
-      Old_Guardian_attack_2_1: 1611839683
-      Old_Guardian_attack_2_2: 1376126092
-      Old_Guardian_attack_2_3: 1989338426
-      Old_Guardian_attack_2_4: 1112642460
-      Old_Guardian_attack_2_5: 172040120
-      Old_Guardian_attack_2_6: 992895682
-      Old_Guardian_attack_2_7: 506235797
-      Old_Guardian_attack_2_8: 2084121359
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

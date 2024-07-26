@@ -39,6 +39,7 @@ public class Enemy4 : MonoBehaviour
         _HpEnemyText.text = hpEmenyValue.ToString("");
         _rigidbody2 = GetComponent<Rigidbody2D>();
         _IsDead = false;
+        isMoveLeftOrRight = false;
         _boxconllider2D = GetComponent<BoxCollider2D>();
         _circleCollider2D = GetComponent<CircleCollider2D>();
         _isEnemyStartIntro = false;
@@ -80,55 +81,46 @@ public class Enemy4 : MonoBehaviour
     public void EnemyMove()
     {
         AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-        if (stateInfo.IsName("Enemy4_IntroAnimation") ||
-            stateInfo.IsName("Enemy4_Intro2Animation")) 
-        {
-            _HpEnemyOff.SetActive(false);
-            return;
-        }
+        if (stateInfo.IsName("Enemy4_IntroAnimation")) return;
         if (_IsAttacking == true) return;
         else
         {
-            if (hpEmenyValue > 0)
+            _boxconllider2D.enabled = true;
+            _circleCollider2D.enabled = false;
+            var enemyPosition = transform.localPosition;
+            if (enemyPosition.x >= _Right)
             {
-                _HpEnemyOff.SetActive(true);
-                _boxconllider2D.enabled = true;
-                _circleCollider2D.enabled = false;
-                var enemyPosition = transform.localPosition;
-                if (enemyPosition.x >= _Right)
-                {
-                    isMoveLeftOrRight = false;
-                }
-                else if (enemyPosition.x <= _Left)
-                {
-                    isMoveLeftOrRight = true;
-                }
+                isMoveLeftOrRight = false;
+            }
+            else if (enemyPosition.x <= _Left)
+            {
+                isMoveLeftOrRight = true;
+            }
 
-                var move = Vector2.right;
-                _HpEnemyText.transform.localScale = new Vector3(1, 1, 1);
-                if (isMoveLeftOrRight == false)
-                {
-                    move = Vector2.left;
-                    _HpEnemyText.transform.localScale = new Vector3(-1, 1, 1);
-                }
+            var move = Vector2.right;
+            _HpEnemyText.transform.localScale = new Vector3(1, 1, 1);
+            if (isMoveLeftOrRight == false)
+            {
+                move = Vector2.left;
+                _HpEnemyText.transform.localScale = new Vector3(-1, 1, 1);
+            }
 
-                var enemyScale = transform.localScale;
-                if (enemyScale.x > 0 && isMoveLeftOrRight == false || enemyScale.x < 0 && isMoveLeftOrRight == true)
+            var enemyScale = transform.localScale;
+            if (enemyScale.x > 0 && isMoveLeftOrRight == false || enemyScale.x < 0 && isMoveLeftOrRight == true)
+            {
+                enemyScale.x *= -1;
+                transform.localScale = enemyScale;
+            }
+            else
+            {
+                if (hpEmenyValue <= 0)
                 {
-                    enemyScale.x *= -1;
-                    transform.localScale = enemyScale;
+                    return;
                 }
-                else
-                {
-                    if (hpEmenyValue <= 0)
-                    {
-                        return;
-                    }
-                }
-                _animator.SetBool("IsEnemy4Run", true);
-                _animator.SetBool("IsEnemy4Attack", false);
-                transform.Translate(move * _enemyMoveSpeed * Time.deltaTime);
-            }        
+            }
+            _animator.SetBool("IsEnemy4Run", true);
+            _animator.SetBool("IsEnemy4Attack", false);
+            transform.Translate(move * _enemyMoveSpeed * Time.deltaTime);
         }
     }
     public void SkillMonster()
@@ -140,7 +132,6 @@ public class Enemy4 : MonoBehaviour
             if (_player.position.x < transform.position.x && scale.x > 0 || _player.position.x > transform.position.x && scale.x < 0)
             {
                 scale.x *= -1;
-                _HpEnemyText.transform.localScale = new Vector3(scale.x, 1, 1);
                 transform.localScale = scale;
             }
             _animator.SetBool("IsEnemy4Attack", true);
@@ -178,20 +169,22 @@ public class Enemy4 : MonoBehaviour
     {
         if (hpEmenyValue <= 0 && _IsDead == false)
         {
-            StartCoroutine(EnemyDeadOffConllider());
+            _animator.SetBool("IsEnemy4Run", false);
+            _animator.SetBool("IsEnemy4Attack", false);
+            _animator.ResetTrigger("IsEnemy4Idle");
+            AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+            if (!stateInfo.IsName("GoblinScout_DeadAnimation"))
+            {
+                _circleCollider2D.enabled = true;
+                _boxconllider2D.enabled = false;
+                Debug.Log("Enemy da die");
+                _IsDead = true;
+                _HpEnemyOff.SetActive(false);
+                _rigidbody2.velocity = Vector2.zero;
+                _animator.SetTrigger("IsEnemy4Dead");
+                Invoke("DestroyEnemy", 2f);
+            }
         }
-    }
-    IEnumerator EnemyDeadOffConllider()
-    {
-        _boxconllider2D.enabled = false;
-        _circleCollider2D.enabled = true;
-        yield return new WaitForSeconds(0.1f);
-        Debug.Log("Enemy da die");
-        _IsDead = true;
-        _HpEnemyOff.SetActive(false);
-        _rigidbody2.velocity = Vector2.zero;
-        _animator.SetTrigger("IsEnemy4Dead");
-        Invoke("DestroyEnemy", 2f);
     }
     public void DestroyEnemy()
     {
@@ -199,10 +192,7 @@ public class Enemy4 : MonoBehaviour
     }
     public void Enemy4TakeDame(int dame)
     {
-        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-        if (stateInfo.IsName("Enemy4_IntroAnimation") ||
-            stateInfo.IsName("Enemy4_Intro2Animation")) return;
-        else if (hpEmenyValue > 0)
+        if (hpEmenyValue > 0)
         {
             _animator.SetTrigger("IsEnemy4Hurt");
             hpEmenyValue -= dame;

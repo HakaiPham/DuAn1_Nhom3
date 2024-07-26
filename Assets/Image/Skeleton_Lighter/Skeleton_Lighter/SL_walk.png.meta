@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -121,175 +121,7 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: SL_walk_0
-      rect:
-        serializedVersion: 2
-        x: 51
-        y: 1424
-        width: 93
-        height: 90
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2575b42f19ab62141b53697ef9adbf29
-      internalID: 873854569
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SL_walk_1
-      rect:
-        serializedVersion: 2
-        x: 56
-        y: 1228
-        width: 93
-        height: 91
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 94bac76e1006dfb4fb4e05bb384adb7d
-      internalID: -1907807908
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SL_walk_2
-      rect:
-        serializedVersion: 2
-        x: 58
-        y: 1032
-        width: 91
-        height: 91
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ab3047e31212a0a4d956201ae94442fe
-      internalID: 1060033724
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SL_walk_3
-      rect:
-        serializedVersion: 2
-        x: 56
-        y: 836
-        width: 97
-        height: 90
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b5c733e3bed810e4e9c2047d4d8ac8d3
-      internalID: -1650703002
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SL_walk_4
-      rect:
-        serializedVersion: 2
-        x: 53
-        y: 640
-        width: 98
-        height: 90
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d0f5d8ef9780890438647135211bb835
-      internalID: 611834341
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SL_walk_5
-      rect:
-        serializedVersion: 2
-        x: 52
-        y: 444
-        width: 95
-        height: 90
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ad207814869157241b2762ed9cadfc3b
-      internalID: -1833259538
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SL_walk_6
-      rect:
-        serializedVersion: 2
-        x: 53
-        y: 248
-        width: 92
-        height: 90
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5d4a0a2a4ca67f542af531536f8997f4
-      internalID: -381058719
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SL_walk_7
-      rect:
-        serializedVersion: 2
-        x: 53
-        y: 52
-        width: 92
-        height: 90
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0aecec005eff5e04fb11fca5f03113ff
-      internalID: -608214999
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     physicsShape: []
     bones: []
@@ -300,15 +132,7 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      SL_walk_0: 873854569
-      SL_walk_1: -1907807908
-      SL_walk_2: 1060033724
-      SL_walk_3: -1650703002
-      SL_walk_4: 611834341
-      SL_walk_5: -1833259538
-      SL_walk_6: -381058719
-      SL_walk_7: -608214999
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
