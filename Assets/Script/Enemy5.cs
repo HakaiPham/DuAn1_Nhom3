@@ -67,19 +67,17 @@ public class Enemy5 : MonoBehaviour
     }
     public void EnemyMove()
     {
-        if (_IsAttacking == true) return;
+        if (_IsAttacking == true || _playerHp.hpValue <= 0) return;
         else
         {
             var enemyPosition = transform.localPosition;
             if (enemyPosition.x >= _Right)
             {
                 isMoveLeftOrRight = false;
-                StartCoroutine(CooldownMoveEnemy());
             }
             else if (enemyPosition.x <= _Left)
             {
                 isMoveLeftOrRight = true;
-                StartCoroutine(CooldownMoveEnemy());
             }
 
             var move = Vector2.right;
@@ -91,7 +89,8 @@ public class Enemy5 : MonoBehaviour
             }
 
             var enemyScale = transform.localScale;
-            if (enemyScale.x > 0 && isMoveLeftOrRight == false || enemyScale.x < 0 && isMoveLeftOrRight == true)
+            if (enemyScale.x > 0 && isMoveLeftOrRight == false ||
+                enemyScale.x < 0 && isMoveLeftOrRight == true)
             {
                 enemyScale.x *= -1;
                 transform.localScale = enemyScale;
@@ -108,11 +107,7 @@ public class Enemy5 : MonoBehaviour
             transform.Translate(move * _enemyMoveSpeed * Time.deltaTime);
         }
     }
-    IEnumerator CooldownMoveEnemy()
-    {
-        _animator.SetBool("IsEnemy5Run", false);
-        yield return new WaitForSeconds(10f);
-    }
+    
     public void SkillMonster()
     {
         if (_playerHp.hpValue > 0 && _IsAttacking == true)
@@ -121,6 +116,7 @@ public class Enemy5 : MonoBehaviour
             if (_player.position.x < transform.position.x && scale.x > 0 || _player.position.x > transform.position.x && scale.x < 0)
             {
                 scale.x *= -1;
+                _HpEnemyText.transform.localScale = new Vector3(scale.x, 1, 1);
                 transform.localScale = scale;
             }
             _animator.SetBool("IsEnemy5Attack", true);
@@ -172,7 +168,7 @@ public class Enemy5 : MonoBehaviour
             _animator.SetBool("IsEnemy5Attack", false);
             _animator.SetBool("IsEnemy5Run", false);
             _animator.SetTrigger("IsEnemy5Dead");
-            Destroy(gameObject, 2f);
+            Destroy(gameObject,2f);
         }
     }
     public void Enemy5TakeDame(int dame)

@@ -108,21 +108,9 @@ public class Monster : MonoBehaviour
                 switch (randomSkill)
                 {
                     case 1:
-                        Vector3 scale = transform.localScale;
-                        if (_player.position.x < transform.position.x && scale.x > 0 || _player.position.x > transform.position.x && scale.x < 0)
-                        {
-                            scale.x *= -1;
-                            transform.localScale = scale;
-                        }
                         _animator.SetBool("IsEnemyAttack1", true);
                         break;
                     case 2:
-                        scale = transform.localScale;
-                        if (_player.position.x < transform.position.x && scale.x > 0 || _player.position.x > transform.position.x && scale.x < 0)
-                        {
-                            scale.x *= -1;
-                            transform.localScale = scale;
-                        }
                         _animator.SetBool("IsEnemyAttack2", true);
                     ; break;
                 }
