@@ -24,6 +24,9 @@ public class Enemy4 : MonoBehaviour
     public int hpEmenyValue;
     Rigidbody2D _rigidbody2;
     bool _IsDead;
+    private BoxCollider2D _boxconllider2D;
+    private CircleCollider2D _circleCollider2D;
+    private bool _isEnemyStartIntro;
     [SerializeField] private GameObject _HpEnemyOff;
     void Start()
     {
@@ -36,14 +39,10 @@ public class Enemy4 : MonoBehaviour
         _HpEnemyText.text = hpEmenyValue.ToString("");
         _rigidbody2 = GetComponent<Rigidbody2D>();
         _IsDead = false;
-<<<<<<< HEAD
-        isMoveLeftOrRight = false;
-=======
         _boxconllider2D = GetComponent<BoxCollider2D>();
         _circleCollider2D = GetComponent<CircleCollider2D>();
         _isEnemyStartIntro = false;
         isMoveLeftOrRight = true;
->>>>>>> main
     }
 
     void Update()
