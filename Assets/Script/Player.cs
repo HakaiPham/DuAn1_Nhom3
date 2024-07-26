@@ -47,6 +47,18 @@ public class Player : MonoBehaviour
     Enemy2 _enemy2;
     Enemy3 _enemy3;
     EnermyArrow _enemyArrow;
+<<<<<<< HEAD
+    Enemy4 _enemy4;
+    Enemy5 _enemy5;
+<<<<<<< HEAD
+    Enemy6 _enemy6;
+    Enemy7 _enemy7;
+    public TextMeshProUGUI _CoinText;
+    private int coinValue;
+=======
+>>>>>>> parent of 79fa0e2 (Hoan thien quai, trap)
+=======
+>>>>>>> main
     void Start()
     {
         _Rigidbody2 = GetComponent<Rigidbody2D>();
@@ -69,6 +81,11 @@ public class Player : MonoBehaviour
         _TimeAttackStart = 0;
         _enemy3 = FindObjectOfType<Enemy3>();
         _enemyArrow = FindObjectOfType<EnermyArrow>();
+<<<<<<< HEAD
+        _enemy5 = FindObjectOfType<Enemy5>();
+        _enemy4 = FindObjectOfType<Enemy4>();
+=======
+>>>>>>> main
     }
 
     // Update is called once per frame
@@ -389,6 +406,12 @@ public class Player : MonoBehaviour
             _SlMpText.text = slMp.ToString("");
             canUseItem = true;
         }
+        if (collision.gameObject.CompareTag("Coin"))
+        {
+            coinValue += 10;
+            _CoinText.text = coinValue.ToString("");
+            Destroy(collision.gameObject);
+        }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -408,6 +431,10 @@ public class Player : MonoBehaviour
         _enemy2 = monster.GetComponent<Enemy2>();
         _enemy3 = monster.GetComponent<Enemy3>();
         _enemyArrow = monster.GetComponent<EnermyArrow>();
+<<<<<<< HEAD
+        _enemy5 = monster.GetComponent<Enemy5>();
+=======
+>>>>>>> main
         if (positionMonster <= _AttackRange)
         {
             if (_HpMonster != null && _HpMonster.hpEmenyValue > 0)
@@ -428,6 +455,10 @@ public class Player : MonoBehaviour
             }
             if(_enemy3 != null && _enemy3.hpEmenyValue > 0) _enemy3.Enemy3TakeDame(5);
             else if (_enemyArrow != null && _enemyArrow.hp > 0) _enemyArrow.TakeDamge(5);
+<<<<<<< HEAD
+            if(_enemy4 != null && _enemy4.hpEmenyValue > 0) _enemy4.Enemy4TakeDame(5);
+=======
+>>>>>>> main
         }
     }
     private void AttackMonsterbySkill1(Transform monster)

@@ -39,6 +39,7 @@ public class Enemy4 : MonoBehaviour
         _HpEnemyText.text = hpEmenyValue.ToString("");
         _rigidbody2 = GetComponent<Rigidbody2D>();
         _IsDead = false;
+        isMoveLeftOrRight = false;
         _boxconllider2D = GetComponent<BoxCollider2D>();
         _circleCollider2D = GetComponent<CircleCollider2D>();
         _isEnemyStartIntro = false;
@@ -69,9 +70,19 @@ public class Enemy4 : MonoBehaviour
     }
     public void EnemyMove()
     {
+<<<<<<< HEAD
+        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+        if (stateInfo.IsName("Enemy4_IntroAnimation")) return;
         if (_IsAttacking == true) return;
         else
         {
+            _boxconllider2D.enabled = true;
+            _circleCollider2D.enabled = false;
+=======
+        if (_IsAttacking == true) return;
+        else
+        {
+>>>>>>> main
             var enemyPosition = transform.localPosition;
             if (enemyPosition.x >= _Right)
             {
@@ -157,6 +168,30 @@ public class Enemy4 : MonoBehaviour
     {
         if (hpEmenyValue <= 0 && _IsDead == false)
         {
+<<<<<<< HEAD
+            _animator.SetBool("IsEnemy4Run", false);
+            _animator.SetBool("IsEnemy4Attack", false);
+            _animator.ResetTrigger("IsEnemy4Idle");
+            AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+            if (!stateInfo.IsName("GoblinScout_DeadAnimation"))
+            {
+                _circleCollider2D.enabled = true;
+                _boxconllider2D.enabled = false;
+                Debug.Log("Enemy da die");
+                _IsDead = true;
+                _HpEnemyOff.SetActive(false);
+                _rigidbody2.velocity = Vector2.zero;
+                _animator.SetTrigger("IsEnemy4Dead");
+                Invoke("DestroyEnemy", 2f);
+            }
+        }
+    }
+    public void DestroyEnemy()
+    {
+        Destroy(gameObject);
+    }
+    public void Enemy4TakeDame(int dame)
+=======
             _IsDead = true;
             _HpEnemyOff.SetActive(false);
             _rigidbody2.velocity = Vector2.zero;
@@ -165,6 +200,7 @@ public class Enemy4 : MonoBehaviour
         }
     }
     public void Enemy3TakeDame(int dame)
+>>>>>>> main
     {
         if (hpEmenyValue > 0)
         {
