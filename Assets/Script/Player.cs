@@ -489,11 +489,11 @@ public class Player : MonoBehaviour
     IEnumerator EatHpItem()
     {
         Debug.Log("--------------");
-        for(int i = 0; i < 10; i++)
+        for(int i = 0; i < 100; i++)
         {
             if (hpValue>=0&&hpValue <100)
             {
-                hpValue += 1;
+                hpValue += 20;
                 _HpText.text = hpValue.ToString("");
                 _HpSlider.value = hpValue;
                 if(hpValue==100)
@@ -507,11 +507,11 @@ public class Player : MonoBehaviour
     IEnumerator EatMpItem()
     {
         Debug.Log("--------------");
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 100; i++)
         {
             if (mpValue >= 0 && mpValue < 100)
             {
-                mpValue += 1;
+                mpValue += 20;
                 _MpText.text = mpValue.ToString("");
                 _MpSlider.value = mpValue;
                 if (mpValue == 100)
