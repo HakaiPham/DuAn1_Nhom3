@@ -24,10 +24,10 @@ public class Enemy4 : MonoBehaviour
     public int hpEmenyValue;
     Rigidbody2D _rigidbody2;
     bool _IsDead;
+    private BoxCollider2D _boxconllider2D;
+    private CircleCollider2D _circleCollider2D;
+    private bool _isEnemyStartIntro;
     [SerializeField] private GameObject _HpEnemyOff;
-    BoxCollider2D _boxconllider2D;
-    CircleCollider2D _circleCollider2D;
-    bool _isEnemyStartIntro;
     void Start()
     {
         _animator = GetComponent<Animator>();
@@ -43,8 +43,8 @@ public class Enemy4 : MonoBehaviour
         _boxconllider2D = GetComponent<BoxCollider2D>();
         _circleCollider2D = GetComponent<CircleCollider2D>();
         _isEnemyStartIntro = false;
-        isMoveLeftOrRight = true;
     }
+
     void Update()
     {
         var distancePlayer = Vector2.Distance(transform.position, _player.position);
@@ -52,11 +52,6 @@ public class Enemy4 : MonoBehaviour
         // Kiểm tra xem người chơi có nằm trong phạm vi tấn công không
         if (distancePlayer <= _AttackRange)
         {
-            if (_isEnemyStartIntro == false)
-            {
-                _isEnemyStartIntro = true;
-                _animator.SetTrigger("IsEnemy4Intro");
-            }
             _IsAttacking = true;
         }
         else
@@ -73,13 +68,9 @@ public class Enemy4 : MonoBehaviour
         //StopAttack();
         EnemyDead();
     }
-    public void StopIntro()
-    {
-        _animator.ResetTrigger("IsEnemy4Intro");
-        _animator.SetTrigger("IsEnemy4Idle");
-    }
     public void EnemyMove()
     {
+<<<<<<< HEAD
         AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
         if (stateInfo.IsName("Enemy4_IntroAnimation")) return;
         if (_IsAttacking == true) return;
@@ -87,6 +78,11 @@ public class Enemy4 : MonoBehaviour
         {
             _boxconllider2D.enabled = true;
             _circleCollider2D.enabled = false;
+=======
+        if (_IsAttacking == true) return;
+        else
+        {
+>>>>>>> main
             var enemyPosition = transform.localPosition;
             if (enemyPosition.x >= _Right)
             {
@@ -125,9 +121,8 @@ public class Enemy4 : MonoBehaviour
     }
     public void SkillMonster()
     {
-        if (_playerHp.hpValue > 0 && _IsAttacking == true&&_IsDead==false)
+        if (_playerHp.hpValue > 0 && _IsAttacking == true)
         {
-            Debug.Log("Đã tấn  công");
             Vector3 scale = transform.localScale;
             if (_player.position.x < transform.position.x && scale.x > 0 || _player.position.x > transform.position.x && scale.x < 0)
             {
@@ -161,14 +156,19 @@ public class Enemy4 : MonoBehaviour
             return;
         }
     }
+    public void HitEnemy()
+    {
+        _animator.SetTrigger("IsEnemy3Hurt");
+    }
     public void StopHitEnemy()
     {
-        _animator.SetTrigger("IsEnemy4Idle");
+        _animator.SetTrigger("IsEnemy3Idle");
     }
     public void EnemyDead()
     {
         if (hpEmenyValue <= 0 && _IsDead == false)
         {
+<<<<<<< HEAD
             _animator.SetBool("IsEnemy4Run", false);
             _animator.SetBool("IsEnemy4Attack", false);
             _animator.ResetTrigger("IsEnemy4Idle");
@@ -191,14 +191,24 @@ public class Enemy4 : MonoBehaviour
         Destroy(gameObject);
     }
     public void Enemy4TakeDame(int dame)
+=======
+            _IsDead = true;
+            _HpEnemyOff.SetActive(false);
+            _rigidbody2.velocity = Vector2.zero;
+            _animator.SetBool("IsEnemy3Run", false);
+            _animator.SetTrigger("IsEnemy3Dead");
+        }
+    }
+    public void Enemy3TakeDame(int dame)
+>>>>>>> main
     {
         if (hpEmenyValue > 0)
         {
-            _animator.SetTrigger("IsEnemy4Hurt");
+            _animator.SetTrigger("IsEnemy3Hurt");
             hpEmenyValue -= dame;
             _EnemyHp.value = hpEmenyValue;
             _HpEnemyText.text = hpEmenyValue.ToString("");
-            Invoke("StopHitEnemy", 0.33f);
+            Invoke("StopHitEnemy", 0.3f);
         }
     }
 }

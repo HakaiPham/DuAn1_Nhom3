@@ -38,7 +38,10 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
+<<<<<<< HEAD
   m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+=======
+>>>>>>> main
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -123,7 +126,13 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+<<<<<<< HEAD
 --- !u!1 &14389155
+=======
+<<<<<<< HEAD:Assets/Scenes/Scene3.5.unity
+=======
+--- !u!1 &457348871
+>>>>>>> main
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -131,22 +140,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+<<<<<<< HEAD
   - component: {fileID: 14389156}
   - component: {fileID: 14389158}
   - component: {fileID: 14389157}
   m_Layer: 0
   m_Name: Grass
+=======
+  - component: {fileID: 457348873}
+  - component: {fileID: 457348872}
+  m_Layer: 0
+  m_Name: 1
+>>>>>>> main
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+<<<<<<< HEAD
 --- !u!4 &14389156
+=======
+--- !u!156049354 &457348872
+Grid:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 457348871}
+  m_Enabled: 1
+  m_CellSize: {x: 1, y: 1, z: 0}
+  m_CellGap: {x: 0, y: 0, z: 0}
+  m_CellLayout: 0
+  m_CellSwizzle: 0
+--- !u!4 &457348873
+>>>>>>> main
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
   m_GameObject: {fileID: 14389155}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
@@ -33519,6 +33552,19 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3331573118000546153, guid: ce905b2803d55594790bf36cbfb88c0a, type: 3}
   m_PrefabInstance: {fileID: 1993044975}
   m_PrefabAsset: {fileID: 0}
+=======
+  m_GameObject: {fileID: 457348871}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.16, y: 0.16, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1916361778}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+>>>>>>> main:Assets/Scenes/Scene3_5.unity
+>>>>>>> main
 --- !u!1 &1073744137
 GameObject:
   m_ObjectHideFlags: 0
@@ -33530,7 +33576,10 @@ GameObject:
   - component: {fileID: 1073744140}
   - component: {fileID: 1073744139}
   - component: {fileID: 1073744138}
+<<<<<<< HEAD
   - component: {fileID: 1073744141}
+=======
+>>>>>>> main
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -33581,7 +33630,11 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
+<<<<<<< HEAD
   orthographic size: 1.92
+=======
+  orthographic size: 5
+>>>>>>> main
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -33606,6 +33659,7 @@ Transform:
   m_GameObject: {fileID: 1073744137}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+<<<<<<< HEAD
   m_LocalPosition: {x: -5.5433216, y: -1.8061099, z: -10.0820465}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -33650,6 +33704,17 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1086714318
+=======
+  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< HEAD:Assets/Scenes/Scene3.5.unity
+=======
+--- !u!1 &1916361777
+>>>>>>> main
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -33657,15 +33722,24 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+<<<<<<< HEAD
   - component: {fileID: 1086714320}
   - component: {fileID: 1086714319}
   m_Layer: 0
   m_Name: Grid
+=======
+  - component: {fileID: 1916361778}
+  - component: {fileID: 1916361780}
+  - component: {fileID: 1916361779}
+  m_Layer: 0
+  m_Name: Tilemap
+>>>>>>> main
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+<<<<<<< HEAD
 --- !u!156049354 &1086714319
 Grid:
   m_ObjectHideFlags: 0
@@ -33679,11 +33753,15 @@ Grid:
   m_CellLayout: 0
   m_CellSwizzle: 0
 --- !u!4 &1086714320
+=======
+--- !u!4 &1916361778
+>>>>>>> main
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
   m_GameObject: {fileID: 1086714318}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -33818,12 +33896,16 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1237456458}
+=======
+  m_GameObject: {fileID: 1916361777}
+>>>>>>> main
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
+<<<<<<< HEAD
   m_Father: {fileID: 263907690}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1237456460
@@ -34910,12 +34992,21 @@ TilemapCollider2D:
   m_ExtrusionFactor: 0
   m_UseDelaunayMesh: 0
 --- !u!483693784 &1813614031
+=======
+  m_Father: {fileID: 457348873}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!483693784 &1916361779
+>>>>>>> main
 TilemapRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
   m_GameObject: {fileID: 1813614026}
+=======
+  m_GameObject: {fileID: 1916361777}
+>>>>>>> main
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -34947,8 +35038,13 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+<<<<<<< HEAD
   m_SortingLayerID: 1743411901
   m_SortingLayer: 4
+=======
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+>>>>>>> main
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -34958,12 +35054,17 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
+<<<<<<< HEAD
 --- !u!1839735485 &1813614032
+=======
+--- !u!1839735485 &1916361780
+>>>>>>> main
 Tilemap:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
   m_GameObject: {fileID: 1813614026}
   m_Enabled: 1
   m_Tiles:
@@ -37159,6 +37260,21 @@ Tilemap:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: -62, y: -21, z: 0}
   m_Size: {x: 206, y: 21, z: 1}
+=======
+  m_GameObject: {fileID: 1916361777}
+  m_Enabled: 1
+  m_Tiles: {}
+  m_AnimatedTiles: {}
+  m_TileAssetArray: []
+  m_TileSpriteArray: []
+  m_TileMatrixArray: []
+  m_TileColorArray: []
+  m_TileObjectToInstantiateArray: []
+  m_AnimationFrameRate: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Origin: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0, y: 0, z: 1}
+>>>>>>> main
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
@@ -37178,6 +37294,7 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+<<<<<<< HEAD
 --- !u!4 &1855220315 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4413235957305236774, guid: b453d8bc8d14aab42a688fc714ad8165, type: 3}
@@ -37689,11 +37806,15 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+=======
+>>>>>>> main:Assets/Scenes/Scene3_5.unity
+>>>>>>> main
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1073744140}
+<<<<<<< HEAD
   - {fileID: 1086714320}
   - {fileID: 418167315}
   - {fileID: 1945721275}
@@ -37702,3 +37823,5 @@ SceneRoots:
   - {fileID: 682845548}
   - {fileID: 90954514}
   - {fileID: 1384065216}
+=======
+>>>>>>> main

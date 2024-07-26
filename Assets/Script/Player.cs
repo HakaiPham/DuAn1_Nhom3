@@ -47,6 +47,7 @@ public class Player : MonoBehaviour
     Enemy2 _enemy2;
     Enemy3 _enemy3;
     EnermyArrow _enemyArrow;
+<<<<<<< HEAD
     Enemy4 _enemy4;
     Enemy5 _enemy5;
 <<<<<<< HEAD
@@ -56,6 +57,8 @@ public class Player : MonoBehaviour
     private int coinValue;
 =======
 >>>>>>> parent of 79fa0e2 (Hoan thien quai, trap)
+=======
+>>>>>>> main
     void Start()
     {
         _Rigidbody2 = GetComponent<Rigidbody2D>();
@@ -78,8 +81,11 @@ public class Player : MonoBehaviour
         _TimeAttackStart = 0;
         _enemy3 = FindObjectOfType<Enemy3>();
         _enemyArrow = FindObjectOfType<EnermyArrow>();
+<<<<<<< HEAD
         _enemy5 = FindObjectOfType<Enemy5>();
         _enemy4 = FindObjectOfType<Enemy4>();
+=======
+>>>>>>> main
     }
 
     // Update is called once per frame
@@ -425,7 +431,10 @@ public class Player : MonoBehaviour
         _enemy2 = monster.GetComponent<Enemy2>();
         _enemy3 = monster.GetComponent<Enemy3>();
         _enemyArrow = monster.GetComponent<EnermyArrow>();
+<<<<<<< HEAD
         _enemy5 = monster.GetComponent<Enemy5>();
+=======
+>>>>>>> main
         if (positionMonster <= _AttackRange)
         {
             if (_HpMonster != null && _HpMonster.hpEmenyValue > 0)
@@ -446,7 +455,10 @@ public class Player : MonoBehaviour
             }
             if(_enemy3 != null && _enemy3.hpEmenyValue > 0) _enemy3.Enemy3TakeDame(5);
             else if (_enemyArrow != null && _enemyArrow.hp > 0) _enemyArrow.TakeDamge(5);
+<<<<<<< HEAD
             if(_enemy4 != null && _enemy4.hpEmenyValue > 0) _enemy4.Enemy4TakeDame(5);
+=======
+>>>>>>> main
         }
     }
     private void AttackMonsterbySkill1(Transform monster)
@@ -508,11 +520,11 @@ public class Player : MonoBehaviour
     IEnumerator EatHpItem()
     {
         Debug.Log("--------------");
-        for(int i = 0; i < 100; i++)
+        for(int i = 0; i < 10; i++)
         {
             if (hpValue>=0&&hpValue <100)
             {
-                hpValue += 20;
+                hpValue += 1;
                 _HpText.text = hpValue.ToString("");
                 _HpSlider.value = hpValue;
                 if(hpValue==100)
@@ -526,11 +538,11 @@ public class Player : MonoBehaviour
     IEnumerator EatMpItem()
     {
         Debug.Log("--------------");
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 10; i++)
         {
             if (mpValue >= 0 && mpValue < 100)
             {
-                mpValue += 20;
+                mpValue += 1;
                 _MpText.text = mpValue.ToString("");
                 _MpSlider.value = mpValue;
                 if (mpValue == 100)

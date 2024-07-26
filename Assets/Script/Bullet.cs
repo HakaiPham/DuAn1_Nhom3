@@ -83,7 +83,10 @@ public class Bullet : MonoBehaviour
                 else if (_bossTank != null && _bossTank._HpBossTankValue > 0)
                 {
                     targetMonster = _bossTank.transform;
+<<<<<<< HEAD
                     _player.AttackMonsterbySkill2(targetMonster);
+=======
+>>>>>>> main
                     DestroyBullet();
                 }
             }
