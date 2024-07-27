@@ -157,6 +157,7 @@ public class Enemy3 : MonoBehaviour
             _rigidbody2.velocity = Vector2.zero;
             _animator.SetBool("IsEnemy3Run", false);
             _animator.SetTrigger("IsEnemy3Dead");
+            Destroy(gameObject, 1.3f);
         }
     }
     public void Enemy3TakeDame(int dame)

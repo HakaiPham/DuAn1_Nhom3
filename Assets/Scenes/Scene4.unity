@@ -386,10 +386,6 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 2015238869}
-    - target: {fileID: 133519724435979883, guid: 8237ca23199ebde43a4a46b453aa5927, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 196961685140929214, guid: 8237ca23199ebde43a4a46b453aa5927, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -397,10 +393,6 @@ PrefabInstance:
     - target: {fileID: 196961685140929214, guid: 8237ca23199ebde43a4a46b453aa5927, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1170190127463294199, guid: 8237ca23199ebde43a4a46b453aa5927, type: 3}
-      propertyPath: m_Constraints
-      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2281293132565643887, guid: 8237ca23199ebde43a4a46b453aa5927, type: 3}
       propertyPath: m_LocalPosition.x
@@ -445,10 +437,6 @@ PrefabInstance:
     - target: {fileID: 6327053895387267601, guid: 8237ca23199ebde43a4a46b453aa5927, type: 3}
       propertyPath: m_Name
       value: EnemySummon
-      objectReference: {fileID: 0}
-    - target: {fileID: 6327053895387267601, guid: 8237ca23199ebde43a4a46b453aa5927, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
