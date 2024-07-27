@@ -183,6 +183,7 @@ public class Enemy2 : MonoBehaviour
             _rigidbody2.velocity = Vector2.zero;
             _animator.SetBool("IsEnemy2Run", false);
             _animator.SetTrigger("IsEnemy2Dead");
+            Destroy(gameObject, 1.3f);
         }
     }
     public void Enemy2TakeDame(int dame)
