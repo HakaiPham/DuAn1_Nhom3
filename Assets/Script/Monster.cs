@@ -151,6 +151,7 @@ public class Monster : MonoBehaviour
             _rigidbody2.velocity = Vector2.zero;
             _animator.SetBool("IsEnemyRun", false);
             _animator.SetTrigger("IsEnemyDead");
+            Destroy(gameObject, 1.3f);
         }
     }
     public void TakeDameEnemy(int dame)

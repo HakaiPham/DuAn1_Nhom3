@@ -388,14 +388,14 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("ItemHp"))
         {
-            Destroy(_HpItem);
+            Destroy(collision.gameObject);
             slHp += 1;
             _SlHpText.text = slHp.ToString("");
             canUseItem = true;
         }
         if (collision.gameObject.CompareTag("ItemMp"))
         {
-            Destroy(_MpItem);
+            Destroy(collision.gameObject);
             slMp += 1;
             _SlMpText.text = slMp.ToString("");
             canUseItem = true;
@@ -535,13 +535,13 @@ public class Player : MonoBehaviour
         {
             if (hpValue>=0&&hpValue <100)
             {
-                hpValue += 20;
-                _HpText.text = hpValue.ToString("");
-                _HpSlider.value = hpValue;
-                if(hpValue==100)
+                if (hpValue == 100)
                 {
                     break;
                 }
+                hpValue += 20;
+                _HpText.text = hpValue.ToString("");
+                _HpSlider.value = hpValue;
                 yield return new WaitForSeconds(0.3f);
             }
         }
@@ -553,13 +553,13 @@ public class Player : MonoBehaviour
         {
             if (mpValue >= 0 && mpValue < 100)
             {
-                mpValue += 20;
-                _MpText.text = mpValue.ToString("");
-                _MpSlider.value = mpValue;
                 if (mpValue == 100)
                 {
                     break;
                 }
+                mpValue += 20;
+                _MpText.text = mpValue.ToString("");
+                _MpSlider.value = mpValue;
                 yield return new WaitForSeconds(0.3f);
             }
         }
