@@ -35,6 +35,6 @@ public class Loading : MonoBehaviour
             yield return new WaitForSeconds(0.1f); // Chạy mỗi 0.6 giây để tăng 20%
         }
         // chuyển sang sc2
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
 }

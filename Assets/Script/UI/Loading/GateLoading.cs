@@ -29,18 +29,14 @@ public class GateLoading : MonoBehaviour
     {
         var value = 0;
         _slider.value = value;
-        while (true)
+        while (value < 100)
         {
-            value +=10;
+            value += 10;
             _slider.value = value;
             _textMeshProUGUI.text = value + "%";
-            yield return new WaitForSeconds(0.1f);
-            if (value >= 100)
-            {
-                break;
-            }
+            yield return new WaitForSeconds(0.1f); // Chạy mỗi 0.6 giây để tăng 20%
         }
         // chuyển sang sc2
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(3);
     }
 }
