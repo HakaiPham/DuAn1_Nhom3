@@ -24,6 +24,8 @@ public class Enemy7 : MonoBehaviour
     Rigidbody2D _rigidbody2;
     bool _IsDead;
     [SerializeField] private GameObject _HpEnemyOff;
+    public TextMeshProUGUI _DameText;
+    GameController1 gameController1;
     void Start()
     {
         _animator = GetComponent<Animator>();
@@ -35,6 +37,7 @@ public class Enemy7 : MonoBehaviour
         _HpEnemyText.text = hpEmenyValue.ToString("");
         _rigidbody2 = GetComponent<Rigidbody2D>();
         _IsDead = false;
+        gameController1 = FindObjectOfType<GameController1>();
     }
     void Update()
     {
@@ -172,6 +175,7 @@ public class Enemy7 : MonoBehaviour
         {
             _animator.SetTrigger("IsEnemy7Hurt");
             hpEmenyValue -= dame;
+            gameController1.StartDameText(dame, _DameText, gameObject.transform);
             _EnemyHp.value = hpEmenyValue;
             _HpEnemyText.text = hpEmenyValue.ToString("");
             Invoke("StopHitEnemy", 0.33f);

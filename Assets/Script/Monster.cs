@@ -24,6 +24,8 @@ public class Monster : MonoBehaviour
     Rigidbody2D _rigidbody2;
     bool _IsDead;
     [SerializeField] private GameObject _HpEnemyOff;
+    public TextMeshProUGUI _DameText;
+    GameController1 _GameController1;
     void Start()
     {
         _animator = GetComponent<Animator>();
@@ -35,6 +37,7 @@ public class Monster : MonoBehaviour
         _HpEnemyText.text = hpEmenyValue.ToString("");
         _rigidbody2 = GetComponent<Rigidbody2D>();
         _IsDead = false;
+       _GameController1 = FindObjectOfType<GameController1>();
     }
 
     void Update()
@@ -151,7 +154,7 @@ public class Monster : MonoBehaviour
             _rigidbody2.velocity = Vector2.zero;
             _animator.SetBool("IsEnemyRun", false);
             _animator.SetTrigger("IsEnemyDead");
-            Destroy(gameObject, 1.3f);
+            Destroy(gameObject, 2f);
         }
     }
     public void TakeDameEnemy(int dame)
@@ -160,6 +163,7 @@ public class Monster : MonoBehaviour
         {
             _animator.SetTrigger("IsEnemyHurt");
             hpEmenyValue -= dame;
+            _GameController1.StartDameText(dame, _DameText, gameObject.transform);
             _EnemyHp.value = hpEmenyValue;
             _HpEnemyText.text = hpEmenyValue.ToString("");
             Invoke("StopHitEnemy", 0.2f);
