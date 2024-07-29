@@ -50,7 +50,9 @@ public class Bullet : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Monster"))         
+        if (collision.gameObject.CompareTag("Monster")||
+            collision.gameObject.CompareTag("EnemySummon")||
+            collision.gameObject.CompareTag("BossTank"))         
         {
             _monster =  collision.GetComponent<Monster>();
             _monsterSummon = collision.GetComponent<Monster2>();
@@ -76,6 +78,7 @@ public class Bullet : MonoBehaviour
                 {
                     Debug.Log("vị trị hiện tại của quái là: " + targetMonster);
                     targetMonster = _monsterSummon.transform;
+                    _player.AttackMonsterbySkill2(targetMonster);
                     DestroyBullet();
                 }
                 else if (_enemy2 != null && _enemy2.hpEmenyValue > 0)

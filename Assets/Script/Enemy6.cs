@@ -25,6 +25,8 @@ public class Enemy6 : MonoBehaviour
     [SerializeField] private GameObject _HpEnemyOff;
     BoxCollider2D _boxconllider2D;
     CircleCollider2D _circleCollider2D;
+    public TextMeshProUGUI _DameText;
+    GameController1 gameController1;
     void Start()
     {
         _animator = GetComponent<Animator>();
@@ -40,6 +42,7 @@ public class Enemy6 : MonoBehaviour
         _boxconllider2D = GetComponent<BoxCollider2D>();
         _circleCollider2D = GetComponent<CircleCollider2D>();
         isMoveLeftOrRight = false;
+        gameController1 = FindObjectOfType<GameController1>();
     }
     void Update()
     {
@@ -178,6 +181,7 @@ public class Enemy6 : MonoBehaviour
         {
             _animator.SetTrigger("IsEnemy6Hurt");
             hpEmenyValue -= dame;
+            gameController1.StartDameText(dame, _DameText, gameObject.transform);
             _EnemyHp.value = hpEmenyValue;
             _HpEnemyText.text = hpEmenyValue.ToString("");
             Invoke("StopHitEnemy", 0.33f);

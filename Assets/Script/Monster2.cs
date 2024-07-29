@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -24,6 +25,10 @@ public class Monster2 : MonoBehaviour
     public GameObject _OffHpSliderEnemy;
     Player _player;
     BoxCollider2D _conllider;
+    Rigidbody2D _rb;
+    public TextMeshProUGUI _DameText;
+    GameController1 _GameControll;
+    public GameObject _PanelDame;
     void Start()
     {
         // Lưu trữ scale ban đầu của Boss
@@ -36,6 +41,8 @@ public class Monster2 : MonoBehaviour
         _HpMonsterSummonText.text = _HpMonsterSummonValue.ToString("");
         _player = FindObjectOfType<Player>();
         _conllider = GetComponent<BoxCollider2D>();
+        _rb = GetComponent<Rigidbody2D>();
+        _GameControll = FindObjectOfType<GameController1>();
     }
     void Update()
     {
@@ -43,6 +50,19 @@ public class Monster2 : MonoBehaviour
         distancePlayer = Vector2.Distance(transform.position, player.position);
         // Tính khoảng cách của nhân vật đến Boss
         Debug.Log("Khoảng cách của player hiện tại là: " + distancePlayer);
+        // Xác định hướng của Boss dựa trên vị trí của người chơi
+        if (player.position.x > transform.position.x)
+        {
+            _HpMonsterSummonText.transform.localScale = new Vector3(1, 1, 1);
+            // Người chơi ở bên phải, quay mặt sang phải
+            transform.localScale = new Vector3(Mathf.Abs(localScale.x), localScale.y, localScale.z);
+        }
+        else if (player.position.x < transform.position.x)
+        {
+            _HpMonsterSummonText.transform.localScale = new Vector3(-1, 1, 1);
+            // Người chơi ở bên trái, quay mặt sang trái
+            transform.localScale = new Vector3(-Mathf.Abs(localScale.x), localScale.y, localScale.z);
+        }
         if (distancePlayer > _DetectionRange)
         {
             if (_HpMonsterSummonValue > 0)
@@ -101,20 +121,7 @@ public class Monster2 : MonoBehaviour
             if (distancePlayer > _DetectionRange)
             {
                 transform.position = Vector3.MoveTowards(transform.position, targetPosition, _Flyspeed * Time.deltaTime);
-            }
-            // Xác định hướng của Boss dựa trên vị trí của người chơi
-            if (player.position.x > transform.position.x)
-            {
-                _HpMonsterSummonText.transform.localScale = new Vector3(1, 1, 1);
-                // Người chơi ở bên phải, quay mặt sang phải
-                transform.localScale = new Vector3(Mathf.Abs(localScale.x), localScale.y, localScale.z);
-            }
-            else if (player.position.x < transform.position.x)
-            {
-                _HpMonsterSummonText.transform.localScale = new Vector3(-1, 1, 1);
-                // Người chơi ở bên trái, quay mặt sang trái
-                transform.localScale = new Vector3(-Mathf.Abs(localScale.x), localScale.y, localScale.z);
-            }
+            }            
         }
         else
         {
@@ -156,40 +163,8 @@ public class Monster2 : MonoBehaviour
             animator.SetTrigger("IsEnemySummonDead");
             animator.ResetTrigger("IsEnemySummonIdle");
             animator.ResetTrigger("IsEnemySummonHurt");
+            Destroy(gameObject, 2f);
         }
-    }
-    public void EnemySummonHitbyPlayerAttackNormal()
-    {
-        animator.SetTrigger("IsEnemySummonHurt");
-        _HpMonsterSummonValue -= 5;
-        _HpMonsterSummonText.text = _HpMonsterSummonValue.ToString();
-        _hpMonsterSummonSlider.value = _HpMonsterSummonValue;
-        animator.ResetTrigger("IsEnemySummonSkill1");
-        animator.ResetTrigger("IsEnemySummonSkill2");
-        Invoke("StopHurtEnemyAnimation", 0.4f);
-        EnemySummonDead();
-    }
-    public void EnemySummonHitbyPlayerSkill1()
-    {
-        animator.SetTrigger("IsEnemySummonHurt");
-        _HpMonsterSummonValue -= 10;
-        _HpMonsterSummonText.text = _HpMonsterSummonValue.ToString();
-        _hpMonsterSummonSlider.value = _HpMonsterSummonValue;
-        animator.ResetTrigger("IsEnemySummonSkill1");
-        animator.ResetTrigger("IsEnemySummonSkill2");
-        Invoke("StopHurtEnemyAnimation", 0.4f);
-        EnemySummonDead();
-    }
-    public void EnemySummonHitbyPlayerSkill2()
-    {
-        animator.SetTrigger("IsEnemySummonHurt");
-        _HpMonsterSummonValue -= 50;
-        _HpMonsterSummonText.text = _HpMonsterSummonValue.ToString();
-        _hpMonsterSummonSlider.value = _HpMonsterSummonValue;
-        animator.ResetTrigger("IsEnemySummonSkill1");
-        animator.ResetTrigger("IsEnemySummonSkill2");
-        Invoke("StopHurtEnemyAnimation", 0.4f);
-        EnemySummonDead();
     }
     public void StartHurtEnemyAnimation()
     {
@@ -198,5 +173,16 @@ public class Monster2 : MonoBehaviour
     public void StopHurtEnemyAnimation()
     {
         animator.SetTrigger("IsEnemySummonIdle");
+    }
+    public void EnemySummonTakeDame(int dame)
+    {
+        animator.SetTrigger("IsEnemySummonHurt");
+        _HpMonsterSummonValue -= dame;
+        _GameControll.StartDameText(dame, _DameText,gameObject.transform);
+        _HpMonsterSummonText.text = _HpMonsterSummonValue.ToString();
+        _hpMonsterSummonSlider.value = _HpMonsterSummonValue;
+        animator.ResetTrigger("IsEnemySummonSkill1");
+        animator.ResetTrigger("IsEnemySummonSkill2");
+        Invoke("StopHurtEnemyAnimation", 0.4f);
     }
 }

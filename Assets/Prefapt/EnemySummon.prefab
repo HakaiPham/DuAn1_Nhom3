@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.6177924, y: -1.63, z: 0}
-  m_LocalScale: {x: 2.5, y: 2.5, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5720002742339835729}
@@ -204,6 +204,8 @@ MonoBehaviour:
   _HpMonsterSummonValue: 0
   _HpMonsterSummonText: {fileID: 1146197204626397239}
   _OffHpSliderEnemy: {fileID: 6842189542133698828}
+  _DameText: {fileID: 6415405206934503836}
+  _PanelDame: {fileID: 0}
 --- !u!1001 &4233046623738631103
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -212,6 +214,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2281293132565643887}
     m_Modifications:
+    - target: {fileID: 557428449900359105, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.507967
+      objectReference: {fileID: 0}
+    - target: {fileID: 557428449900359105, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.49531573
+      objectReference: {fileID: 0}
+    - target: {fileID: 557428449900359105, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 190.652
+      objectReference: {fileID: 0}
+    - target: {fileID: 557428449900359105, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -962.61035
+      objectReference: {fileID: 0}
+    - target: {fileID: 557428449900359105, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -540.9014
+      objectReference: {fileID: 0}
+    - target: {fileID: 2905777453445833060, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4036758955604863233, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -220,9 +246,29 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5294615254077713576, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6651496105901591265, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
       propertyPath: m_Name
       value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 7185163840066048547, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
+      propertyPath: m_margin.w
+      value: 24.632332
+      objectReference: {fileID: 0}
+    - target: {fileID: 7185163840066048547, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
+      propertyPath: m_margin.x
+      value: 96.51467
+      objectReference: {fileID: 0}
+    - target: {fileID: 7185163840066048547, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
+      propertyPath: m_margin.y
+      value: 25.139313
+      objectReference: {fileID: 0}
+    - target: {fileID: 7185163840066048547, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
+      propertyPath: m_margin.z
+      value: 93.512856
       objectReference: {fileID: 0}
     - target: {fileID: 8493583607296066798, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
       propertyPath: m_Pivot.x
@@ -336,6 +382,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8493583607296066798, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
   m_PrefabInstance: {fileID: 4233046623738631103}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6415405206934503836 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7185163840066048547, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
+  m_PrefabInstance: {fileID: 4233046623738631103}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6842189542133698828 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7226758259604849331, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}

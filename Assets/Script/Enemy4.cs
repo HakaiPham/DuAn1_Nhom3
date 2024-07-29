@@ -28,6 +28,8 @@ public class Enemy4 : MonoBehaviour
     BoxCollider2D _boxconllider2D;
     CircleCollider2D _circleCollider2D;
     bool _isEnemyStartIntro;
+    GameController1 gameController1;
+    public TextMeshProUGUI _DameText;
     void Start()
     {
         _animator = GetComponent<Animator>();
@@ -43,6 +45,7 @@ public class Enemy4 : MonoBehaviour
         _circleCollider2D = GetComponent<CircleCollider2D>();
         _isEnemyStartIntro = false;
         isMoveLeftOrRight = true;
+        gameController1 = FindObjectOfType<GameController1>();
     }
     void Update()
     {
@@ -206,6 +209,7 @@ public class Enemy4 : MonoBehaviour
         {
             _animator.SetTrigger("IsEnemy4Hurt");
             hpEmenyValue -= dame;
+            gameController1.StartDameText(dame, _DameText, gameObject.transform);
             _EnemyHp.value = hpEmenyValue;
             _HpEnemyText.text = hpEmenyValue.ToString("");
             Invoke("StopHitEnemy", 0.33f);

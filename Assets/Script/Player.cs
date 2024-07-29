@@ -52,6 +52,7 @@ public class Player : MonoBehaviour
     Enemy6 _enemy6;
     Enemy7 _enemy7;
     GameController1 _GameController1;
+    public TextMeshProUGUI _DameTextPlayer;
     void Start()
     {
         _Rigidbody2 = GetComponent<Rigidbody2D>();
@@ -232,9 +233,14 @@ public class Player : MonoBehaviour
     }
     public void TakeDame(int dame)
     {
+        AnimatorStateInfo stateInfo = _Animator2.GetCurrentAnimatorStateInfo(0);
+        if (stateInfo.IsName("Player_Skill1Animation") ||
+            stateInfo.IsName("Player_Skill1_2Animation")) return;
         if (hpValue >= 0)
         {
+            if (hpValue <= 0) return;
             hpValue -= dame;
+            _GameController1.StartDameText(dame, _DameTextPlayer,gameObject.transform);
             _HpSlider.value = hpValue;
             _HpText.text = hpValue.ToString("");
             _Animator2.SetTrigger("IsHurt");
@@ -326,9 +332,9 @@ public class Player : MonoBehaviour
             circleCollider.enabled = true;
         _Rigidbody2.gravityScale = 1;
         if (!stateInfo.IsName("Player_DeadAnimation")){
-            _Animator2.SetTrigger("IsDead");
             _Animator2.ResetTrigger("IsHurt");
             _Animator2.ResetTrigger("IsIdle");
+            _Animator2.SetTrigger("IsDead");
         }          
     }
     public void SkillAttack1()
@@ -430,28 +436,29 @@ public class Player : MonoBehaviour
         _enemy7 = monster.GetComponent<Enemy7>();
         if (positionMonster <= _AttackRange)
         {
+            int randomDame = Random.Range(5, 11);
             if (_HpMonster != null && _HpMonster.hpEmenyValue > 0)
             {
-                _HpMonster.TakeDameEnemy(5);
+                _HpMonster.TakeDameEnemy(randomDame);
             }
             else if (_EnemySummon != null && _EnemySummon._HpMonsterSummonValue > 0)
             {
-                _EnemySummon.EnemySummonHitbyPlayerAttackNormal();
+                _EnemySummon.EnemySummonTakeDame(randomDame);
             }
-            if(_BossTank != null && _BossTank._HpBossTankValue > 0)
+            if (_BossTank != null && _BossTank._HpBossTankValue > 0)
             {
-                _BossTank.TakeDameBoss(5);
+                _BossTank.TakeDameBoss(randomDame);
             }
             else
             {
-                if (_enemy2 != null && _enemy2.hpEmenyValue > 0) _enemy2.Enemy2TakeDame(5);
+                if (_enemy2 != null && _enemy2.hpEmenyValue > 0) _enemy2.Enemy2TakeDame(randomDame);
             }
-            if(_enemy3 != null && _enemy3.hpEmenyValue > 0) _enemy3.Enemy3TakeDame(5);
-            else if (_enemyArrow != null && _enemyArrow.hp > 0) _enemyArrow.TakeDamge(5);
-            if(_enemy4 != null && _enemy4.hpEmenyValue > 0) _enemy4.Enemy4TakeDame(5);
-            else if(_enemy5 != null && _enemy5.hpEmenyValue > 0) _enemy5.Enemy5TakeDame(5);
-            if (_enemy6 != null && _enemy6.hpEmenyValue > 0) _enemy6.Enemy6TakeDame(5);
-            else if (_enemy7 != null && _enemy7.hpEmenyValue > 0) _enemy7.Enemy7TakeDame(5);
+            if (_enemy3 != null && _enemy3.hpEmenyValue > 0) _enemy3.Enemy3TakeDame(randomDame);
+            else if (_enemyArrow != null && _enemyArrow.hp > 0) _enemyArrow.TakeDamge(randomDame);
+            if(_enemy4 != null && _enemy4.hpEmenyValue > 0) _enemy4.Enemy4TakeDame(randomDame);
+            else if(_enemy5 != null && _enemy5.hpEmenyValue > 0) _enemy5.Enemy5TakeDame(randomDame);
+            if (_enemy6 != null && _enemy6.hpEmenyValue > 0) _enemy6.Enemy6TakeDame(randomDame);
+            else if (_enemy7 != null && _enemy7.hpEmenyValue > 0) _enemy7.Enemy7TakeDame(randomDame);
         }
     }
     private void AttackMonsterbySkill1(Transform monster)
@@ -476,15 +483,15 @@ public class Player : MonoBehaviour
             }
             else if (_EnemySummon != null && _EnemySummon._HpMonsterSummonValue > 0)
             {
-                _EnemySummon.EnemySummonHitbyPlayerSkill1();
+                _EnemySummon.EnemySummonTakeDame(20);
             }
-            if (_BossTank != null&&_BossTank._HpBossTankValue>0)
+            if (_BossTank != null && _BossTank._HpBossTankValue > 0)
             {
                 _BossTank.TakeDameBoss(20);
             }
             else
             {
-                if (_enemy2 != null&&_enemy2.hpEmenyValue>0) _enemy2.Enemy2TakeDame(20);
+                if (_enemy2 != null && _enemy2.hpEmenyValue > 0) _enemy2.Enemy2TakeDame(20);
             }
             if (_enemy3 != null && _enemy3.hpEmenyValue > 0) _enemy3.Enemy3TakeDame(20);
             else if (_enemyArrow != null && _enemyArrow.hp > 0) _enemyArrow.TakeDamge(20);
@@ -512,7 +519,7 @@ public class Player : MonoBehaviour
         }
         else if (_EnemySummon != null && _EnemySummon._HpMonsterSummonValue > 0)
         {
-            _EnemySummon.EnemySummonHitbyPlayerSkill2();
+            _EnemySummon.EnemySummonTakeDame(50);
         }
         if (_BossTank != null)
         {
@@ -531,7 +538,7 @@ public class Player : MonoBehaviour
     IEnumerator EatHpItem()
     {
         Debug.Log("--------------");
-        for(int i = 0; i < 100; i++)
+        for(int i = 0; i < 20; i++)
         {
             if (hpValue>=0&&hpValue <100)
             {
@@ -539,7 +546,7 @@ public class Player : MonoBehaviour
                 {
                     break;
                 }
-                hpValue += 20;
+                hpValue += 1;
                 _HpText.text = hpValue.ToString("");
                 _HpSlider.value = hpValue;
                 yield return new WaitForSeconds(0.3f);
@@ -549,7 +556,7 @@ public class Player : MonoBehaviour
     IEnumerator EatMpItem()
     {
         Debug.Log("--------------");
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 20; i++)
         {
             if (mpValue >= 0 && mpValue < 100)
             {
@@ -557,7 +564,7 @@ public class Player : MonoBehaviour
                 {
                     break;
                 }
-                mpValue += 20;
+                mpValue += 1;
                 _MpText.text = mpValue.ToString("");
                 _MpSlider.value = mpValue;
                 yield return new WaitForSeconds(0.3f);

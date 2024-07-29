@@ -2426,6 +2426,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4485415133049414481, guid: ce905b2803d55594790bf36cbfb88c0a, type: 3}
+      propertyPath: m_SortingLayer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6666008472722698547, guid: ce905b2803d55594790bf36cbfb88c0a, type: 3}
       propertyPath: m_Name
       value: Coin (1)
