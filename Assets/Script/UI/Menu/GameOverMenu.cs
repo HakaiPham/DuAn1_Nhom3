@@ -8,11 +8,16 @@ public class GameOverMenu : MonoBehaviour
 {
     [SerializeField] private GameObject gameOverMenu;
     [SerializeField] private GameObject CheckPlayer;
+    Player _Player;
 
+    private void Start()
+    {
+        _Player = FindObjectOfType<Player>();
+    }
     void Update()
     {
         // Kiểm tra xem người chơi còn tồn tại không
-        if (CheckPlayer == null)
+        if (CheckPlayer == null || _Player.hpValue <= 0)
         {
             GameOver();
         }
@@ -26,7 +31,8 @@ public class GameOverMenu : MonoBehaviour
 
     public void GotoHome()
     {
-        Time.timeScale = 1;
+       
         SceneManager.LoadScene("Login");
+        Time.timeScale = 1;
     }
 }
