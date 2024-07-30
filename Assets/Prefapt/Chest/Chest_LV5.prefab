@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8000498593886185179}
   - component: {fileID: 1643938865510301765}
   - component: {fileID: 8914956163086554935}
-  - component: {fileID: 989851183687983346}
+  - component: {fileID: -6353428581135022756}
   m_Layer: 0
   m_Name: Chest_LV5
   m_TagString: Untagged
@@ -123,11 +123,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnLocation: {fileID: 3302673004308387920}
-  item1: {fileID: 1928493626714867647, guid: dcc9bd5f785573b41b897a680005d8a3, type: 3}
-  item2: {fileID: 2870689791189104251, guid: 240ca5f1e9f8e6946b3eb2e480d412a9, type: 3}
-  item3: {fileID: 1928493626714867647, guid: dcc9bd5f785573b41b897a680005d8a3, type: 3}
-  item4: {fileID: 1928493626714867647, guid: dcc9bd5f785573b41b897a680005d8a3, type: 3}
-  item5: {fileID: 2870689791189104251, guid: 240ca5f1e9f8e6946b3eb2e480d412a9, type: 3}
+  item1: {fileID: 8319137910094248555, guid: 27b7d887146e6f44f965d7812e66475a, type: 3}
+  item2: {fileID: 8319137910094248555, guid: 27b7d887146e6f44f965d7812e66475a, type: 3}
+  item3: {fileID: 3125654137878556151, guid: 6e81555b64d8c3942acdd8ff20cc2f56, type: 3}
+  item4: {fileID: 3125654137878556151, guid: 6e81555b64d8c3942acdd8ff20cc2f56, type: 3}
+  item5: {fileID: 3125654137878556151, guid: 6e81555b64d8c3942acdd8ff20cc2f56, type: 3}
 --- !u!61 &1643938865510301765
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -200,8 +200,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!70 &989851183687983346
-CapsuleCollider2D:
+--- !u!61 &-6353428581135022756
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -233,5 +233,15 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.32, y: 0.32}
+    newSize: {x: 0.32, y: 0.32}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
   m_Size: {x: 0.32, y: 0.32}
-  m_Direction: 0
+  m_EdgeRadius: 0

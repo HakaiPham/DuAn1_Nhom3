@@ -28,10 +28,10 @@ public class DropItem : MonoBehaviour
         // Destroy(this.gameObject);
     }
 
-    // Được gọi khi kẻ thù bị tiêu diệt hoặc bị phá hủy
-    void OnDestroy()
+    // Được gọi khi kẻ thù bị vô hiệu hóa hoặc bị phá hủy
+    void OnDisable()
     {
-        // Gọi phương thức OnEnemyDestroyed() khi đối tượng bị hủy
+        // Gọi phương thức OnEnemyDestroyed() khi đối tượng bị vô hiệu hóa
         OnEnemyDestroyed();
     }
 }

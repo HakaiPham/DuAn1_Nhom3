@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class ArrowAF : MonoBehaviour
 {
@@ -15,11 +16,13 @@ public class ArrowAF : MonoBehaviour
 
     // Thời gian tồn tại của đối tượng mũi tên
     public float TimerAAF;
+    Player _Player;
 
     void Start()
     {
         // Lấy và lưu trữ thành phần Rigidbody2D của đối tượng
         rb = GetComponent<Rigidbody2D>();
+        _Player = FindObjectOfType<Player>();
 
         // Tìm đối tượng người chơi bằng tag "Player"
         Player = GameObject.FindGameObjectWithTag("Player");
@@ -53,6 +56,7 @@ public class ArrowAF : MonoBehaviour
         // Nếu va chạm với đối tượng có tag "Player", hủy đối tượng mũi tên
         if (other.gameObject.CompareTag("Player"))
         {
+            _Player.TakeDame(7);
             Destroy(gameObject);
         }
     }
