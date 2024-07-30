@@ -39,6 +39,8 @@ public class BossTank : MonoBehaviour
     bool isDead;
     bool _CanUseSkillTele;
     private bool isPreparingToTeleport = false;
+    public TextMeshProUGUI _DameText;
+    GameController1 gameController1;
     void Start()
     {
         // Lưu trữ scale ban đầu của Boss
@@ -52,6 +54,7 @@ public class BossTank : MonoBehaviour
         _HpText.text = _HpBossTankValue.ToString("");
         isDead = false;
         _CanUseSkillTele = false;
+        gameController1 = FindObjectOfType<GameController1>();
     }
 
     void Update()
@@ -90,6 +93,7 @@ public class BossTank : MonoBehaviour
             _OffSlider.SetActive(false);
             animator.SetTrigger("IsBossDead");
             isDead = true;
+            Destroy(gameObject, 2f);
         }
     }
     public void MoveBoss()
@@ -216,13 +220,13 @@ public class BossTank : MonoBehaviour
     }
     IEnumerator WaitCreateMetorite()
     {
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 20; i++)
         {
             var randomPostion = new Vector2(Random.Range(-7.69f, 7.32f), 6);
             var createMetorite = Instantiate(_Metorite, randomPostion, Quaternion.Euler(0, 0, -90.322f));
             var speedfall = new Vector2(0, -3f);
             createMetorite.GetComponent<Rigidbody2D>().velocity = speedfall;
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(1f);
         }
     }
     private IEnumerator PrepareToTeleport()
@@ -262,12 +266,12 @@ public class BossTank : MonoBehaviour
     }
     IEnumerator LazerSpawn()
     {
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 20; i++)
         {
             var spawnLazerPosition = new Vector2(Random.Range(-7.3f, 7.8f), 1.6f);
             var createLaze = Instantiate(_Lazer, spawnLazerPosition, Quaternion.Euler(0,0,90));
             createLaze.transform.localScale = new Vector2(18.16f, 8.218f);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
         }
     }
     public void TakeDameBoss(int dame)
@@ -284,6 +288,7 @@ public class BossTank : MonoBehaviour
         {
             animator.SetTrigger("IsBossHurt");
             _HpBossTankValue -= dame;
+            gameController1.StartDameText(dame, _DameText, gameObject.transform);
             hpBossTankSlider.value = _HpBossTankValue;
             _HpText.text = _HpBossTankValue.ToString("");
             animator.SetTrigger("IsBossIdle");

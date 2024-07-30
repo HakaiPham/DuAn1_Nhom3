@@ -18,9 +18,10 @@ public class GameController1 : MonoBehaviour
     bool isStartIntroBoss = false;
     public GameObject _PanelInfomationBoss;
     public GameObject _BossCthuluImage;
+    public GameObject _PanelInfomationBoss2;
+    public GameObject _BossDarkWizardImage;
     void Start()
     {
-        monster2Script.enabled = false;
     }
 
     // Update is called once per frame
@@ -38,10 +39,13 @@ public class GameController1 : MonoBehaviour
         GameObject[] _Enemy = GameObject.FindGameObjectsWithTag("Monster");
         GameObject _HpItem = GameObject.FindGameObjectWithTag("ItemHp");
         GameObject _MpItem = GameObject.FindGameObjectWithTag("ItemMp");
+        GameObject _EnemySummon = GameObject.FindGameObjectWithTag("EnemySummon");
+        GameObject _DarkWizard = GameObject.FindGameObjectWithTag("BossTank");
         GameObject spawnItemHp;
         GameObject spawnItemMp;
+        if (_EnemySummon == null && _DarkWizard == null) return;
         Debug.Log("So luong quai con: "+_Enemy.Length);
-        if(_Enemy.Length <= 0 ) {
+        if(_Enemy.Length <= 0 && _EnemySummon!=null) {
             if (isStartIntroBoss == false)
             {
                 StartCoroutine(IntroBoss());
@@ -68,6 +72,34 @@ public class GameController1 : MonoBehaviour
                 }
             }
         }
+        else if(_DarkWizard != null)
+        {
+            if (isStartIntroBoss == false)
+            {
+                StartCoroutine(IntroBoss2());
+                isStartIntroBoss = true;
+            }
+            var randomItemPosition = new Vector2(Random.Range(-7.57f, 6.62f), -1.841413f);
+            int randomItemSpawn = Random.Range(0, 2);
+            if (randomItemSpawn == 0)
+            {
+                if (_MpItem != null) return;
+                if (_HpItem == null)
+                {
+                    spawnItemHp = Instantiate(_ItemHp, randomItemPosition, Quaternion.identity);
+                    StartCoroutine(SpawnItemCooldown());
+                }
+            }
+            else if (randomItemSpawn == 1)
+            {
+                if (_HpItem != null) return;
+                if (_MpItem == null)
+                {
+                    spawnItemMp = Instantiate(_ItemMp, randomItemPosition, Quaternion.identity);
+                    StartCoroutine(SpawnItemCooldown());
+                }
+            }
+        }
     }
     IEnumerator SpawnItemCooldown()
     {
@@ -85,6 +117,18 @@ public class GameController1 : MonoBehaviour
         yield return new WaitForSeconds(2f);
         _PanelInfomationBoss.SetActive(false);
     }
+    IEnumerator IntroBoss2()
+    {
+        _PanelIntroBoss.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        _PanelIntroBoss.SetActive(false);
+        yield return new WaitForSeconds(1f);
+        _PanelInfomationBoss2.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
+        _BossDarkWizardImage.SetActive(true);
+        yield return new WaitForSeconds(4.2f);
+        _PanelInfomationBoss2.SetActive(false);
+    }
     IEnumerator DameText(int dame, TextMeshProUGUI text,Transform monsterTransform)
     {
         if (monsterTransform.localScale.x < 0)
@@ -99,7 +143,7 @@ public class GameController1 : MonoBehaviour
         }
         text.gameObject.SetActive(true);
         text.text = dame.ToString("");
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(0.1f);
         text.gameObject.SetActive(false);
 
     }
