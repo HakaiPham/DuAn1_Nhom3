@@ -30,7 +30,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3787362665897617360}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.05, y: -1.103, z: 5.2056313}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
@@ -231,8 +231,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyMoveSpeed: 1
-  _Right: 5.96
-  _Left: 1.05
+  _Right: 3.59
+  _Left: 1.55
   _AttackRange: 0.5
   _player: {fileID: 0}
   _EnemyAttackTime: 0.25
@@ -251,11 +251,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 557428449900359105, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
       propertyPath: m_Pivot.x
-      value: 0.5081514
+      value: 0.5081174
       objectReference: {fileID: 0}
     - target: {fileID: 557428449900359105, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
       propertyPath: m_Pivot.y
-      value: 0.49384472
+      value: 0.49423346
       objectReference: {fileID: 0}
     - target: {fileID: 557428449900359105, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -263,7 +263,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 557428449900359105, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -540.28064
+      value: -540.2612
       objectReference: {fileID: 0}
     - target: {fileID: 2090490476200850872, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
       propertyPath: m_Layer
@@ -313,6 +313,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -540.56494
       objectReference: {fileID: 0}
+    - target: {fileID: 5294615254077713576, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6557073095145316687, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
       propertyPath: m_Layer
       value: 10
@@ -324,6 +328,26 @@ PrefabInstance:
     - target: {fileID: 6651496105901591265, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
       propertyPath: m_Layer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7185163840066048547, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
+      propertyPath: m_fontSize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7185163840066048547, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
+      propertyPath: m_margin.x
+      value: 96.14567
+      objectReference: {fileID: 0}
+    - target: {fileID: 7185163840066048547, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
+      propertyPath: m_margin.y
+      value: 24.918663
+      objectReference: {fileID: 0}
+    - target: {fileID: 7185163840066048547, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
+      propertyPath: m_margin.z
+      value: 92.83974
+      objectReference: {fileID: 0}
+    - target: {fileID: 7185163840066048547, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7226758259604849331, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
       propertyPath: m_Layer

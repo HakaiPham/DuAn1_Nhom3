@@ -240,6 +240,7 @@ MonoBehaviour:
   _HpEnemyText: {fileID: 6618669511953798169}
   hpEmenyValue: 0
   _HpEnemyOff: {fileID: 776439589626584354}
+  _DameText: {fileID: 0}
 --- !u!1001 &7966003423552216977
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -250,19 +251,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 557428449900359105, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
       propertyPath: m_Pivot.x
-      value: 0.50813186
+      value: 0.5100454
       objectReference: {fileID: 0}
     - target: {fileID: 557428449900359105, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
       propertyPath: m_Pivot.y
-      value: 0.49425346
+      value: 0.49772018
       objectReference: {fileID: 0}
     - target: {fileID: 557428449900359105, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -962.43335
+      value: -962.4173
       objectReference: {fileID: 0}
     - target: {fileID: 557428449900359105, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -540.4308
+      value: -540.25757
       objectReference: {fileID: 0}
     - target: {fileID: 2090490476200850872, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
       propertyPath: m_Layer
@@ -303,6 +304,22 @@ PrefabInstance:
     - target: {fileID: 6651496105901591265, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
       propertyPath: m_Layer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7185163840066048547, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
+      propertyPath: m_fontSize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7185163840066048547, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
+      propertyPath: m_margin.y
+      value: 24.8704
+      objectReference: {fileID: 0}
+    - target: {fileID: 7185163840066048547, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
+      propertyPath: m_margin.z
+      value: 92.74437
+      objectReference: {fileID: 0}
+    - target: {fileID: 7185163840066048547, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7226758259604849331, guid: 29cafe1a7b902a74e93d1ccd72a954a0, type: 3}
       propertyPath: m_Layer

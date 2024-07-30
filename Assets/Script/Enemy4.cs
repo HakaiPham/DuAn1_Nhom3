@@ -36,8 +36,8 @@ public class Enemy4 : MonoBehaviour
         _IsAttacking = false;
         _EnemyAttackTimeStart = 0;
         _playerHp = FindObjectOfType<Player>();
-        _EnemyHp.maxValue = 50;
-        hpEmenyValue = 50;
+        _EnemyHp.maxValue = 100;
+        hpEmenyValue = 100;
         _HpEnemyText.text = hpEmenyValue.ToString("");
         _rigidbody2 = GetComponent<Rigidbody2D>();
         _IsDead = false;
