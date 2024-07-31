@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class GameOverMenu : MonoBehaviour
 {
     [SerializeField] private GameObject gameOverMenu;
-    [SerializeField] private GameObject CheckPlayer;
+    
     Player _Player;
 
     private void Start()
@@ -17,7 +17,7 @@ public class GameOverMenu : MonoBehaviour
     void Update()
     {
         // Kiểm tra xem người chơi còn tồn tại không
-        if (CheckPlayer == null || _Player.hpValue <= 0)
+        if ( _Player.hpValue <= 0)
         {
             GameOver();
         }
@@ -30,9 +30,15 @@ public class GameOverMenu : MonoBehaviour
     }
 
     public void GotoHome()
-    {
-       
+    {       
         SceneManager.LoadScene("Login");
         Time.timeScale = 1;
+    }
+    public void Restarts()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+      
+
     }
 }

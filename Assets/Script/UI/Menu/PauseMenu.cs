@@ -21,14 +21,15 @@ public class PauseMenu : MonoBehaviour
 
     public void Resume()
     {
-        pauseMenu?.SetActive(false);
+        pauseMenu.SetActive(false);
         Time.timeScale = 1;
     }
 
     public void Restart()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         Time.timeScale = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+       
     }
   
 }

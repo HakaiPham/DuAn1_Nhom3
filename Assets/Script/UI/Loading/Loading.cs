@@ -25,7 +25,7 @@ public class Loading : MonoBehaviour
 
     IEnumerator LoadingS()
     {
-        Time.timeScale = 1;
+        Time.timeScale = 1  ;
         var value = 0;
         _slider.value = value;
         while (value < 100)
