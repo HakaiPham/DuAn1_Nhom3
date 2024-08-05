@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
@@ -19,6 +20,10 @@ public class Bullet : MonoBehaviour
     Enemy5 _enemy5;
     Enemy6 _enemy6;
     Enemy7 _enemy7;
+    Enemy8 _enemy8;
+    Enemy9 _enemy9;
+    AudioSource audioSource;
+    public AudioClip audioClipHit;
     void Start()
     {
         _Animator = GetComponent<Animator>();
@@ -35,6 +40,8 @@ public class Bullet : MonoBehaviour
         _enemy5 = FindObjectOfType<Enemy5>();
         _enemy6 = FindObjectOfType<Enemy6>();
         _enemy7 = FindObjectOfType<Enemy7>();
+        _enemy8 = FindObjectOfType<Enemy8>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -45,6 +52,7 @@ public class Bullet : MonoBehaviour
     public void DestroyBullet ()
     {
         _Rigidbody.velocity = Vector2.zero;
+        audioSource.PlayOneShot(audioClipHit);
         _Animator.SetBool("IsBulletAttack", true);
         Destroy(gameObject, 0.4f);
     }
@@ -63,6 +71,8 @@ public class Bullet : MonoBehaviour
             _enemy5 = collision.GetComponent<Enemy5>();
             _enemy6 = collision.GetComponent<Enemy6>();
             _enemy7 = collision.GetComponent<Enemy7>();
+            _enemy8 = collision.GetComponent<Enemy8>();
+            _enemy9 = collision.GetComponent<Enemy9>();
             if (_monster != null&&_monster.hpEmenyValue>0)
             {
                 targetMonster = _monster.transform;
@@ -120,6 +130,18 @@ public class Bullet : MonoBehaviour
                 else if (_enemy7 != null && _enemy7.hpEmenyValue > 0)
                 {
                     targetMonster = _enemy7.transform;
+                    _player.AttackMonsterbySkill2(targetMonster);
+                    DestroyBullet();
+                }
+                if (_enemy8 != null && _enemy8.hpEmenyValue > 0)
+                {
+                    targetMonster = _enemy8.transform;
+                    _player.AttackMonsterbySkill2(targetMonster);
+                    DestroyBullet();
+                }
+                else if (_enemy9 != null && _enemy9.hpEmenyValue > 0)
+                {
+                    targetMonster = _enemy9.transform;
                     _player.AttackMonsterbySkill2(targetMonster);
                     DestroyBullet();
                 }

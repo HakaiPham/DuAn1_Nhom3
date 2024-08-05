@@ -28,6 +28,9 @@ public class Enemy5 : MonoBehaviour
     CircleCollider2D _circleCollider2D;
     GameController1 _gameControll;
     public TextMeshProUGUI _DameText;
+    AudioSource audioSource;
+    public AudioClip audioClipHitEnemy;
+    public AudioClip audioClipDead;
     void Start()
     {
         _animator = GetComponent<Animator>();
@@ -43,6 +46,7 @@ public class Enemy5 : MonoBehaviour
         _Boxconllider2D = GetComponent<BoxCollider2D>();
         _circleCollider2D = GetComponent<CircleCollider2D>();
         _gameControll = FindObjectOfType<GameController1>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -115,6 +119,7 @@ public class Enemy5 : MonoBehaviour
     {
         if (_playerHp.hpValue > 0 && _IsAttacking == true)
         {
+            _animator.ResetTrigger("IsEnemy5Hurt");
             Vector3 scale = transform.localScale;
             if (_player.position.x < transform.position.x && scale.x > 0 || _player.position.x > transform.position.x && scale.x < 0)
             {
@@ -170,20 +175,35 @@ public class Enemy5 : MonoBehaviour
             _animator.ResetTrigger("IsEnemy5Hurt");
             _animator.SetBool("IsEnemy5Attack", false);
             _animator.SetBool("IsEnemy5Run", false);
+            audioSource.PlayOneShot(audioClipDead);
+            StartCoroutine(TriggerEnemyDead());
             _animator.SetTrigger("IsEnemy5Dead");
             Destroy(gameObject,2f);
         }
     }
+    IEnumerator TriggerEnemyDead()
+    {
+        yield return new WaitForSeconds(0.5f);
+        _circleCollider2D.isTrigger = true;
+        _rigidbody2.gravityScale = 0;
+        yield return new WaitForSeconds(0.1f);
+    }
     public void Enemy5TakeDame(int dame)
     {
+        AnimatorStateInfo animatorStateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+        bool canAttack = true;
+        if (animatorStateInfo.IsName("Enemy5_AttackAnimation") && canAttack == true) return;
         if (hpEmenyValue > 0&&_IsDead==false)
         {
             _animator.SetTrigger("IsEnemy5Hurt");
+            audioSource.PlayOneShot(audioClipHitEnemy);
             hpEmenyValue -= dame;
+            if (hpEmenyValue <= 0) { hpEmenyValue = 0; }
             _gameControll.StartDameText(dame, _DameText, gameObject.transform);
             _EnemyHp.value = hpEmenyValue;
             _HpEnemyText.text = hpEmenyValue.ToString("");
             Invoke("StopHitEnemy", 0.3f);
+            canAttack = false;
         }
     }
 }

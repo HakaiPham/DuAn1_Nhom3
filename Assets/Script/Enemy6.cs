@@ -27,6 +27,9 @@ public class Enemy6 : MonoBehaviour
     CircleCollider2D _circleCollider2D;
     public TextMeshProUGUI _DameText;
     GameController1 gameController1;
+    AudioSource audioSource;
+    public AudioClip audioClipHitEnemy;
+    public AudioClip audioClipDead;
     void Start()
     {
         _animator = GetComponent<Animator>();
@@ -43,6 +46,7 @@ public class Enemy6 : MonoBehaviour
         _circleCollider2D = GetComponent<CircleCollider2D>();
         isMoveLeftOrRight = false;
         gameController1 = FindObjectOfType<GameController1>();
+        audioSource = GetComponent<AudioSource>();
     }
     void Update()
     {
@@ -167,24 +171,35 @@ public class Enemy6 : MonoBehaviour
             _IsDead = true;
             _HpEnemyOff.SetActive(false);
             _rigidbody2.velocity = Vector2.zero;
+            audioSource.PlayOneShot(audioClipDead);
+            StartCoroutine(TriggerEnemyDead());
             _animator.SetTrigger("IsEnemy6Dead");
-            Invoke("DestroyEnemy", 2f);
+            Destroy(gameObject,2f);
         }
     }
-    public void DestroyEnemy()
+    IEnumerator TriggerEnemyDead()
     {
-        Destroy(gameObject);
+        yield return new WaitForSeconds(0.5f);
+        _circleCollider2D.isTrigger = true;
+        _rigidbody2.gravityScale = 0;
+        yield return new WaitForSeconds(0.1f);
     }
     public void Enemy6TakeDame(int dame)
     {
+        AnimatorStateInfo animatorStateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+        bool canAttack = true;
+        if (animatorStateInfo.IsName("Enemy6_AttackAnimation") && canAttack == true) return;
         if (hpEmenyValue > 0)
         {
             _animator.SetTrigger("IsEnemy6Hurt");
+            audioSource.PlayOneShot(audioClipHitEnemy);
             hpEmenyValue -= dame;
+            if (hpEmenyValue <= 0) { hpEmenyValue = 0; }
             gameController1.StartDameText(dame, _DameText, gameObject.transform);
             _EnemyHp.value = hpEmenyValue;
             _HpEnemyText.text = hpEmenyValue.ToString("");
             Invoke("StopHitEnemy", 0.33f);
+            canAttack = false;
         }
     }
 }

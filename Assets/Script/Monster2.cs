@@ -29,6 +29,11 @@ public class Monster2 : MonoBehaviour
     public TextMeshProUGUI _DameText;
     GameController1 _GameControll;
     public GameObject _PanelDame;
+    bool isDead;
+    AudioSource audioSource;
+    public AudioClip audioClipHitEnemy;
+    public AudioClip audioClipDead;
+    public AudioClip audioClipBossShoutToDead;
     void Start()
     {
         // Lưu trữ scale ban đầu của Boss
@@ -36,13 +41,15 @@ public class Monster2 : MonoBehaviour
         animator = GetComponent<Animator>();
         _AttackBossStart = 0;
         rb=GetComponent<Rigidbody2D>();
-        _hpMonsterSummonSlider.maxValue = 1000;
-        _HpMonsterSummonValue = 1000;
+        _hpMonsterSummonSlider.maxValue = 500;
+        _HpMonsterSummonValue = 500;
         _HpMonsterSummonText.text = _HpMonsterSummonValue.ToString("");
         _player = FindObjectOfType<Player>();
         _conllider = GetComponent<BoxCollider2D>();
         _rb = GetComponent<Rigidbody2D>();
         _GameControll = FindObjectOfType<GameController1>();
+        isDead = false;
+        audioSource = GetComponent<AudioSource>();
     }
     void Update()
     {
@@ -96,6 +103,7 @@ public class Monster2 : MonoBehaviour
 
             }
         }
+        EnemySummonDead();
     }
     public void IntroBoss()
     {
@@ -131,6 +139,7 @@ public class Monster2 : MonoBehaviour
     public void BossSkillAttack()
     {
         int randomSkill = Random.Range(0, 3);
+        int randomdame = Random.Range(10,21 );
         _AttackBossStart -= Time.deltaTime;
         if (_AttackBossStart <= 0&&_HpMonsterSummonValue>0)
         {
@@ -138,11 +147,11 @@ public class Monster2 : MonoBehaviour
             {
                 case 1:
                     animator.SetTrigger("IsEnemySummonSkill1");
-                    _player.TakeDame(10);
+                    _player.TakeDame(randomdame);
                     break;
                 case 2:
                     animator.SetTrigger("IsEnemySummonSkill2");
-                    _player.TakeDame(10);
+                    _player.TakeDame(randomdame);
                     break;
             }
             _AttackBossStart = _AttackBossCoolDown;
@@ -156,15 +165,23 @@ public class Monster2 : MonoBehaviour
     }
     public void EnemySummonDead()
     {
-        if (_HpMonsterSummonValue <= 0)
+        if (_HpMonsterSummonValue <= 0&&isDead==false)
         {
+            StartCoroutine(BossShoutToDead());
+            isDead = true;
             _OffHpSliderEnemy.SetActive(false);
             Debug.Log("Enemy Da chet");
-            animator.SetTrigger("IsEnemySummonDead");
             animator.ResetTrigger("IsEnemySummonIdle");
             animator.ResetTrigger("IsEnemySummonHurt");
+            audioSource.PlayOneShot(audioClipDead);
+            animator.SetTrigger("IsEnemySummonDead");
             Destroy(gameObject, 2f);
         }
+    }
+    IEnumerator BossShoutToDead()
+    {
+        audioSource.PlayOneShot(audioClipBossShoutToDead);
+        yield return new WaitForSeconds(0.2f);
     }
     public void StartHurtEnemyAnimation()
     {
@@ -176,13 +193,18 @@ public class Monster2 : MonoBehaviour
     }
     public void EnemySummonTakeDame(int dame)
     {
-        animator.SetTrigger("IsEnemySummonHurt");
-        _HpMonsterSummonValue -= dame;
-        _GameControll.StartDameText(dame, _DameText,gameObject.transform);
-        _HpMonsterSummonText.text = _HpMonsterSummonValue.ToString();
-        _hpMonsterSummonSlider.value = _HpMonsterSummonValue;
-        animator.ResetTrigger("IsEnemySummonSkill1");
-        animator.ResetTrigger("IsEnemySummonSkill2");
-        Invoke("StopHurtEnemyAnimation", 0.4f);
+        if (_HpMonsterSummonValue > 0)
+        {
+            animator.SetTrigger("IsEnemySummonHurt");
+            audioSource.PlayOneShot(audioClipHitEnemy);
+            _HpMonsterSummonValue -= dame;
+            if (_HpMonsterSummonValue <= 0) { _HpMonsterSummonValue = 0; }
+            _GameControll.StartDameText(dame, _DameText, gameObject.transform);
+            _HpMonsterSummonText.text = _HpMonsterSummonValue.ToString();
+            _hpMonsterSummonSlider.value = _HpMonsterSummonValue;
+            animator.ResetTrigger("IsEnemySummonSkill1");
+            animator.ResetTrigger("IsEnemySummonSkill2");
+            Invoke("StopHurtEnemyAnimation", 0.4f);
+        }
     }
 }

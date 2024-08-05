@@ -26,6 +26,9 @@ public class Enemy3 : MonoBehaviour
     [SerializeField] private GameObject _HpEnemyOff;
     public TextMeshProUGUI _DameText;
     GameController1 _gameController1;
+    AudioSource audioSource;
+    public AudioClip audioClipHitEnemy;
+    public AudioClip audioClipDead;
     void Start()
     {
         _animator = GetComponent<Animator>();
@@ -39,6 +42,7 @@ public class Enemy3 : MonoBehaviour
         _IsDead = false;
         isMoveLeftOrRight = false;
         _gameController1 = FindObjectOfType<GameController1>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -159,20 +163,27 @@ public class Enemy3 : MonoBehaviour
             _HpEnemyOff.SetActive(false);
             _rigidbody2.velocity = Vector2.zero;
             _animator.SetBool("IsEnemy3Run", false);
+            audioSource.PlayOneShot(audioClipDead);
             _animator.SetTrigger("IsEnemy3Dead");
             Destroy(gameObject, 2f);
         }
     }
     public void Enemy3TakeDame(int dame)
     {
+        AnimatorStateInfo animatorStateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+        bool canAttack = true;
+        if (animatorStateInfo.IsName("Enemy3_AttackAnimation") && canAttack == true) return;
         if (hpEmenyValue > 0)
         {
             _animator.SetTrigger("IsEnemy3Hurt");
+            audioSource.PlayOneShot(audioClipHitEnemy);
             hpEmenyValue -= dame;
+            if (hpEmenyValue <= 0) { hpEmenyValue = 0; }
             _gameController1.StartDameText(dame, _DameText,gameObject.transform);
             _EnemyHp.value = hpEmenyValue;
             _HpEnemyText.text = hpEmenyValue.ToString("");
             Invoke("StopHitEnemy", 0.3f);
+            canAttack = false;
         }
     }
 }

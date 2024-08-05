@@ -6,7 +6,11 @@ using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField] GameObject pauseMenu;
-
+    GameController1 gameController1;
+    private void Start()
+    {
+        gameController1 = FindObjectOfType<GameController1>();
+    }
     public void Pause()
     {
         pauseMenu.SetActive(true);
@@ -28,6 +32,7 @@ public class PauseMenu : MonoBehaviour
     public void Restart()
     {
         Time.timeScale = 1;
+        gameController1.ResetCoin();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
        
     }

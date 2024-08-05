@@ -4,12 +4,13 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController1 : MonoBehaviour
 {
     // Start is called before the first frame update
     public TextMeshProUGUI _CoinText;
-    int coin;
+    public static int coin = 0;
     public Monster2 monster2Script;
     public GameObject _ItemHp;
     public GameObject _ItemMp;
@@ -20,19 +21,47 @@ public class GameController1 : MonoBehaviour
     public GameObject _BossCthuluImage;
     public GameObject _PanelInfomationBoss2;
     public GameObject _BossDarkWizardImage;
+    public GameObject _PanelTotalGame;
+    public GameObject _BossWizard;
+    bool isTotalGameOn = false;
+    string currentScene;
+    public TextMeshProUGUI _ToTalCoinText;
+    public TextMeshProUGUI _NpcTalk1;
+    public TextMeshProUGUI _NpcTalk2;
+    public GameObject _PanelNPCTalk;
+    bool isNpcTalk = false;
+    public GameObject _CoinSpawn;
     void Start()
     {
+        _CoinText.text = coin.ToString("");
+        currentScene = SceneManager.GetActiveScene().name;
     }
 
     // Update is called once per frame
     void Update()
     {
         CheckMonsterDestroy();
+        if(currentScene== "Scene4") {
+            if (_BossWizard == null && isTotalGameOn == false)
+            {
+                isTotalGameOn = true;
+                StartCoroutine(TotalGame());
+            }
+        }
+        if(isNpcTalk == false&& Input.GetKeyDown(KeyCode.B))
+        {
+            StartCoroutine(NPCTalk());
+            isNpcTalk = false;
+        }
     }
     public void CollectCoin()
     {
         coin += 10;
         _CoinText.text = coin.ToString("");
+    }
+    public static int GetScore()
+    {
+        return coin;
     }
     public void CheckMonsterDestroy()
     {
@@ -41,6 +70,7 @@ public class GameController1 : MonoBehaviour
         GameObject _MpItem = GameObject.FindGameObjectWithTag("ItemMp");
         GameObject _EnemySummon = GameObject.FindGameObjectWithTag("EnemySummon");
         GameObject _DarkWizard = GameObject.FindGameObjectWithTag("BossTank");
+        GameObject _Coin = GameObject.FindGameObjectWithTag("Coin");
         GameObject spawnItemHp;
         GameObject spawnItemMp;
         if (_EnemySummon == null && _DarkWizard == null) return;
@@ -54,12 +84,15 @@ public class GameController1 : MonoBehaviour
             monster2Script.enabled = true;
             var randomItemPosition = new Vector2(Random.Range(-7.83f, 13.32f), 0.21f);
             int randomItemSpawn = Random.Range(0, 2);
+            if (_Coin==null)
+            {
+                var spawnCoin = Instantiate(_CoinSpawn, randomItemPosition, Quaternion.identity);
+            }
             if (randomItemSpawn == 0) {
                 if (_MpItem != null) return;
                 if(_HpItem == null)
                 {
                     spawnItemHp = Instantiate(_ItemHp, randomItemPosition, Quaternion.identity);
-                    StartCoroutine(SpawnItemCooldown());
                 }
             }
             else if (randomItemSpawn == 1)
@@ -68,9 +101,9 @@ public class GameController1 : MonoBehaviour
                 if(_MpItem == null)
                 {
                     spawnItemMp = Instantiate(_ItemMp, randomItemPosition, Quaternion.identity);
-                    StartCoroutine(SpawnItemCooldown());
                 }
             }
+            //if (_Coin != null) return;
         }
         else if(_DarkWizard != null)
         {
@@ -81,13 +114,16 @@ public class GameController1 : MonoBehaviour
             }
             var randomItemPosition = new Vector2(Random.Range(-7.57f, 6.62f), -1.841413f);
             int randomItemSpawn = Random.Range(0, 2);
+            if (_Coin == null)
+            {
+                var spawnCoin = Instantiate(_CoinSpawn, randomItemPosition, Quaternion.identity);
+            }
             if (randomItemSpawn == 0)
             {
                 if (_MpItem != null) return;
                 if (_HpItem == null)
                 {
                     spawnItemHp = Instantiate(_ItemHp, randomItemPosition, Quaternion.identity);
-                    StartCoroutine(SpawnItemCooldown());
                 }
             }
             else if (randomItemSpawn == 1)
@@ -96,7 +132,6 @@ public class GameController1 : MonoBehaviour
                 if (_MpItem == null)
                 {
                     spawnItemMp = Instantiate(_ItemMp, randomItemPosition, Quaternion.identity);
-                    StartCoroutine(SpawnItemCooldown());
                 }
             }
         }
@@ -150,5 +185,52 @@ public class GameController1 : MonoBehaviour
     public void StartDameText(int dame,TextMeshProUGUI text, Transform monsterTransform)
     {
         StartCoroutine(DameText(dame, text, monsterTransform));
+    }
+    IEnumerator TotalGame()
+    {
+        Time.timeScale = 0;
+        _PanelTotalGame.SetActive(true);
+        yield return new WaitForSecondsRealtime(0.5f);
+        _ToTalCoinText.gameObject.SetActive(true);
+        int totalCoin = GetScore();
+        int CountCoin = 0;
+        Debug.Log("Score hien tai la: " + totalCoin);
+        for(int i = 0;i< totalCoin; i++)
+        {
+            CountCoin += 1;
+            _ToTalCoinText.text = "Score: " + CountCoin;
+            yield return new WaitForSecondsRealtime(0.05f);
+        }
+    }
+    public void ResetCoin()
+    {
+        coin = 0;
+        _CoinText.text = coin.ToString("");
+    }
+    IEnumerator NPCTalk()
+    {
+        GameObject checkNPC = GameObject.FindGameObjectWithTag("NPC");
+        if(checkNPC != null)
+        {
+            Debug.Log("Npc ton tai");
+            _NpcTalk2.gameObject.SetActive(false);
+            _PanelNPCTalk.SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+            _NpcTalk1.gameObject.SetActive(true);
+        }
+    }
+    public void NextTalkButton()
+    {
+        StartCoroutine(OffTalk1NextTalk2());
+    }
+    IEnumerator OffTalk1NextTalk2()
+    {
+        _NpcTalk1.gameObject.SetActive(false);
+        yield return new WaitForSeconds(0.5f);
+        _NpcTalk2.gameObject.SetActive(true);
+    }
+    public void OffPanelTalk()
+    {
+        _PanelNPCTalk.SetActive(false);
     }
 }
