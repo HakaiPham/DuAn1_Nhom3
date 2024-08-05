@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,6 +27,9 @@ public class Enemy2 : MonoBehaviour
     [SerializeField] private GameObject _HpEnemyOff;
     public TextMeshProUGUI _DameText;
     GameController1 _gameController1;
+    AudioSource audioSource;
+    public AudioClip audioClipHitEnemy;
+    public AudioClip audioClipDead;
     void Start()
     {
         _animator = GetComponent<Animator>();
@@ -38,6 +42,7 @@ public class Enemy2 : MonoBehaviour
         _rigidbody2 = GetComponent<Rigidbody2D>();
         _IsDead = false;
         _gameController1 = FindObjectOfType<GameController1>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -185,24 +190,30 @@ public class Enemy2 : MonoBehaviour
             _HpEnemyOff.SetActive(false);
             _rigidbody2.velocity = Vector2.zero;
             _animator.SetBool("IsEnemy2Run", false);
+            audioSource.PlayOneShot(audioClipDead);
             _animator.SetTrigger("IsEnemy2Dead");
             Destroy(gameObject, 2f);
         }
     }
     public void Enemy2TakeDame(int dame)
     {
+        bool canAttack = true;
         AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-        if (stateInfo.IsName("Enemy2_blockAnimation")) return;
+        if (stateInfo.IsName("Enemy2_blockAnimation")||
+            (stateInfo.IsName("Enemy2_AttackAnimation") && canAttack == true)) return;
         else
         {
             if (hpEmenyValue > 0)
             {
                 _animator.SetTrigger("IsEnemy2Hurt");
+                audioSource.PlayOneShot(audioClipHitEnemy);
                 hpEmenyValue -= dame;
+                if (hpEmenyValue <= 0) { hpEmenyValue = 0; }
                 _gameController1.StartDameText(dame, _DameText,gameObject.transform);
                 _EnemyHp.value = hpEmenyValue;
                 _HpEnemyText.text = hpEmenyValue.ToString("");
                 Invoke("StopHitEnemy", 0.3f);
+                canAttack = false;
             }
         }
     }

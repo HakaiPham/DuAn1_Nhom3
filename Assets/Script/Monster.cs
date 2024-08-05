@@ -26,6 +26,9 @@ public class Monster : MonoBehaviour
     [SerializeField] private GameObject _HpEnemyOff;
     public TextMeshProUGUI _DameText;
     GameController1 _GameController1;
+    AudioSource audioSource;
+    public AudioClip audioClipHitEnemy;
+    public AudioClip audioClipDead;
     void Start()
     {
         _animator = GetComponent<Animator>();
@@ -38,6 +41,7 @@ public class Monster : MonoBehaviour
         _rigidbody2 = GetComponent<Rigidbody2D>();
         _IsDead = false;
        _GameController1 = FindObjectOfType<GameController1>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -152,6 +156,7 @@ public class Monster : MonoBehaviour
             _IsDead = true;
             _HpEnemyOff.SetActive(false);
             _rigidbody2.velocity = Vector2.zero;
+            audioSource.PlayOneShot(audioClipDead);
             _animator.SetBool("IsEnemyRun", false);
             _animator.SetTrigger("IsEnemyDead");
             Destroy(gameObject, 2f);
@@ -162,6 +167,7 @@ public class Monster : MonoBehaviour
         if (hpEmenyValue > 0)
         {
             _animator.SetTrigger("IsEnemyHurt");
+            audioSource.PlayOneShot(audioClipHitEnemy);
             hpEmenyValue -= dame;
             _GameController1.StartDameText(dame, _DameText, gameObject.transform);
             _EnemyHp.value = hpEmenyValue;

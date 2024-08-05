@@ -26,6 +26,10 @@ public class Enemy7 : MonoBehaviour
     [SerializeField] private GameObject _HpEnemyOff;
     public TextMeshProUGUI _DameText;
     GameController1 gameController1;
+    AudioSource audioSource;
+    public AudioClip audioClipHitEnemy;
+    public AudioClip audioClipDead;
+    BoxCollider2D boxCollider2;
     void Start()
     {
         _animator = GetComponent<Animator>();
@@ -38,6 +42,8 @@ public class Enemy7 : MonoBehaviour
         _rigidbody2 = GetComponent<Rigidbody2D>();
         _IsDead = false;
         gameController1 = FindObjectOfType<GameController1>();
+        audioSource = GetComponent<AudioSource>();
+        boxCollider2 = GetComponent<BoxCollider2D>();
     }
     void Update()
     {
@@ -157,28 +163,33 @@ public class Enemy7 : MonoBehaviour
             _animator.SetBool("IsEnemy7Attack", false);
             _animator.ResetTrigger("IsEnemy7Idle");
             _animator.ResetTrigger("IsEnemy7Hurt");
+            boxCollider2.isTrigger = true;
+            _rigidbody2.gravityScale = 0;
             Debug.Log("Enemy da die");
             _IsDead = true;
             _HpEnemyOff.SetActive(false);
             _rigidbody2.velocity = Vector2.zero;
+            audioSource.PlayOneShot(audioClipDead);
             _animator.SetTrigger("IsEnemy7Dead");
-            Invoke("DestroyEnemy", 2f);
+            Destroy(gameObject, 2f);
         }
-    }
-    public void DestroyEnemy()
-    {
-        Destroy(gameObject);
     }
     public void Enemy7TakeDame(int dame)
     {
+        AnimatorStateInfo animatorStateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+        bool canAttack = true;
+        if (animatorStateInfo.IsName("Enemy7_AttackAnimation") && canAttack == true) return;
         if (hpEmenyValue > 0)
         {
             _animator.SetTrigger("IsEnemy7Hurt");
+            audioSource.PlayOneShot(audioClipHitEnemy);
             hpEmenyValue -= dame;
+            if (hpEmenyValue <= 0) { hpEmenyValue = 0; }
             gameController1.StartDameText(dame, _DameText, gameObject.transform);
             _EnemyHp.value = hpEmenyValue;
             _HpEnemyText.text = hpEmenyValue.ToString("");
             Invoke("StopHitEnemy", 0.33f);
+            canAttack = false;
         }
     }
 }

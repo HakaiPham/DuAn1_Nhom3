@@ -1,5 +1,8 @@
-﻿using UnityEngine;
-using UnityEngine.SceneManagement; // Import SceneManager
+﻿using System.Collections;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI; // Import SceneManager
 
 public class Login : MonoBehaviour
 {
@@ -15,7 +18,7 @@ public class Login : MonoBehaviour
 
     public void SelectLV()
     {
-       SelectLVMenu.SetActive(true);
+        SelectLVMenu.SetActive(true);
         Time.timeScale = 1;
     }
 
@@ -28,7 +31,7 @@ public class Login : MonoBehaviour
     public void WaitUpdate()
     {
         WaitUpdateMenu.SetActive(true);
-        Time .timeScale = 1;
+        Time.timeScale = 1;
     }
     public void WaitUpdateEXit()
     {

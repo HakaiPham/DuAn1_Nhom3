@@ -10,7 +10,7 @@ public class Bullet_Boss : MonoBehaviour
     Player _player;
     void Start()
     {
-        animator = GetComponent<Animator>();  
+        animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         _player = FindObjectOfType<Player>();
     }

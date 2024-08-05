@@ -12,7 +12,6 @@ public class BossTank : MonoBehaviour
     private Vector3 localScale;
     Animator animator;
     [SerializeField] private float _AttackRange;
-    [SerializeField] private float _DetectionRange;
     private float _AttackBossStart;
     [SerializeField] private float _AttackBossCoolDown;
     float distancePlayer;
@@ -41,6 +40,10 @@ public class BossTank : MonoBehaviour
     private bool isPreparingToTeleport = false;
     public TextMeshProUGUI _DameText;
     GameController1 gameController1;
+    AudioSource audioSource;
+    public AudioClip audioClipHitEnemy;
+    public AudioClip audioClipDead;
+    public AudioClip audioClipLazedSkill;
     void Start()
     {
         // Lưu trữ scale ban đầu của Boss
@@ -55,6 +58,7 @@ public class BossTank : MonoBehaviour
         isDead = false;
         _CanUseSkillTele = false;
         gameController1 = FindObjectOfType<GameController1>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -91,6 +95,7 @@ public class BossTank : MonoBehaviour
         if (_HpBossTankValue <= 0 && isDead == false)
         {
             _OffSlider.SetActive(false);
+            audioSource.PlayOneShot(audioClipDead);
             animator.SetTrigger("IsBossDead");
             isDead = true;
             Destroy(gameObject, 2f);
@@ -220,13 +225,13 @@ public class BossTank : MonoBehaviour
     }
     IEnumerator WaitCreateMetorite()
     {
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 30; i++)
         {
             var randomPostion = new Vector2(Random.Range(-7.69f, 7.32f), 6);
             var createMetorite = Instantiate(_Metorite, randomPostion, Quaternion.Euler(0, 0, -90.322f));
-            var speedfall = new Vector2(0, -3f);
+            var speedfall = new Vector2(0, -5f);
             createMetorite.GetComponent<Rigidbody2D>().velocity = speedfall;
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
         }
     }
     private IEnumerator PrepareToTeleport()
@@ -266,11 +271,12 @@ public class BossTank : MonoBehaviour
     }
     IEnumerator LazerSpawn()
     {
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 30; i++)
         {
             var spawnLazerPosition = new Vector2(Random.Range(-7.3f, 7.8f), 1.6f);
             var createLaze = Instantiate(_Lazer, spawnLazerPosition, Quaternion.Euler(0,0,90));
             createLaze.transform.localScale = new Vector2(18.16f, 8.218f);
+            audioSource.PlayOneShot(audioClipLazedSkill);
             yield return new WaitForSeconds(0.5f);
         }
     }
@@ -287,7 +293,9 @@ public class BossTank : MonoBehaviour
         if (_HpBossTankValue > 0)
         {
             animator.SetTrigger("IsBossHurt");
+            audioSource.PlayOneShot(audioClipHitEnemy);
             _HpBossTankValue -= dame;
+            if (_HpBossTankValue <= 0) { _HpBossTankValue = 0; }
             gameController1.StartDameText(dame, _DameText, gameObject.transform);
             hpBossTankSlider.value = _HpBossTankValue;
             _HpText.text = _HpBossTankValue.ToString("");

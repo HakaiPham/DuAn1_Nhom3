@@ -23,13 +23,16 @@ public class Enemy4 : MonoBehaviour
     public TextMeshProUGUI _HpEnemyText;
     public int hpEmenyValue;
     Rigidbody2D _rigidbody2;
-    bool _IsDead;
+    bool _IsDead=false;
     [SerializeField] private GameObject _HpEnemyOff;
     BoxCollider2D _boxconllider2D;
     CircleCollider2D _circleCollider2D;
     bool _isEnemyStartIntro;
     GameController1 gameController1;
     public TextMeshProUGUI _DameText;
+    AudioSource audioSource;
+    public AudioClip audioClipHitEnemy;
+    public AudioClip audioClipDead;
     void Start()
     {
         _animator = GetComponent<Animator>();
@@ -40,12 +43,12 @@ public class Enemy4 : MonoBehaviour
         hpEmenyValue = 100;
         _HpEnemyText.text = hpEmenyValue.ToString("");
         _rigidbody2 = GetComponent<Rigidbody2D>();
-        _IsDead = false;
         _boxconllider2D = GetComponent<BoxCollider2D>();
         _circleCollider2D = GetComponent<CircleCollider2D>();
         _isEnemyStartIntro = false;
         isMoveLeftOrRight = true;
         gameController1 = FindObjectOfType<GameController1>();
+        audioSource = GetComponent<AudioSource>();
     }
     void Update()
     {
@@ -181,6 +184,7 @@ public class Enemy4 : MonoBehaviour
     {
         if (hpEmenyValue <= 0 && _IsDead == false)
         {
+            _IsDead = true;
             StartCoroutine(EnemyDeadOffConllider());
         }
     }
@@ -189,30 +193,34 @@ public class Enemy4 : MonoBehaviour
         _boxconllider2D.enabled = false;
         _circleCollider2D.enabled = true;
         yield return new WaitForSeconds(0.1f);
-        Debug.Log("Enemy da die");
-        _IsDead = true;
         _HpEnemyOff.SetActive(false);
         _rigidbody2.velocity = Vector2.zero;
+        audioSource.PlayOneShot(audioClipDead);
+        yield return new WaitForSeconds(0.5f);
+        _circleCollider2D.isTrigger = true;
+        _rigidbody2.gravityScale = 0;
+        yield return new WaitForSeconds(0.1f);
         _animator.SetTrigger("IsEnemy4Dead");
-        Invoke("DestroyEnemy", 2f);
-    }
-    public void DestroyEnemy()
-    {
-        Destroy(gameObject);
+        Destroy(gameObject,2f);
     }
     public void Enemy4TakeDame(int dame)
     {
         AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
         if (stateInfo.IsName("Enemy4_IntroAnimation") ||
             stateInfo.IsName("Enemy4_Intro2Animation")) return;
+        bool canAttack = true;
+        if (stateInfo.IsName("Enemy4_AttackAnimation") && canAttack == true) return;
         else if (hpEmenyValue > 0)
         {
             _animator.SetTrigger("IsEnemy4Hurt");
+            audioSource.PlayOneShot(audioClipHitEnemy);
             hpEmenyValue -= dame;
+            if(hpEmenyValue <= 0) { hpEmenyValue = 0; }
             gameController1.StartDameText(dame, _DameText, gameObject.transform);
             _EnemyHp.value = hpEmenyValue;
             _HpEnemyText.text = hpEmenyValue.ToString("");
             Invoke("StopHitEnemy", 0.33f);
+            canAttack = false;
         }
     }
 }

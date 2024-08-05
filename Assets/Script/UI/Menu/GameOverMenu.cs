@@ -9,36 +9,39 @@ public class GameOverMenu : MonoBehaviour
     [SerializeField] private GameObject gameOverMenu;
     
     Player _Player;
-
+    bool isDead;
+    GameController1 _Controller1;
     private void Start()
     {
         _Player = FindObjectOfType<Player>();
+        isDead = false;
+        _Controller1 = FindObjectOfType<GameController1>();
     }
     void Update()
     {
         // Kiểm tra xem người chơi còn tồn tại không
-        if ( _Player.hpValue <= 0)
+        if ( _Player.hpValue <= 0&&isDead==false)
         {
+            isDead = true;
             GameOver();
         }
     }
 
     public void GameOver()
     {
-        gameOverMenu.SetActive(true);
         Time.timeScale = 0;
+        gameOverMenu.SetActive(true);
     }
 
     public void GotoHome()
     {       
         SceneManager.LoadScene("Login");
-        Time.timeScale = 1;
     }
     public void Restarts()
     {
         Time.timeScale = 1;
+        _Controller1.ResetCoin();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
       
-
     }
 }

@@ -51,8 +51,17 @@ public class Player : MonoBehaviour
     Enemy5 _enemy5;
     Enemy6 _enemy6;
     Enemy7 _enemy7;
+    Enemy8 _enemy8;
+    Enemy9 _enemy9;
     GameController1 _GameController1;
     public TextMeshProUGUI _DameTextPlayer;
+    AudioSource audioSource;
+    public AudioClip audioClipAttack;
+    public AudioClip audioClipHurt;
+    public AudioClip audioClipCollectCoin;
+    public AudioClip audioClipDead;
+    public AudioClip audioClipJump;
+    public AudioSource _MusicGameSource;
     void Start()
     {
         _Rigidbody2 = GetComponent<Rigidbody2D>();
@@ -79,7 +88,10 @@ public class Player : MonoBehaviour
         _enemy4 = FindObjectOfType<Enemy4>();
         _enemy6 = FindObjectOfType<Enemy6>();
         _enemy7 = FindObjectOfType<Enemy7>();
+        _enemy8 = FindObjectOfType<Enemy8>();
+        _enemy9 = FindObjectOfType<Enemy9>();
         _GameController1 = FindObjectOfType<GameController1>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -88,7 +100,6 @@ public class Player : MonoBehaviour
         MovePlayer();
         Jump();
         PlayerAttack();
-        Debug.Log("cooldown tan cong con: " + _TimeAttackStart);
         //SkillAttack1();
         if (canUseItem && Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -111,6 +122,7 @@ public class Player : MonoBehaviour
         if (hpValue <= 0 && isDead == false)
         {
             isDead = true;
+            StartCoroutine(OffMusicGame());
             Dead();
         }
         PlayerClimp();
@@ -153,7 +165,7 @@ public class Player : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
-                Debug.Log("Đã tấn công thành công");
+                audioSource.PlayOneShot(audioClipAttack);
                 _Animator2.SetTrigger("IsAttack");
                 AttackMonsterbyNormalAttack(targetMonster);
                 _TimeAttackStart = cooldownAttackTime;
@@ -163,7 +175,6 @@ public class Player : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.F)&&_MpSlider.value>=10
                     &&_Skill1Image.fillAmount>=1)
                 {
-                    Debug.Log("Đã tấn công thành công");
                     SkillAttack1();
                     _MpSlider.value -= 10;
                     mpValue -= 10;
@@ -179,7 +190,6 @@ public class Player : MonoBehaviour
                         &&_Skill2Image.fillAmount>=1)
                     {
                         OnSkill2();
-                        Debug.Log("Đã tấn công thành công");
                         _MpSlider.value -= 20;
                         mpValue -= 20;
                         _MpText.text = mpValue.ToString("");
@@ -196,6 +206,7 @@ public class Player : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.E))
                 {
+                    audioSource.PlayOneShot(audioClipAttack);
                     _Animator2.SetTrigger("IsAttack");
                     _TimeAttackStart = cooldownAttackTime;
                 }
@@ -238,11 +249,15 @@ public class Player : MonoBehaviour
             stateInfo.IsName("Player_Skill1_2Animation")) return;
         if (hpValue >= 0)
         {
-            if (hpValue <= 0) return;
             hpValue -= dame;
-            _GameController1.StartDameText(dame, _DameTextPlayer,gameObject.transform);
+            if (hpValue <= 0)
+            {
+                hpValue = 0;
+            }
+                _GameController1.StartDameText(dame, _DameTextPlayer,gameObject.transform);
             _HpSlider.value = hpValue;
             _HpText.text = hpValue.ToString("");
+            audioSource.PlayOneShot(audioClipHurt);
             _Animator2.SetTrigger("IsHurt");
             Invoke("StopHurt", 0.2f);
         }
@@ -273,13 +288,13 @@ public class Player : MonoBehaviour
         if (transform.localScale.x > 0)
         {
             var transformAttack = new Vector2(3f, 0);
-            createBullet.transform.localScale = new Vector3(2, 2, 2);
+            createBullet.transform.localScale = new Vector3(3, 3, 3);
             createBullet.GetComponent<Rigidbody2D>().velocity = transformAttack;
         }
         else if (transform.localScale.x < 0)
         {
             var transformAttack = new Vector2(-3f,0);
-            createBullet.transform.localScale = new Vector3(-2, -2, -2);
+            createBullet.transform.localScale = new Vector3(-3, -3, -3);
             createBullet.GetComponent<Rigidbody2D>().velocity = transformAttack;
         }
         StartCoroutine(ReLoadSkill2());
@@ -313,6 +328,7 @@ public class Player : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
+                audioSource.PlayOneShot(audioClipJump);
                 _Animator2.SetTrigger("IsJump");
                 _Rigidbody2.velocity = new Vector2(_Rigidbody2.velocity.x, _JumpPower);
             }
@@ -408,6 +424,7 @@ public class Player : MonoBehaviour
         }
         if (collision.gameObject.CompareTag("Coin"))
         {
+            audioSource.PlayOneShot(audioClipCollectCoin);
             _GameController1.CollectCoin();
             Destroy(collision.gameObject);
         }
@@ -434,6 +451,8 @@ public class Player : MonoBehaviour
         _enemy5 = monster.GetComponent<Enemy5>();
         _enemy6 = monster.GetComponent<Enemy6>();
         _enemy7 = monster.GetComponent<Enemy7>();
+        _enemy8 = monster.GetComponent<Enemy8>();
+        _enemy9 = monster.GetComponent<Enemy9>();
         if (positionMonster <= _AttackRange)
         {
             int randomDame = Random.Range(5, 11);
@@ -459,6 +478,8 @@ public class Player : MonoBehaviour
             else if(_enemy5 != null && _enemy5.hpEmenyValue > 0) _enemy5.Enemy5TakeDame(randomDame);
             if (_enemy6 != null && _enemy6.hpEmenyValue > 0) _enemy6.Enemy6TakeDame(randomDame);
             else if (_enemy7 != null && _enemy7.hpEmenyValue > 0) _enemy7.Enemy7TakeDame(randomDame);
+            if (_enemy8 != null && _enemy8.hpEmenyValue > 0) _enemy8.Enemy8TakeDame(randomDame);
+            else if (_enemy9 != null && _enemy9.hpEmenyValue > 0) _enemy9.Enemy9TakeDame(randomDame);
         }
     }
     private void AttackMonsterbySkill1(Transform monster)
@@ -475,6 +496,8 @@ public class Player : MonoBehaviour
         _enemy5 = monster.GetComponent<Enemy5>();
         _enemy6 = monster.GetComponent<Enemy6>();
         _enemy7 = monster.GetComponent<Enemy7>();
+        _enemy8 = monster.GetComponent<Enemy8>();
+        _enemy9 = monster.GetComponent<Enemy9>();
         if (positionMonster <= _AttackRange)
         {
             if (_HpMonster != null && _HpMonster.hpEmenyValue > 0)
@@ -499,6 +522,8 @@ public class Player : MonoBehaviour
             else if (_enemy5 != null && _enemy5.hpEmenyValue > 0) _enemy5.Enemy5TakeDame(20);
             if (_enemy6 != null && _enemy6.hpEmenyValue > 0) _enemy6.Enemy6TakeDame(20);
             else if (_enemy7 != null && _enemy7.hpEmenyValue > 0) _enemy7.Enemy7TakeDame(20);
+            if (_enemy8 != null && _enemy8.hpEmenyValue > 0) _enemy8.Enemy8TakeDame(20);
+            else if (_enemy9 != null && _enemy9.hpEmenyValue > 0) _enemy9.Enemy9TakeDame(20);
         }
     }
     public void AttackMonsterbySkill2(Transform monster)
@@ -513,6 +538,8 @@ public class Player : MonoBehaviour
         _enemy5 = monster.GetComponent<Enemy5>();
         _enemy6 = monster.GetComponent<Enemy6>();
         _enemy7 = monster.GetComponent<Enemy7>();
+        _enemy8 = monster.GetComponent<Enemy8>();
+        _enemy9 = monster.GetComponent<Enemy9>();
         if (_HpMonster != null && _HpMonster.hpEmenyValue > 0)
         {
             _HpMonster.TakeDameEnemy(50);
@@ -534,6 +561,8 @@ public class Player : MonoBehaviour
         if (_enemy4 != null && _enemy4.hpEmenyValue > 0) _enemy4.Enemy4TakeDame(50);
         else if (_enemy6 != null && _enemy6.hpEmenyValue > 0) _enemy6.Enemy6TakeDame(50);
         if (_enemy7 != null && _enemy7.hpEmenyValue > 0) _enemy7.Enemy7TakeDame(50);
+        else if (_enemy8 != null && _enemy8.hpEmenyValue > 0) _enemy8.Enemy8TakeDame(50);
+        else if (_enemy9 != null && _enemy9.hpEmenyValue > 0) _enemy9.Enemy9TakeDame(50);
     }
     IEnumerator EatHpItem()
     {
@@ -570,5 +599,11 @@ public class Player : MonoBehaviour
                 yield return new WaitForSeconds(0.3f);
             }
         }
+    }
+    IEnumerator OffMusicGame()
+    {
+        _MusicGameSource.Stop();
+        yield return new WaitForSecondsRealtime(0.1f);
+        audioSource.PlayOneShot(audioClipDead);
     }
 }
