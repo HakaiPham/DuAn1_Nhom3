@@ -10,12 +10,105 @@ public class Login : MonoBehaviour
     [SerializeField] GameObject SelectLVMenu;
     [SerializeField] GameObject WaitUpdateMenu;
     [SerializeField] GameObject BXHMenu;
+    [SerializeField] GameObject HelpMenu;
+    [SerializeField] GameObject DemoE;
+    [SerializeField] GameObject DemoF;
+    [SerializeField] GameObject DemoR;
+    [SerializeField] GameObject DemoArrow;
+    [SerializeField] GameObject DemoSpace;
+    [SerializeField] GameObject Demo1;
+    [SerializeField] GameObject Demo2;
     public void ChangeScene()
     {
         // Tên cảnh cần chuyển đến
         SceneManager.LoadScene("Scene2");
     }
+    public void Help()
+    {
+        HelpMenu.SetActive(true);
+        Time.timeScale = 1;
 
+    }
+    public void HelpExit()
+    {
+        HelpMenu.SetActive(false);
+        Time.timeScale = 1;
+
+    }
+    public void DemoSkillE()
+    {
+        DemoE.SetActive(true);
+        Time.timeScale = 1;
+
+    }
+    public void DemoSkillEExit()
+    {
+        DemoE.SetActive(false);
+        Time.timeScale = 1;
+
+    }
+    public void DemoSkillF()
+    {
+        DemoF.SetActive(true);
+        Time.timeScale = 1;
+    }
+    public void DemoSkillFExit()
+    {
+        DemoF.SetActive(false);
+        Time.timeScale = 1;
+    }
+    public void DemoSkillR()
+    {
+        DemoR.SetActive(true);
+        Time.timeScale = 1;
+       
+    }
+    public void DemoSkillRExit()
+    {
+        DemoR.SetActive(false);
+        Time.timeScale = 1;
+
+    }
+    public void DemoSkillArrow()
+    {
+        DemoArrow.SetActive(true);
+        Time.timeScale = 1;
+    }
+    public void DemoSkillArrowExit()
+    {
+        DemoArrow.SetActive(false);
+        Time.timeScale = 1;
+    }
+    public void DemoSkillSpace()
+    {
+        DemoSpace.SetActive(true);
+        Time.timeScale = 1;
+    }
+    public void DemoSkillSpaceExit()
+    {
+        DemoSpace.SetActive(false);
+        Time.timeScale = 1;
+    }
+    public void DemoSkill1()
+    {
+        Demo1.SetActive(true);
+        Time.timeScale = 1;
+    }
+    public void DemoSkill1Exit()
+    {
+        Demo1.SetActive(false);
+        Time.timeScale = 1;
+    }
+    public void DemoSkill2()
+    {
+        Demo2.SetActive(true);
+        Time.timeScale = 1;
+    }
+    public void DemoSkill2Exit()
+    {
+        Demo2.SetActive(false);
+        Time.timeScale = 1;
+    }
     public void SelectLV()
     {
         SelectLVMenu.SetActive(true);
@@ -73,5 +166,10 @@ public class Login : MonoBehaviour
     {
         SceneManager.LoadScene("Scene4");
         Time.timeScale = 1;
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
     }
 }
