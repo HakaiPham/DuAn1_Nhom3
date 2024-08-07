@@ -229,9 +229,9 @@ public class BossTank : MonoBehaviour
         {
             var randomPostion = new Vector2(Random.Range(-7.69f, 7.32f), 6);
             var createMetorite = Instantiate(_Metorite, randomPostion, Quaternion.Euler(0, 0, -90.322f));
-            var speedfall = new Vector2(0, -5f);
+            var speedfall = new Vector2(0, -3f);
             createMetorite.GetComponent<Rigidbody2D>().velocity = speedfall;
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.85f);
         }
     }
     private IEnumerator PrepareToTeleport()
