@@ -5,6 +5,7 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -285,16 +286,31 @@ public class Player : MonoBehaviour
     public void CreateBullet()
     {
         var createBullet = Instantiate(_Bullet, _TransformAttack.position, Quaternion.identity);
+        var currentScene = SceneManager.GetActiveScene().name;
         if (transform.localScale.x > 0)
         {
             var transformAttack = new Vector2(3f, 0);
-            createBullet.transform.localScale = new Vector3(3, 3, 3);
+            if(currentScene != "Scene4")
+            {
+                createBullet.transform.localScale = new Vector3(2, 2, 2);
+            }
+            else if(currentScene == "Scene4")
+            {
+                createBullet.transform.localScale = new Vector3(3, 3, 3);
+            }
             createBullet.GetComponent<Rigidbody2D>().velocity = transformAttack;
         }
         else if (transform.localScale.x < 0)
         {
             var transformAttack = new Vector2(-3f,0);
-            createBullet.transform.localScale = new Vector3(-3, -3, -3);
+            if (currentScene != "Scene4")
+            {
+                createBullet.transform.localScale = new Vector3(-2, -2, -2);
+            }
+            else if (currentScene == "Scene4")
+            {
+                createBullet.transform.localScale = new Vector3(-3, -3, 3);
+            }
             createBullet.GetComponent<Rigidbody2D>().velocity = transformAttack;
         }
         StartCoroutine(ReLoadSkill2());
