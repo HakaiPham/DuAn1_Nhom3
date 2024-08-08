@@ -41,8 +41,8 @@ public class Monster2 : MonoBehaviour
         animator = GetComponent<Animator>();
         _AttackBossStart = 0;
         rb=GetComponent<Rigidbody2D>();
-        _hpMonsterSummonSlider.maxValue = 500;
-        _HpMonsterSummonValue = 500;
+        _hpMonsterSummonSlider.maxValue = 300;
+        _HpMonsterSummonValue = 300;
         _HpMonsterSummonText.text = _HpMonsterSummonValue.ToString("");
         _player = FindObjectOfType<Player>();
         _conllider = GetComponent<BoxCollider2D>();
