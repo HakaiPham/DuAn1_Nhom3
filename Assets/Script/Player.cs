@@ -280,7 +280,7 @@ public class Player : MonoBehaviour
         for (int i = 0; i < 10; i++)
         {
             _Skill2Image.fillAmount += 0.1f;
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.6f);
         }
     }
     public void CreateBullet()

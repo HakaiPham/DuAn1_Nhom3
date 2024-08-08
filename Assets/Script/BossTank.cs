@@ -132,7 +132,7 @@ public class BossTank : MonoBehaviour
             // 30% xác suất cho skill 3
             return 3;
         }
-        if (randomSkill <= 70)
+        if (randomSkill <= 60)
         {
             // 30% xác suất cho skill 2
             return 2;
@@ -231,7 +231,7 @@ public class BossTank : MonoBehaviour
             var createMetorite = Instantiate(_Metorite, randomPostion, Quaternion.Euler(0, 0, -90.322f));
             var speedfall = new Vector2(0, -3f);
             createMetorite.GetComponent<Rigidbody2D>().velocity = speedfall;
-            yield return new WaitForSeconds(0.85f);
+            yield return new WaitForSeconds(1f);
         }
     }
     private IEnumerator PrepareToTeleport()
