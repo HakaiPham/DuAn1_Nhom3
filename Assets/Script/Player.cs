@@ -10,42 +10,42 @@ using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour
 {
     // Start is called before the first frame update
-    [SerializeField] private float _MoveSpeed;
+    [SerializeField] private float _MoveSpeed;//Tốc độ di chuyển của nhân vật
     Rigidbody2D _Rigidbody2;
     BoxCollider2D _Collider2;
     public Animator _Animator2;
-    [SerializeField] private float _JumpPower;
-    [SerializeField] private float _JumpPowerSkill;
+    [SerializeField] private float _JumpPower;//Lực nhảy của nhân vật
+    [SerializeField] private float _JumpPowerSkill;//lực nhảy của skillă
     CircleCollider2D circleCollider;
-    [SerializeField] private float _AttackRange;
-    public Transform[] _monster;
-    [SerializeField] private Transform _TransformAttack;
-    public GameObject _Bullet;    //float positionMonster;
-     public Slider _HpSlider;
-     public Slider _MpSlider;
-    public int hpValue;
+    [SerializeField] private float _AttackRange;//Phạm vi tấn công
+    public Transform[] _monster;//Mảng chứa số lượng quái có trong mảng
+    [SerializeField] private Transform _TransformAttack;//Vị trí tấn công quái
+    public GameObject _Bullet;//Đạn
+     public Slider _HpSlider;//Thanh slider HP
+     public Slider _MpSlider;// Thanh Slider MP
+    public int hpValue;//HpValue
     [SerializeField] public  TextMeshProUGUI _HpText;
     [SerializeField] public TextMeshProUGUI _MpText;
     public int mpValue;
-    public Image _Skill1Image;
-    public Image _Skill2Image;
-    Monster _HpMonster;
-    bool isMonsterinRange;
-    float positionMonster;
+    public Image _Skill1Image;//Ảnh skill1
+    public Image _Skill2Image;//Ảnh skill2
+    Monster _HpMonster;//Script của Monster
+    bool isMonsterinRange;//Biến xác định liệu monster có trong phạm vi không
+    float positionMonster;//vị trí của monster
     [SerializeField] private GameObject _HpItem;
     [SerializeField] private GameObject _MpItem;
     [SerializeField] public TextMeshProUGUI _SlHpText;
     int slHp = 0;
     int slMp = 0;
     [SerializeField] public TextMeshProUGUI _SlMpText;
-    bool canUseItem;
-    public Transform targetMonster;
-    Monster2 _EnemySummon;
-    BossTank _BossTank;
-    bool isDead;
-    private float _TimeAttackStart;
-   [SerializeField] private float cooldownAttackTime;
-    Enemy2 _enemy2;
+    bool canUseItem;//Biến xác định có được phép sử dụng Item không
+    public Transform targetMonster;// Transform của monster
+    Monster2 _EnemySummon;//Script của Boss 1
+    BossTank _BossTank;//Sciprt của Boss 2
+    bool isDead;//Biến xác định nhân vật đã chết chưa
+    private float _TimeAttackStart;//Thời gian bắt đầu(Mặt định là 0)
+   [SerializeField] private float cooldownAttackTime;//thời gian cooldown Attack
+    Enemy2 _enemy2;//Script của Enemy
     Enemy3 _enemy3;
     EnermyArrow _enemyArrow;
     Enemy4 _enemy4;
@@ -79,7 +79,7 @@ public class Player : MonoBehaviour
         _SlHpText.text = slHp.ToString("");
         _SlMpText.text = slMp.ToString("");
         _EnemySummon = FindObjectOfType<Monster2>();
-        _BossTank = FindObjectOfType<BossTank>();
+        _BossTank = FindObjectOfType<BossTank>();//Tìm kiếm đối tượng mang Script BossTank
         _enemy2 = FindObjectOfType<Enemy2>();
         isDead = false;
         _TimeAttackStart = 0;
@@ -104,11 +104,12 @@ public class Player : MonoBehaviour
         //SkillAttack1();
         if (canUseItem && Input.GetKeyDown(KeyCode.Alpha1))
         {
-            if (slHp > 0)
+            // Nếu CanUseItem == true và Người chơi nhấn phím 1
+            if (slHp > 0)//Nếu số lượng item Hp >0
             {
-                slHp -= 1;
-                _Animator2.SetBool("IsHealth", true);
-                Invoke("AnimationEatHpFinished", 0.5f);
+                slHp -= 1;//Sau khi dùng thì sl item -1
+                _Animator2.SetBool("IsHealth", true);//Chạy Animation
+                Invoke("AnimationEatHpFinished", 0.5f);//Đợi 0,5f để animation chạy xong sẽ chạy hàm
             }
         }
         else if (canUseItem && Input.GetKeyDown(KeyCode.Alpha2))
@@ -120,11 +121,11 @@ public class Player : MonoBehaviour
                 Invoke("AnimationEatMpFinished", 0.5f);
             }
         }
-        if (hpValue <= 0 && isDead == false)
+        if (hpValue <= 0 && isDead == false)//Nếu hp của nv <=0 và biến is Dead ==false
         {
-            isDead = true;
-            StartCoroutine(OffMusicGame());
-            Dead();
+            isDead = true;//biến isDead == true(tránh trường hợp nhân vật lặp lại hiệu ứng chết)
+            StartCoroutine(OffMusicGame());//Đợi 1 khoảng thời gian rồi tắt nhạc game
+            Dead();//Chạy dòng code nhân vật chết
         }
         PlayerClimp();
     }
@@ -132,8 +133,8 @@ public class Player : MonoBehaviour
     {
        
             _SlHpText.text = slHp.ToString();
-            StartCoroutine(EatHpItem());
-            _Animator2.SetBool("IsHealth", false);       
+            StartCoroutine(EatHpItem());//Chạy code tăng máu 
+            _Animator2.SetBool("IsHealth", false);// tắt animation       
     }
     public void AnimationEatMpFinished()
     {
@@ -147,16 +148,17 @@ public class Player : MonoBehaviour
     {
         _TimeAttackStart -= Time.deltaTime;
         isMonsterinRange = false; // quái chưa có vào phạm vi tấn công
-        targetMonster = null;
+        targetMonster = null;//Bắt đầu cho Transform bằng null
         Debug.Log("Số lượng quái có trong mảng là: " + _monster.Length);
-        foreach(Transform monster in _monster) 
+        foreach(Transform monster in _monster) //Duyệt tất cả các quái có trong mảng
         {
             if (monster != null) // Kiểm tra nếu monster không phải là null
             {
                 positionMonster = Vector2.Distance(transform.position, monster.position);
-                if (positionMonster <= _AttackRange)
+                //Vị trí tính toán khoản khách từ nv đến các quái có trong map
+                if (positionMonster <= _AttackRange)//Quái đang nằm trong pv tấn công của quái
                 {
-                    isMonsterinRange = true;
+                    isMonsterinRange = true;//Quái đang nằm trong phạm vi tấn công
                     targetMonster = monster; // Lưu lại quái vật trong phạm vi tấn công
                     break; // Thoát khỏi vòng lặp nếu tìm thấy quái vật trong phạm vi
                 }
@@ -164,26 +166,28 @@ public class Player : MonoBehaviour
         }
         if (isMonsterinRange==true&&_TimeAttackStart<=0)
         {
-            if (Input.GetKeyDown(KeyCode.E))
+            //Quái đang nằm trong pv tấn công và thời gian tấn công hiện tại <=0
+            if (Input.GetKeyDown(KeyCode.E))//Nhấn E
             {
-                audioSource.PlayOneShot(audioClipAttack);
-                _Animator2.SetTrigger("IsAttack");
-                AttackMonsterbyNormalAttack(targetMonster);
-                _TimeAttackStart = cooldownAttackTime;
+                audioSource.PlayOneShot(audioClipAttack);//Chạy sound tấn công
+                _Animator2.SetTrigger("IsAttack");//Animation tấn công
+                AttackMonsterbyNormalAttack(targetMonster);//Hàm trừ máu
+                _TimeAttackStart = cooldownAttackTime;//Reset lại thời gian tấn công
             }
             else
             {
                 if (Input.GetKeyDown(KeyCode.F)&&_MpSlider.value>=10
                     &&_Skill1Image.fillAmount>=1)
                 {
-                    SkillAttack1();
-                    _MpSlider.value -= 10;
+                    //Nhấn F và Mp hiện tại phải >=10 và skill 1 không có trong thời gian cooldown
+                    SkillAttack1();//nv bay lên và chạy animation
+                    _MpSlider.value -= 10;//trừ 10 mp
                     mpValue -= 10;
                     _MpText.text = mpValue.ToString("");
-                    _Skill1Image.fillAmount = 0;
+                    _Skill1Image.fillAmount = 0;//skill1 đang trong thời gian cooldown
                     //AttackMonsterbySkill1();
-                    StartCoroutine(ReLoadSkill1());
-                    _TimeAttackStart = cooldownAttackTime;
+                    StartCoroutine(ReLoadSkill1());//thời gian cooldown skill1
+                    _TimeAttackStart = cooldownAttackTime;//reset lại thời gian tấn công
                 }
                 else
                 {
@@ -203,6 +207,8 @@ public class Player : MonoBehaviour
         }
         else
         {
+            //Các hàm bên dưới ngoại trừ chiêu R thì 2 chiêu còn lại không thể gây dame
+            //khi ở ngoại phạm vi tấn công
             if (isMonsterinRange == false&&_TimeAttackStart<=0)
             {
                 if (Input.GetKeyDown(KeyCode.E))
@@ -243,62 +249,70 @@ public class Player : MonoBehaviour
         }
         //StopAttack();
     }
-    public void TakeDame(int dame)
+    public void TakeDame(int dame)//Hàm nhận dame
     {
         AnimatorStateInfo stateInfo = _Animator2.GetCurrentAnimatorStateInfo(0);
+        //Lấy animation hiện tại tại Layer 0
         if (stateInfo.IsName("Player_Skill1Animation") ||
             stateInfo.IsName("Player_Skill1_2Animation")) return;
-        if (hpValue >= 0)
+        //Nếu player đang trong trạng thái skill 1 thì không thể bị mất máu
+        if (hpValue >= 0)//hp player >=0 thì mơi có thể nhận dame
         {
             hpValue -= dame;
-            if (hpValue <= 0)
+            if (hpValue <= 0)//điều kiện tránh trường hợp bị âm máu
             {
-                hpValue = 0;
+                hpValue = 0;//hp của nv trả về 0 ngay khi bị trừ hết máu
             }
+            //hiện hiệu ứng gây dame ngay trên đầu nhân vật
                 _GameController1.StartDameText(dame, _DameTextPlayer,gameObject.transform);
             _HpSlider.value = hpValue;
             _HpText.text = hpValue.ToString("");
-            audioSource.PlayOneShot(audioClipHurt);
-            _Animator2.SetTrigger("IsHurt");
-            Invoke("StopHurt", 0.2f);
+            audioSource.PlayOneShot(audioClipHurt);//sound bị tấn công
+            _Animator2.SetTrigger("IsHurt");//animation Hurt
+            Invoke("StopHurt", 0.2f);//Sau 0.2f thì chuyển từ trạng thái "Hurt"
+            //sang trạng thái Idle tránh trường hợp bị lặp lại nhiều lần
         }
     }
-    public void StopHurt()
+    public void StopHurt()//Hàm chuyển sang trạng thái idle
     {
         _Animator2.SetTrigger("IsIdle");
     }
-    IEnumerator ReLoadSkill1()
+    IEnumerator ReLoadSkill1()//Hàm cooldown skill1
     {
         for(int i = 0; i < 10; i++)
         {
             _Skill1Image.fillAmount += 0.1f;
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.5f);//Cử 0.5 s là +0.1
         }
     }
-    IEnumerator ReLoadSkill2()
+    IEnumerator ReLoadSkill2()//Hàm reload skill 2
     {
         for (int i = 0; i < 10; i++)
         {
             _Skill2Image.fillAmount += 0.1f;
-            yield return new WaitForSeconds(0.6f);
+            yield return new WaitForSeconds(0.6f);//Cứ 0.6s là +0.1
         }
     }
-    public void CreateBullet()
+    public void CreateBullet()//Hàm tạo ra viên đạn
     {
+        //biến khởi tạo ra viên đạn
         var createBullet = Instantiate(_Bullet, _TransformAttack.position, Quaternion.identity);
+        //lấy tên Scene hiện tại
         var currentScene = SceneManager.GetActiveScene().name;
-        if (transform.localScale.x > 0)
+        if (transform.localScale.x > 0)//Nếu scale quay sang phải
         {
-            var transformAttack = new Vector2(3f, 0);
-            if(currentScene != "Scene4")
+            var transformAttack = new Vector2(3f, 0);//tốc độ của viên đạn
+            if(currentScene != "Scene4")//Ngoại trừ Scene 4 thì viên đạn sẽ có kích thước là 2
             {
                 createBullet.transform.localScale = new Vector3(2, 2, 2);
             }
-            else if(currentScene == "Scene4")
+            else if(currentScene == "Scene4") 
+                //Ngược lại thì ở Scene 4 thì viên đạn sẽ có kích thước là 3
             {
                 createBullet.transform.localScale = new Vector3(3, 3, 3);
             }
             createBullet.GetComponent<Rigidbody2D>().velocity = transformAttack;
+            //Chuyển động vật lý của viên đạn
         }
         else if (transform.localScale.x < 0)
         {
@@ -313,8 +327,8 @@ public class Player : MonoBehaviour
             }
             createBullet.GetComponent<Rigidbody2D>().velocity = transformAttack;
         }
-        StartCoroutine(ReLoadSkill2());
-        Destroy(createBullet,2f);
+        StartCoroutine(ReLoadSkill2());//Thời gian Cooldown của Skill2
+        Destroy(createBullet,2f);//Phá hủy viên đạn sau 2s
 
     }
     public void MovePlayer()
@@ -325,6 +339,8 @@ public class Player : MonoBehaviour
         var localscale = transform.localScale;
         if (horizontalInput > 0 || horizontalInput < 0)
         {
+            //Ở dòng code phía dưới cho phép tùy chỉnh kích thước nhân vật
+            //Tránh trường hợp nhân vật quá nhỏ hoặc quá lớn
             localscale.x = Mathf.Abs(transform.localScale.x) * Mathf.Sign(horizontalInput);
             transform.localScale = localscale;
         }
@@ -372,21 +388,23 @@ public class Player : MonoBehaviour
     public void SkillAttack1()
     {
         // Bắt đầu animation skill
-        _Animator2.SetTrigger("IsSkill1");
+        _Animator2.SetTrigger("IsSkill1");//Hiệu ứng nhảy lên của skill1
         _Rigidbody2.velocity = Vector2.up * _JumpPowerSkill;
     }
-    public void OnSkill1End()
+    public void OnSkill1End()//Kết thúc skill1(Event)
     {
         // Animation event khi skill 1 kết thúc
         if (_Collider2.IsTouchingLayers(LayerMask.GetMask("Ground"))
             || _Collider2.IsTouchingLayers(LayerMask.GetMask("Monster")))
         {
-            _Animator2.SetTrigger("IsSkill1_2");
-            AttackMonsterbySkill1(targetMonster);
+            //Conllider của nv khi va chạm với layer "Ground" và "Monster"
+            _Animator2.SetTrigger("IsSkill1_2");//Chạy Animation còn lại của skill1
+            AttackMonsterbySkill1(targetMonster);//Hàm trừ máu của skill1
         }
         else
         {
-            _Animator2.ResetTrigger("IsSkill1_2");
+            //Tránh trường hợp chưa chạm đất thì chạy animation tiếp theo
+            _Animator2.ResetTrigger("IsSkill1_2");//Ngược lại thì ResetTrigger
         }
     }
     public void OnSkill2()
@@ -401,14 +419,17 @@ public class Player : MonoBehaviour
     {
         if (_Collider2.IsTouchingLayers(LayerMask.GetMask("Stair")))
         {
-            _Rigidbody2.gravityScale = 0;
+            //Nếu nv va chạm với cái Layer có tên là Stair
+            _Rigidbody2.gravityScale = 0;//trọng lực  = 0 
             if (Input.GetKey(KeyCode.DownArrow))
             {
-                _Animator2.SetBool("IsClimp", true);
-                _Rigidbody2.velocity = Vector2.down * 1;
+                //Nếu mà người chơi nhân nút mũi tên
+                _Animator2.SetBool("IsClimp", true);//Hiệu ứng leo
+                _Rigidbody2.velocity = Vector2.down * 1;//Tốc độ leo
             }
             else if (!Input.GetKey(KeyCode.DownArrow))
             {
+                //ngược lại nếu không bấm thì vấn tộc =0
                 _Rigidbody2.velocity = Vector2.zero;
             }
             if (Input.GetKey(KeyCode.UpArrow))
@@ -426,10 +447,11 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("ItemHp"))
         {
-            Destroy(collision.gameObject);
-            slHp += 1;
+            //Nếu mà người chơi va chạm với tag có tên là "ItemHp"
+            Destroy(collision.gameObject);//Phá hủy đối tượng đó
+            slHp += 1;//số lượng item +1
             _SlHpText.text = slHp.ToString("");
-            canUseItem = true;
+            canUseItem = true;//khi mà sl item khác không thì người chơi được phép sử dụng item
         }
         if (collision.gameObject.CompareTag("ItemMp"))
         {
@@ -449,15 +471,18 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Stair"))
         {
+            //Khi mà player rời khỏi không còn va chạm với cái tag đó 
+            //thì chạy dòng code bên dưới
             _Rigidbody2.gravityScale = 1;
             _Animator2.SetBool("IsClimp", false);
         }
     }
     private void AttackMonsterbyNormalAttack(Transform monster)
     {
-        if (monster == null) return;
+        //Lấy Transform của các Enemy
+        if (monster == null) return;//Nếu mà monster == null thì kết thúc
 
-        _HpMonster = monster.GetComponent<Monster>();
+        _HpMonster = monster.GetComponent<Monster>();//Lấy Tranform của Enemy
         _EnemySummon = monster.GetComponent<Monster2>();
         _BossTank = monster.GetComponent<BossTank>();
         _enemy2 = monster.GetComponent<Enemy2>();
@@ -471,10 +496,12 @@ public class Player : MonoBehaviour
         _enemy9 = monster.GetComponent<Enemy9>();
         if (positionMonster <= _AttackRange)
         {
-            int randomDame = Random.Range(5, 11);
+            //nếu Enemy nằm trong phạm vi tấn công
+            int randomDame = Random.Range(5, 11);//Random dame cho đánh thường
             if (_HpMonster != null && _HpMonster.hpEmenyValue > 0)
             {
-                _HpMonster.TakeDameEnemy(randomDame);
+                //Nếu mà đối tượng Enemy khác null và máu của enemy phải lớn hơn 0
+                _HpMonster.TakeDameEnemy(randomDame);//Hàm nhận dame của Enemy
             }
             else if (_EnemySummon != null && _EnemySummon._HpMonsterSummonValue > 0)
             {
@@ -587,14 +614,14 @@ public class Player : MonoBehaviour
         {
             if (hpValue>=0&&hpValue <100)
             {
-                if (hpValue == 100)
+                if (hpValue == 100) //Nếu giá trị máu hiện tại = 100
                 {
-                    break;
+                    break;//thoát khỏi vòng lặp
                 }
                 hpValue += 1;
                 _HpText.text = hpValue.ToString("");
                 _HpSlider.value = hpValue;
-                yield return new WaitForSeconds(0.3f);
+                yield return new WaitForSeconds(0.3f);//Cứ mỗi 0.3s là + 1 máu
             }
         }
     }
@@ -616,7 +643,7 @@ public class Player : MonoBehaviour
             }
         }
     }
-    IEnumerator OffMusicGame()
+    IEnumerator OffMusicGame()//Tắt nhạc nền game
     {
         _MusicGameSource.Stop();
         yield return new WaitForSecondsRealtime(0.1f);

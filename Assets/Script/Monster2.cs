@@ -8,19 +8,19 @@ using UnityEngine.UI;
 public class Monster2 : MonoBehaviour
 {
     // Start is called before the first frame update
-    public Transform player;
-    public float speed = 1f;
-    public float _Flyspeed = 1.5f;
-    private Vector3 localScale;
+    public Transform player;//Vị trí của player
+    public float speed = 1f;//tốc độ di chuyển của Boss
+    public float _Flyspeed = 1.5f;//Tốc độ di chuyển của Boss khi bay
+    private Vector3 localScale;//Scale của Boss
     Animator animator;
-    [SerializeField] private float _AttackRange;
-    [SerializeField] private float _DetectionRange;
-    private float _AttackBossStart;
-    [SerializeField] private float _AttackBossCoolDown;
-    float distancePlayer;
+    [SerializeField] private float _AttackRange;//Phạm vi tấn công
+    [SerializeField] private float _DetectionRange;//Phạm vi di chuyển
+    private float _AttackBossStart;//Thời gian tấn công của Boss (mặc định là 0)
+    [SerializeField] private float _AttackBossCoolDown;//Cool down đoàn tấn công của Boss
+    float distancePlayer;//Vị trí player
     Rigidbody2D rb;
-    public Slider _hpMonsterSummonSlider;
-    public int _HpMonsterSummonValue;
+    public Slider _hpMonsterSummonSlider;//Thanh slider Hp của Boss
+    public int _HpMonsterSummonValue;//Giá trị máu của Boss
     public TextMeshProUGUI _HpMonsterSummonText;
     public GameObject _OffHpSliderEnemy;
     Player _player;
@@ -60,6 +60,7 @@ public class Monster2 : MonoBehaviour
         // Xác định hướng của Boss dựa trên vị trí của người chơi
         if (player.position.x > transform.position.x)
         {
+            //Thanh Text của Boss sẽ xoay theo tránh trường hợp bị ngược
             _HpMonsterSummonText.transform.localScale = new Vector3(1, 1, 1);
             // Người chơi ở bên phải, quay mặt sang phải
             transform.localScale = new Vector3(Mathf.Abs(localScale.x), localScale.y, localScale.z);
@@ -72,8 +73,10 @@ public class Monster2 : MonoBehaviour
         }
         if (distancePlayer > _DetectionRange)
         {
+            //Nếu vị trí của nv lớn hơn phạm vi di chuyển của Boss
             if (_HpMonsterSummonValue > 0)
             {
+               //Boss chuyển sang trạng thái bay
                 animator.SetTrigger("IsEnemySummonFly");
             }
             MoveBoss();
@@ -95,6 +98,7 @@ public class Monster2 : MonoBehaviour
                 {
                     AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
                     if (stateInfo.IsName("ionmySummon_HurtAnimation")) return;
+                    //Nếu boss trong trạng thái bị tấn công thì không thể gây dame lên nv
                     else
                     {
                         BossSkillAttack();
@@ -105,14 +109,15 @@ public class Monster2 : MonoBehaviour
         }
         EnemySummonDead();
     }
-    public void IntroBoss()
+    public void IntroBoss()//Intro của Boss khi Boss xuất hiện
     {
         animator.SetTrigger("IsEnemySummonFly");
-        rb.velocity = Vector2.down * 1;
+        rb.velocity = Vector2.down * 1;//Tốc độ đáp xuống của Boss
         if (_conllider.IsTouchingLayers(LayerMask.GetMask("Ground")))
         {
+            //Chạm vao Layer "Ground" thì dừng trạng thái bay
             animator.SetTrigger("IsEnemySummonIdle");
-            animator.ResetTrigger("IsEnemySummonFly");
+            animator.ResetTrigger("IsEnemySummonFly");//Thoát khỏi trạng thái bay
             Debug.Log("Đã va chạm");
             rb.velocity = Vector2.zero;
         }
@@ -123,10 +128,13 @@ public class Monster2 : MonoBehaviour
         // Tính toán hướng tới người chơi nhưng chỉ trên trục X
         if (_HpMonsterSummonValue > 0)
         {
+            //biến lấy vị trí của Player
             Vector3 targetPosition = new Vector3(player.position.x, transform.position.y, transform.position.z);
             // Di chuyển Boss tới vị trí mới
+            //Boss di chuyển tới nv bằng phương thức MoveToward
+            //MoveToward(vị trí hiện tại của Boss,vị trí mà Boss muốn tới,tốc độ di chuyển của Boss)
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
-            if (distancePlayer > _DetectionRange)
+            if (distancePlayer > _DetectionRange)//Nếu mà vị trí của Player lớn hơn pv di chuyển của Boss
             {
                 transform.position = Vector3.MoveTowards(transform.position, targetPosition, _Flyspeed * Time.deltaTime);
             }            
@@ -138,23 +146,25 @@ public class Monster2 : MonoBehaviour
     }
     public void BossSkillAttack()
     {
-        int randomSkill = Random.Range(0, 3);
-        int randomdame = Random.Range(10,21 );
+        int randomSkill = Random.Range(0, 3);//Random skill Boss
+        int randomdame = Random.Range(10,21 );//Random Dame của Boss
         _AttackBossStart -= Time.deltaTime;
         if (_AttackBossStart <= 0&&_HpMonsterSummonValue>0)
         {
+            //Boss không nằm trong thời gian cooldown tấn công
+            // và máu của Boss lớn hơn 0
             switch (randomSkill)
             {
                 case 1:
                     animator.SetTrigger("IsEnemySummonSkill1");
-                    _player.TakeDame(randomdame);
+                    _player.TakeDame(randomdame);//Hàm nhận dame của nv
                     break;
                 case 2:
                     animator.SetTrigger("IsEnemySummonSkill2");
                     _player.TakeDame(randomdame);
                     break;
             }
-            _AttackBossStart = _AttackBossCoolDown;
+            _AttackBossStart = _AttackBossCoolDown;//Reset thời gian tấn công của Boss
 
         }
         else if (_AttackBossStart > 0) //Nếu còn đang trong thời gian cooldown
@@ -167,15 +177,16 @@ public class Monster2 : MonoBehaviour
     {
         if (_HpMonsterSummonValue <= 0&&isDead==false)
         {
-            StartCoroutine(BossShoutToDead());
-            isDead = true;
-            _OffHpSliderEnemy.SetActive(false);
+            //Nếu mà hp boss = 0 và biến isdead == false
+            StartCoroutine(BossShoutToDead());//Boss chạy sound âm thanh khi bị đánh bại
+            isDead = true;//biến isDead = true (bảo đảm boss chỉ chạy hàm này 1 lần)
+            _OffHpSliderEnemy.SetActive(false);//Tắt thanh máu của Boss
             Debug.Log("Enemy Da chet");
-            animator.ResetTrigger("IsEnemySummonIdle");
+            animator.ResetTrigger("IsEnemySummonIdle");//Tắt hết các trạng thái của Boss
             animator.ResetTrigger("IsEnemySummonHurt");
             audioSource.PlayOneShot(audioClipDead);
-            animator.SetTrigger("IsEnemySummonDead");
-            Destroy(gameObject, 2f);
+            animator.SetTrigger("IsEnemySummonDead");//Chạy trạng thái chết của Boss
+            Destroy(gameObject, 2f);//Phá hủy đối tượng sau 2s
         }
     }
     IEnumerator BossShoutToDead()
@@ -191,7 +202,7 @@ public class Monster2 : MonoBehaviour
     {
         animator.SetTrigger("IsEnemySummonIdle");
     }
-    public void EnemySummonTakeDame(int dame)
+    public void EnemySummonTakeDame(int dame)//Hàm nhận dame của Boss
     {
         if (_HpMonsterSummonValue > 0)
         {

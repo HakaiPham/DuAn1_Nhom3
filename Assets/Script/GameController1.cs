@@ -9,13 +9,12 @@ using UnityEngine.SceneManagement;
 public class GameController1 : MonoBehaviour
 {
     // Start is called before the first frame update
-    public TextMeshProUGUI _CoinText;
-    public static int coin = 0;
-    public Monster2 monster2Script;
+    public TextMeshProUGUI _CoinText;//CoinText
+    public static int coin = 0;//Giá trị Coin ban đầu
+    public Monster2 monster2Script;//Script của Monster2
     public GameObject _ItemHp;
     public GameObject _ItemMp;
     public GameObject _PanelIntroBoss;
-    bool isStartRandom = false;
     bool isStartIntroBoss = false;
     public GameObject _PanelInfomationBoss;
     public GameObject _BossCthuluImage;
@@ -35,36 +34,38 @@ public class GameController1 : MonoBehaviour
     {
         _CoinText.text = coin.ToString("");
         currentScene = SceneManager.GetActiveScene().name;
+        //Lấy tên Scene hiện tại
     }
 
     // Update is called once per frame
     void Update()
     {
         CheckMonsterDestroy();
-        if(currentScene== "Scene4") {
+        if(currentScene== "Scene4") {//Nếu mà Scene hiện tại là Scene 4
             if (_BossWizard == null && isTotalGameOn == false)
-            {
+            {//Nếu mà BossWizard == null và Biến này xác định để Bảng tổng kết game chỉ chạy 1 lần
                 isTotalGameOn = true;
-                StartCoroutine(TotalGame());
+                StartCoroutine(TotalGame());//Bắt đầu chạy điểm tổng kết game
             }
         }
         if(isNpcTalk == false&& Input.GetKeyDown(KeyCode.B))
         {
-            StartCoroutine(NPCTalk());
-            isNpcTalk = false;
+            //Nếu mà 
+            StartCoroutine(NPCTalk());//Bắt đầu hiện ra cốt truyện
         }
     }
-    public void CollectCoin()
+    public void CollectCoin()//Hàm nhận Coin
     {
         coin += 10;
         _CoinText.text = coin.ToString("");
     }
-    public static int GetScore()
+    public static int GetScore()//Hàm nhận coin
     {
         return coin;
     }
     public void CheckMonsterDestroy()
     {
+        //Các biến ở dưới check các đối tượng liệu có đang tồn tại trong map hay không
         GameObject[] _Enemy = GameObject.FindGameObjectsWithTag("Monster");
         GameObject _HpItem = GameObject.FindGameObjectWithTag("ItemHp");
         GameObject _MpItem = GameObject.FindGameObjectWithTag("ItemMp");
@@ -73,31 +74,37 @@ public class GameController1 : MonoBehaviour
         GameObject _Coin = GameObject.FindGameObjectWithTag("Coin");
         GameObject spawnItemHp;
         GameObject spawnItemMp;
+        //Nếu mà 2 Con boss đều là null thì thoát khỏi hàm
         if (_EnemySummon == null && _DarkWizard == null) return;
         Debug.Log("So luong quai con: "+_Enemy.Length);
         if(_Enemy.Length <= 0 && _EnemySummon!=null) {
-            if (isStartIntroBoss == false)
+            //Nếu quái hiện tại trong map đã được Clear
+            if (isStartIntroBoss == false)//Thì bắt đầu chạy phần IntroBoss
             {
-                StartCoroutine(IntroBoss());
-                isStartIntroBoss = true;
+                StartCoroutine(IntroBoss());//Chạy hàm khởi chạy Intro
+                isStartIntroBoss = true;//Hàm chỉ chạy 1 lần
             }
-            monster2Script.enabled = true;
+            monster2Script.enabled = true;//Sau khi chạy xong phần Intro thì Bật Script của Boss
+            //Random vị trí xuất hiện item
             var randomItemPosition = new Vector2(Random.Range(-7.83f, 13.32f), 0.21f);
+            //Random item (hp/mp) được spawn
             int randomItemSpawn = Random.Range(0, 2);
-            if (_Coin==null)
+            if (_Coin==null)//Nếu coin = null
             {
+                //được phép spawn đồng coin tiếp thep
                 var spawnCoin = Instantiate(_CoinSpawn, randomItemPosition, Quaternion.identity);
             }
-            if (randomItemSpawn == 0) {
-                if (_MpItem != null) return;
-                if(_HpItem == null)
+            if (randomItemSpawn == 0) {//Nếu mà ra số 0 (hp)
+                if (_MpItem != null) return;//Xác định không có itemMp nào xuất hiện
+                if(_HpItem == null)//Và cũng chưa có bình Hp nào đang tồn tại 
                 {
+                    //được phép spawn
                     spawnItemHp = Instantiate(_ItemHp, randomItemPosition, Quaternion.identity);
                 }
             }
-            else if (randomItemSpawn == 1)
+            else if (randomItemSpawn == 1)//Nếu mà ra số 1(mp)
             {
-                if (_HpItem != null) return;
+                if (_HpItem != null) return;//Tương tự như hp
                 if(_MpItem == null)
                 {
                     spawnItemMp = Instantiate(_ItemMp, randomItemPosition, Quaternion.identity);
@@ -105,12 +112,12 @@ public class GameController1 : MonoBehaviour
             }
             //if (_Coin != null) return;
         }
-        else if(_DarkWizard != null)
+        else if(_DarkWizard != null)//Nếu mà boss Dark wizard khác null
         {
-            if (isStartIntroBoss == false)
+            if (isStartIntroBoss == false)//bắt đầu được phép khởi chạy Intro
             {
-                StartCoroutine(IntroBoss2());
-                isStartIntroBoss = true;
+                StartCoroutine(IntroBoss2());//Chạy IntroBoss
+                isStartIntroBoss = true;//Biến chỉ cho phép chạy 1 lần
             }
             var randomItemPosition = new Vector2(Random.Range(-7.57f, 6.62f), -1.841413f);
             int randomItemSpawn = Random.Range(0, 2);
@@ -135,10 +142,6 @@ public class GameController1 : MonoBehaviour
                 }
             }
         }
-    }
-    IEnumerator SpawnItemCooldown()
-    {
-        yield return new WaitForSeconds(5f);
     }
     IEnumerator IntroBoss()
     {
@@ -165,8 +168,8 @@ public class GameController1 : MonoBehaviour
         _PanelInfomationBoss2.SetActive(false);
     }
     IEnumerator DameText(int dame, TextMeshProUGUI text,Transform monsterTransform)
-    {
-        if (monsterTransform.localScale.x < 0)
+    {//Hàm tạo ra Dame text trên đầu các đối tượng
+        if (monsterTransform.localScale.x < 0)//Dame Text sẽ được xoay theo chiều của đối tượng
         {
             // Quái đang nhìn sang trái, lật DameText theo trục x
             text.transform.localScale = new Vector3(-1, 1, 1);
@@ -178,37 +181,41 @@ public class GameController1 : MonoBehaviour
         }
         text.gameObject.SetActive(true);
         text.text = dame.ToString("");
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.1f);//Sau 0.1s thì ẩn đi
         text.gameObject.SetActive(false);
 
     }
+    //hàm khởi chạy DameText
     public void StartDameText(int dame,TextMeshProUGUI text, Transform monsterTransform)
     {
         StartCoroutine(DameText(dame, text, monsterTransform));
     }
     IEnumerator TotalGame()
     {
-        Time.timeScale = 0;
+        //hàm Tổng kết điểm sau khi chiến thắng Boss
+        Time.timeScale = 0;//Sau khi chiến thắng thời gian sẽ dừng lại
         _PanelTotalGame.SetActive(true);
-        yield return new WaitForSecondsRealtime(0.5f);
+        yield return new WaitForSecondsRealtime(0.5f);//Do Time.timescale = 0 nên ta sẽ
+        //lấy thời gian thực để chạy
         _ToTalCoinText.gameObject.SetActive(true);
-        int totalCoin = GetScore();
-        int CountCoin = 0;
+        int totalCoin = GetScore();//Lấy điểm của các màn chơi
+        int CountCoin = 0;//Biến đếm số
         Debug.Log("Score hien tai la: " + totalCoin);
-        for(int i = 0;i< totalCoin; i++)
+        for(int i = 0;i< totalCoin; i++)//Vòng lặp để tăng điểm
         {
             CountCoin += 1;
             _ToTalCoinText.text = "Score: " + CountCoin;
-            yield return new WaitForSecondsRealtime(0.05f);
+            yield return new WaitForSecondsRealtime(0.05f);//cứ 0.05s thì tăng 1 điểm
         }
     }
     public void ResetCoin()
     {
         coin = 0;
         _CoinText.text = coin.ToString("");
-    }
+    }//Reset lại hết tất cả các coin khi mà nhấn chơi lại
     IEnumerator NPCTalk()
     {
+        //hàm này chỉ được chạy khi mà trong map có đối tượng có tag là NPC
         GameObject checkNPC = GameObject.FindGameObjectWithTag("NPC");
         if(checkNPC != null)
         {
