@@ -3234,6 +3234,10 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 898916388902104398, guid: a25b1f52026b8a1449c1652e864d0cee, type: 3}
+      propertyPath: audioClipCollectCoin
+      value: 
+      objectReference: {fileID: 8300000, guid: ae01442314cc88545a10fd4e4ff5c714, type: 3}
+    - target: {fileID: 898916388902104398, guid: a25b1f52026b8a1449c1652e864d0cee, type: 3}
       propertyPath: _monster.Array.data[0]
       value: 
       objectReference: {fileID: 1518710224}

@@ -10,7 +10,7 @@ public class Bullet : MonoBehaviour
     CircleCollider2D _CircleCollider;
     Rigidbody2D _Rigidbody;
     Player _player;
-    Transform targetMonster;
+    Transform targetMonster;//Vị trí của các quái có trong map
     Monster _monster;
     Monster2 _monsterSummon;
     Enemy2 _enemy2;
@@ -51,10 +51,10 @@ public class Bullet : MonoBehaviour
     }
     public void DestroyBullet ()
     {
-        _Rigidbody.velocity = Vector2.zero;
+        _Rigidbody.velocity = Vector2.zero;//Tạm dừng viên đạn khi đã va chạm
         audioSource.PlayOneShot(audioClipHit);
-        _Animator.SetBool("IsBulletAttack", true);
-        Destroy(gameObject, 0.4f);
+        _Animator.SetBool("IsBulletAttack", true);//chạy Animation
+        Destroy(gameObject, 0.4f);//Sau 0.4f thì phá hủy đối tượng
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -62,6 +62,8 @@ public class Bullet : MonoBehaviour
             collision.gameObject.CompareTag("EnemySummon")||
             collision.gameObject.CompareTag("BossTank"))         
         {
+            //Nếu mà đối tượng va chạm với các tag ở trên 
+            //thì sẽ lấy các conllider của các Enemy khi va chạm
             _monster =  collision.GetComponent<Monster>();
             _monsterSummon = collision.GetComponent<Monster2>();
             _enemy2 = collision.GetComponent<Enemy2>();
@@ -75,7 +77,7 @@ public class Bullet : MonoBehaviour
             _enemy9 = collision.GetComponent<Enemy9>();
             if (_monster != null&&_monster.hpEmenyValue>0)
             {
-                targetMonster = _monster.transform;
+                targetMonster = _monster.transform;//cập nhật vị trí của Enemy
                 Debug.Log( "vị trị hiện tại của quái là: " + targetMonster);
                 _player.AttackMonsterbySkill2(targetMonster);
                 _Rigidbody.velocity = Vector2.zero;

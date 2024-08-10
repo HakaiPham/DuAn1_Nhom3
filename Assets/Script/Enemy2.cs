@@ -7,26 +7,25 @@ using UnityEngine.UI;
 
 public class Enemy2 : MonoBehaviour
 {
-    [SerializeField] private float _enemyMoveSpeed;
-    [SerializeField] private float _Right;
-    [SerializeField] private float _Left;
-    [SerializeField] private float _AttackRange;
-    public Transform _player;
+    [SerializeField] private float _enemyMoveSpeed;//Tốc độ của Enemy
+    [SerializeField] private float _Right;//Giới hạn bên phải
+    [SerializeField] private float _Left;//Giới hạn bên trái
+    [SerializeField] private float _AttackRange;//Phạm vi tấn công
+    public Transform _player;//Vị trí của người chơi
     private Animator _animator;
-    private bool isMoveLeftOrRight;
-    private bool _playerInRange;
-    private bool _IsAttacking;
-    float _EnemyAttackTimeStart;
-    [SerializeField] private float _EnemyAttackTime;
-    Player _playerHp;
-    public Slider _EnemyHp;
+    private bool isMoveLeftOrRight;//Biến xác định xoay sang trái hay sang phải
+    private bool _IsAttacking;//Biến xác định Enemy có tấn công không
+    float _EnemyAttackTimeStart;//Thời gian ban đầu (mặc đinh là 0)
+    [SerializeField] private float _EnemyAttackTime;//Thời gian cooldown tấn công
+    Player _playerHp;//Script của player
+    public Slider _EnemyHp;//Thanh slider của Enemy
     public TextMeshProUGUI _HpEnemyText;
     public int hpEmenyValue;
     Rigidbody2D _rigidbody2;
-    bool _IsDead;
+    bool _IsDead;//Biến xác định Enemy đã chết chưa
     [SerializeField] private GameObject _HpEnemyOff;
     public TextMeshProUGUI _DameText;
-    GameController1 _gameController1;
+    GameController1 _gameController1;//script của GameController1
     AudioSource audioSource;
     public AudioClip audioClipHitEnemy;
     public AudioClip audioClipDead;
@@ -48,42 +47,42 @@ public class Enemy2 : MonoBehaviour
     void Update()
     {
         var distancePlayer = Vector2.Distance(transform.position, _player.position);
-
+        //Khoảng cách của player đến quái
         // Kiểm tra xem người chơi có nằm trong phạm vi tấn công không
-        if (distancePlayer <= _AttackRange)
+        if (distancePlayer <= _AttackRange)//Nếu mà vị trí của người chơi < pv tấn công của quái
         {
-            _IsAttacking = true;
+            _IsAttacking = true;//Quái được phép tấn công
         }
-        else
+        else//ngược lại là không
         {
             _IsAttacking = false;
         }
 
         //Nếu người chơi nằm trong phạm vi tấn công, quái sẽ dừng lại và tấn công
 
-        if (_IsAttacking == false)
+        if (_IsAttacking == false)//Nếu Quái không được phép tấn công
         {
-            EnemyMove();
+            EnemyMove();//Thì quái được phép di chuyển
         }
         //StopAttack();
         EnemyDead();
     }
-    public void EnemyMove()
+    public void EnemyMove()//Quái di chuyển
     {
-        var enemyPosition = transform.localPosition;
+        var enemyPosition = transform.localPosition;//Lấy vị trí hiện tại của Enemy
 
-        if (enemyPosition.x >= _Right)
+        if (enemyPosition.x >= _Right)//Giới hạn bên phải
         {
-            isMoveLeftOrRight = false;
+            isMoveLeftOrRight = false;//Tự động chuyển sang trái
         }
-        else if (enemyPosition.x <= _Left)
+        else if (enemyPosition.x <= _Left)//Giới hạn bên trái
         {
-            isMoveLeftOrRight = true;
+            isMoveLeftOrRight = true;//Tự động chuyển sang phải
         }
 
-        var move = Vector2.right;
+        var move = Vector2.right;//Di chuyển sang phải
         _HpEnemyText.transform.localScale = new Vector3(1, 1, 1);
-        if (isMoveLeftOrRight == false)
+        if (isMoveLeftOrRight == false)//Di chuyển sang trái
         {
             move = Vector2.left;
             _HpEnemyText.transform.localScale = new Vector3(-1, 1, 1);
@@ -92,12 +91,14 @@ public class Enemy2 : MonoBehaviour
         var enemyScale = transform.localScale;
         if (enemyScale.x > 0 && isMoveLeftOrRight == false || enemyScale.x < 0 && isMoveLeftOrRight == true)
         {
-            enemyScale.x *= -1;
+            //Nếu scale của Enemy là bên phải và bắt đầu di chuyển sang bên trái
+            //hoặcNếu scale của Enemy là bên trái và bắt đầu di chuyển sang bên phải
+            enemyScale.x *= -1;//đổi hướng xoay
             transform.localScale = enemyScale;
         }
         else
         {
-            if (hpEmenyValue <= 0)
+            if (hpEmenyValue <= 0)//Nếu mà máu của Enemy <=0 thì quái sẽ ngừng di chuyển
             {
                 return;
             }
@@ -107,29 +108,32 @@ public class Enemy2 : MonoBehaviour
         _animator.SetBool("IsEnemy2Block", false);
         transform.Translate(move * _enemyMoveSpeed * Time.deltaTime);
     }
-    public void SkillMonster()
+    public void SkillMonster()//Kỹ năng của Enemy
     {
-        if (_playerHp.hpValue > 0)
+        if (_playerHp.hpValue > 0)//Nếu Hp của player >0 thì Enemy mới được phép tấn công
         {
-            int randomSkill = Random.Range(1, 3);
+            int randomSkill = Random.Range(1, 3);//Random skill từ 1 -2
             _EnemyAttackTimeStart -= Time.deltaTime;
             if (_EnemyAttackTimeStart <= 0&& _IsAttacking == true)
-            {
-
-                switch (randomSkill)
+            {//Nếu mà Quái không nằm trong thời gian cooldown tấn công
+                //và được phép tấn công(nằm trong pv tấn công)
+                switch (randomSkill)//Randomskill
                 {
                     case 1:
                         Vector3 scale = transform.localScale;
                         if (_player.position.x < transform.position.x && scale.x > 0 || _player.position.x > transform.position.x && scale.x < 0)
                         {
-                            scale.x *= -1;
+                            //Nếu vị trí của player bé hơn vị trí của Enemy và Scale ở bên phải
+                            //hoặc Nếu vị trí của player lớn hơn vị trí của Enemy và Scale ở bên trái
+                            scale.x *= -1;//Enemy được phép xoay mặt lại ngay
+                            //Dòng code dưới để chỉnh cho Text của thanh máu không bị xoay ngược chiều
                             _HpEnemyText.transform.localScale = new Vector3(scale.x, 1, 1);
                             transform.localScale = scale;
                         }
                         _animator.SetBool("IsEnemy2Attack", true);
                         if (_playerHp.hpValue > 0)
                         {
-                            Invoke("Hpnv", 0.51f);
+                            Invoke("Hpnv", 0.51f);//Sau 0.51f thì trừ máu player
                         }
                         break;
                     case 2:
@@ -195,15 +199,18 @@ public class Enemy2 : MonoBehaviour
             Destroy(gameObject, 2f);
         }
     }
-    public void Enemy2TakeDame(int dame)
+    public void Enemy2TakeDame(int dame)//Hàm nhận dame của Enemy
     {
-        bool canAttack = true;
+        bool canAttack = true;//được phép tấn công
         AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+        //Lấy trạng thái của Animation hiện tại
         if (stateInfo.IsName("Enemy2_blockAnimation")||
             (stateInfo.IsName("Enemy2_AttackAnimation") && canAttack == true)) return;
+        //Nếu mà Enemy đang trong trạng thái cầm khiên và trong trạng thái tấn công 
+        //người chơi thì không thể bị tấn công
         else
         {
-            if (hpEmenyValue > 0)
+            if (hpEmenyValue > 0)//Nếu mà Hp của Enemy >0
             {
                 _animator.SetTrigger("IsEnemy2Hurt");
                 audioSource.PlayOneShot(audioClipHitEnemy);
